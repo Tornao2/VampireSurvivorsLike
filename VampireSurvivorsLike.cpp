@@ -1,19 +1,22 @@
-#include <SFML/Graphics.hpp>
+#include "Display.h"
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode({ 200, 200 }), "SFML works!");
+    Display display;
+    display.setResolution(800, 600);
+    display.setTitle("PGK2 projekt");
+    display.activateWindow();
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
-    while (window.isOpen())
+    while (display.getWindow()->isOpen())
     {
-        while (const std::optional event = window.pollEvent())
+        while (const std::optional event = display.getWindow()->pollEvent())
         {
             if (event->is<sf::Event::Closed>())
-                window.close();
+                display.getWindow()->close();
         }
-        window.clear();
-        window.draw(shape);
-        window.display();
+        display.getWindow()->clear();
+        display.getWindow()->draw(shape);
+        display.getWindow()->display();
     }
 }
