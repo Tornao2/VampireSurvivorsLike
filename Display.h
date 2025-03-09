@@ -4,7 +4,7 @@
 
 class Display {
 	std::string windowTitle;
-	unsigned int framerate, windowWidth, windowHeight;
+	unsigned int framerate, windowWidth, windowHeight, screenWidth, screenHeight;
 	bool fullscreen;
 	sf::RenderWindow window;
 public:

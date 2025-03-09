@@ -9,10 +9,9 @@ int main()
     display.setFramerate(60);
     display.setFullscreen(true);
     sf::CircleShape shape(100.0f);
-    shape.setFillColor(sf::Color::Green);
     while (display.getWindow()->isOpen())
     {
-        while (const std::optional event = display.getWindow()->pollEvent())
+        while (std::optional event = display.getWindow()->pollEvent())
         {
             if (event->is<sf::Event::Closed>())
                 display.getWindow()->close();

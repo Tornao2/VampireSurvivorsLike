@@ -2,6 +2,8 @@
 
 Display::Display() {
 	windowWidth = windowHeight = fullscreen = framerate = 0;
+	screenWidth = sf::VideoMode::getDesktopMode().size.x;
+	screenHeight = sf::VideoMode::getDesktopMode().size.y;
 	window.create(sf::VideoMode({ 0, 0 }), "");
 }
 
@@ -13,7 +15,17 @@ void Display::setTitle(std::string title) {
 void Display::setResolution(unsigned int width, unsigned int height) {
 	windowWidth = width;
 	windowHeight = height;
-	window.setSize({ width, height });
+	if (!fullscreen){
+		window.setSize({ width, height });
+	}
+	else {
+		float newWidth = windowWidth * (float)screenHeight / windowHeight;
+		sf::View view(sf::FloatRect({ 0.0f, 0.0f }, { (float)windowWidth, (float)windowHeight }));
+		view.setViewport({
+			{(sf::VideoMode::getDesktopMode().size.x - newWidth) / (2.0f * screenWidth), 0.0f},
+			{newWidth / screenWidth, 1.0f} });
+		window.setView(view);
+	}
 }
 
 void Display::turnOffCursor() {
@@ -31,8 +43,6 @@ void Display::setFramerate(unsigned int readFramerate) {
 
 void Display::setFullscreen(bool ifFullscreen) {
 	fullscreen = ifFullscreen;
-	unsigned int screenWidth = sf::VideoMode::getDesktopMode().size.x;
-	unsigned int screenHeight = sf::VideoMode::getDesktopMode().size.y;
 	if (ifFullscreen) {
 		float newWidth = windowWidth * (float)screenHeight / windowHeight;
 		sf::View view(sf::FloatRect({ 0.0f, 0.0f }, { (float)windowWidth, (float)windowHeight }));
