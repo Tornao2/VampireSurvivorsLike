@@ -1,10 +1,14 @@
 #include "Display.h"
 
 Display::Display() {
-	windowWidth = windowHeight = fullscreen = framerate = 0;
 	screenWidth = sf::VideoMode::getDesktopMode().size.x;
 	screenHeight = sf::VideoMode::getDesktopMode().size.y;
 	window.create(sf::VideoMode({ 0, 0 }), "");
+	turnOffCursor();
+	setResolution(800, 600);
+	setTitle("PGK2 projekt");
+	setFramerate(60);
+	setFullscreen(false);
 }
 
 void Display::setTitle(std::string title) {
