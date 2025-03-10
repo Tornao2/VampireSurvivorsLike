@@ -6,4 +6,5 @@ class SpriteHandler {
 public:
 	sf::Texture* loadTexture(sf::Vector2i size, std::string fileName);
 	sf::Sprite loadSprite(sf::Texture& texture, sf::Vector2i size, sf::Vector2i position);
+	void destroyTextures();
 };

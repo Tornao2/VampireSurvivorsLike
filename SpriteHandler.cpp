@@ -14,3 +14,7 @@ sf::Texture* SpriteHandler::loadTexture(sf::Vector2i size, std::string fileName)
 sf::Sprite SpriteHandler::loadSprite(sf::Texture& texture, sf::Vector2i size, sf::Vector2i position) {
     return sf::Sprite(texture, sf::IntRect(position, size));
 }
+
+void SpriteHandler::destroyTextures() {
+    textureHolder.clear();
+}
