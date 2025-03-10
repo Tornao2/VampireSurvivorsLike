@@ -19,9 +19,8 @@ void Display::setTitle(std::string title) {
 void Display::setResolution(unsigned int width, unsigned int height) {
 	windowWidth = width;
 	windowHeight = height;
-	if (!fullscreen){
+	if (!fullscreen)
 		window.setSize({ width, height });
-	}
 	else {
 		float newWidth = windowWidth * (float)screenHeight / windowHeight;
 		sf::View view(sf::FloatRect({ 0.0f, 0.0f }, { (float)windowWidth, (float)windowHeight }));
