@@ -13,6 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\BaseClasses">
+      <UniqueIdentifier>{716c247d-34de-42fc-a701-aae1f0dd6375}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SceneClasses">
+      <UniqueIdentifier>{ed3f3062-5b94-4488-a785-488a64efb89c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SceneClasses">
+      <UniqueIdentifier>{e147e9eb-6f98-44ed-b26e-19a991675bed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VampireSurvivorsLike.cpp">
@@ -30,6 +39,9 @@
     <ClCompile Include="ExitHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>Source Files\SceneClasses</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Display.h">
@@ -43,6 +55,12 @@
     </ClInclude>
     <ClInclude Include="ExitHandler.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files\BaseClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>Header Files\SceneClasses</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

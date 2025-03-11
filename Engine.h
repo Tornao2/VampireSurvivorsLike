@@ -1,20 +1,15 @@
 #pragma once
 #include "Display.h"
-#include "SpriteHandler.h"
-
-enum SceneLabels {
-	MAINMENU
-};
+#include "MainMenu.h"
 
 class Engine {
 	SceneLabels sceneLabel;
-	Display* display;
-	SpriteHandler* spriteHandler;
-	std::vector<sf::Sprite> usedTextures;
-	bool initMainMenu();
+	Display display;
+	SpriteHandler spriteHandler;
+	Scene* scene;
 	void draw();
+	void handleEvents();
 public:
 	Engine();
 	int mainLoop();
-	void handleEvents();
 };
