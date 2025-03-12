@@ -18,7 +18,7 @@ int Engine::mainLoop() {
 
 void Engine::draw() {
     display.getWindow()->clear();
-    for (std::variant<std::vector<sf::Sprite>*, std::list<sf::Sprite>*> var : spriteHandler.getSpriteHolder()) {
+    for (ListOrVector var : **spriteHandler.getSpriteHolder()) {
         Display* dispCopy = &display;
         std::visit([dispCopy](auto* container) {
             for (sf::Sprite& sprite : *container)

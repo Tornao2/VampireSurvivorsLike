@@ -2,7 +2,7 @@
 #include "Scene.h"
 
 class MainMenu : public Scene {
-	std::vector<sf::Sprite>* spriteHolder;
+	int spriteHolderIndex;
 public:
 	using Scene::Scene;
 	bool logic();

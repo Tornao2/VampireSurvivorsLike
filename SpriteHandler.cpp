@@ -11,47 +11,48 @@ sf::Texture* SpriteHandler::loadTexture(sf::Vector2i size, std::string fileName)
     return &textureHolder[fullFileName];
 }
 
-void SpriteHandler::loadSpriteIntoHolder(sf::Texture& texture, sf::Vector2i size, sf::Vector2i position, std::variant<std::vector<sf::Sprite>*, std::list<sf::Sprite>*> collection) {
+void SpriteHandler::loadSpriteIntoHolder(sf::Texture& texture, sf::Vector2i size, sf::Vector2i position, int index) {
     sf::Sprite sprite = sf::Sprite(texture, sf::IntRect(position, size));
     std::visit([&sprite](auto container) {
         container->push_back(sprite);
-    }, collection);
+    }, spriteHolder->at(index));
 }
 
 void SpriteHandler::destroyTextures() {
     textureHolder.clear();
 }
 
-std::vector<sf::Sprite>* SpriteHandler::addVectorToSpriteHolder() {
+int SpriteHandler::addVectorToSpriteHolder() {
     std::vector<sf::Sprite>* newVector = new std::vector<sf::Sprite>;
-    spriteHolder.push_back(newVector);
-    return newVector;
+    spriteHolder->push_back(newVector);
+    return spriteHolder->size() - 1;
 }
 
-std::list<sf::Sprite>* SpriteHandler::addListToSpriteHolder() {
+int SpriteHandler::addListToSpriteHolder() {
     std::list<sf::Sprite>* newList = new std::list<sf::Sprite>;
-    spriteHolder.push_back(newList);
-    return newList;
-}
-
-void SpriteHandler::removeCollectionFromSpriteHolder(std::variant<std::vector<sf::Sprite>*, std::list<sf::Sprite>*>* readCollection) {
-    auto it = std::find(spriteHolder.begin(), spriteHolder.end(), *readCollection);
-    if (it != spriteHolder.end()) {
-        std::visit([](auto ptr) { delete ptr; }, *it);
-        spriteHolder.erase(it);
-    }
+    spriteHolder->push_back(newList);
+    return spriteHolder->size() - 1;
 }
 
 void SpriteHandler::clearSpriteHolder() {
-    for (std::variant<std::vector<sf::Sprite>*, std::list<sf::Sprite>*> var : spriteHolder) {
+    for (ListOrVector var : *spriteHolder) {
         std::visit([](auto* container) {
             container->clear();
             delete container;
         }, var);
     }
-    spriteHolder.clear();
+    spriteHolder->clear();
 }
 
-std::vector < std::variant<std::vector<sf::Sprite>*, std::list<sf::Sprite>*>>& SpriteHandler::getSpriteHolder() {
-    return spriteHolder;
+std::vector <ListOrVector>** SpriteHandler::getSpriteHolder() {
+    return &spriteHolder;
+}
+
+sf::Sprite* SpriteHandler::getSpritePointer(int collectionIndex, int spriteIndex) {
+    return std::visit([spriteIndex](auto container) -> sf::Sprite* {
+        int realIndex = (spriteIndex == -1) ? container->size() - 1 : spriteIndex;
+        auto it = container->begin();
+        std::advance(it, realIndex);
+        return &(*it);
+    }, spriteHolder->at(collectionIndex));
 }
