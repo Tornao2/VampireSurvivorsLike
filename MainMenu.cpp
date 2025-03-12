@@ -1,10 +1,14 @@
 #include "MainMenu.h"
 
-bool MainMenu::logic() {
-    return true;
+bool MainMenu::logic(std::optional<sf::Event> gameEvent) {
+    if (gameEvent->is<sf::Event::Closed>()) {
+        return true;
+    }
+    return false;
 }
 
 bool MainMenu::init() {
+    selectedButton = 0;
     sf::Texture* mainMenuTexture = spriteHandler->loadTexture({ 400, 600 }, "MainMenu");
     if (!mainMenuTexture) return true;
     spriteHolderIndex = spriteHandler->addVectorToSpriteHolder();
@@ -19,4 +23,8 @@ bool MainMenu::init() {
     spriteHandler->loadSpriteIntoHolder(*mainMenuTexture, { 400,100 }, { 0, 0 }, spriteHolderIndex);
     spriteHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 200, 50. });
     return false;
+}
+
+void MainMenu::cleanUp() {
+    spriteHandler->clearSpriteHolder();
 }

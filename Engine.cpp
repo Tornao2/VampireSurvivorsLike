@@ -29,8 +29,15 @@ void Engine::draw() {
 }
 
 void Engine::handleEvents() {
+    SceneLabels temp = sceneLabel;
     while (std::optional event = display.getWindow()->pollEvent()){
-        if (event->is<sf::Event::Closed>()) 
-            display.getWindow()->close();
+        bool finished = scene->logic(event);
+        if (finished) {
+            if (temp != sceneLabel) {
+                scene->cleanUp();
+            } else 
+                display.getWindow()->close();
+            break;
+        };
     }
 }
