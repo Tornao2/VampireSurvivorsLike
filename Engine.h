@@ -3,6 +3,8 @@
 #include "MainMenu.h"
 #include "Settings.h"
 
+//1728/1080 1440:900 1280/800 resolutions
+
 class Engine {
 	SceneLabels sceneLabel;
 	Display display;

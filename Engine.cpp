@@ -17,14 +17,18 @@ int Engine::mainLoop() {
 }
 
 void Engine::draw() {
-    display.getWindow()->clear();
+    sf::RenderTexture renderTexture({ 432, 270 });
+    renderTexture.clear();
     for (ListOrVector var : **spriteHandler.getSpriteHolder()) {
-        Display* dispCopy = &display;
-        std::visit([dispCopy](auto* container) {
+        std::visit([&renderTexture](auto* container) {
             for (sf::Sprite& sprite : *container)
-                dispCopy->getWindow()->draw(sprite);
+                renderTexture.draw(sprite);
             }, var);
     }
+    renderTexture.display();
+    sf::Sprite finalSprite(renderTexture.getTexture());
+    finalSprite.setScale({display.getWindow()->getSize().x/ 432.0f,display.getWindow()->getSize().y/ 270.f });
+    display.getWindow()->draw(finalSprite);
     display.getWindow()->display();
 }
 

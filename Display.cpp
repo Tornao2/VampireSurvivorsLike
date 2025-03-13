@@ -5,10 +5,10 @@ Display::Display() {
 	screenHeight = sf::VideoMode::getDesktopMode().size.y;
 	window.create(sf::VideoMode({ 0, 0 }), "");
 	turnOffCursor();
-	setResolution(800, 600);
+	setResolution(1280, 800);
 	setTitle("PGK2 projekt");
 	setFramerate(60);
-	setFullscreen(false);
+	setFullscreen(true);
 }
 
 void Display::setTitle(std::string title) {
@@ -16,19 +16,22 @@ void Display::setTitle(std::string title) {
 	window.setTitle(title);
 }
 
+void Display::setViewport() {
+	float newWidth = windowWidth * (float)screenHeight / windowHeight;
+	sf::View view(sf::FloatRect({ 0.0f, 0.0f }, { (float)windowWidth , (float)windowHeight }));
+	view.setViewport({
+		{(sf::VideoMode::getDesktopMode().size.x - newWidth) / (2.0f * screenWidth), 0.0f},
+		{newWidth / screenWidth, 1.0f} });
+	window.setView(view);
+}
+
 void Display::setResolution(unsigned int width, unsigned int height) {
 	windowWidth = width;
 	windowHeight = height;
 	if (!fullscreen)
 		window.setSize({ width, height });
-	else {
-		float newWidth = windowWidth * (float)screenHeight / windowHeight;
-		sf::View view(sf::FloatRect({ 0.0f, 0.0f }, { (float)windowWidth, (float)windowHeight }));
-		view.setViewport({
-			{(sf::VideoMode::getDesktopMode().size.x - newWidth) / (2.0f * screenWidth), 0.0f},
-			{newWidth / screenWidth, 1.0f} });
-		window.setView(view);
-	}
+	else
+		setViewport();
 }
 
 void Display::turnOffCursor() {
@@ -47,13 +50,8 @@ void Display::setFramerate(unsigned int readFramerate) {
 void Display::setFullscreen(bool ifFullscreen) {
 	fullscreen = ifFullscreen;
 	if (ifFullscreen) {
-		float newWidth = windowWidth * (float)screenHeight / windowHeight;
-		sf::View view(sf::FloatRect({ 0.0f, 0.0f }, { (float)windowWidth, (float)windowHeight }));
-		window.create(sf::VideoMode({ screenWidth, screenHeight }), windowTitle, sf::State::Fullscreen);
-		view.setViewport({
-			{(sf::VideoMode::getDesktopMode().size.x - newWidth) / (2.0f * screenWidth), 0.0f},
-			{newWidth / screenWidth, 1.0f}});
-		window.setView(view);
+		setViewport();
+		window.create(sf::VideoMode({ windowWidth, windowHeight }), windowTitle, sf::State::Fullscreen);
 	}
 	else 
 		window.create(sf::VideoMode({ windowWidth, windowHeight }), windowTitle, sf::State::Windowed);
