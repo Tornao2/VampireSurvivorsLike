@@ -2,7 +2,10 @@
 #include "SpriteHandler.h"
 
 enum SceneLabels {
-	MAINMENU
+	MAINMENU = 0,
+	PLAYCHOICE,
+	UPGRADE,
+	SETTINGS,
 };
 
 class Scene {

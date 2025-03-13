@@ -147,6 +147,7 @@
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="ExitHandler.cpp" />
     <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="Settings.cpp" />
     <ClCompile Include="SpriteHandler.cpp" />
     <ClCompile Include="VampireSurvivorsLike.cpp" />
   </ItemGroup>
@@ -156,6 +157,7 @@
     <ClInclude Include="ExitHandler.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="Settings.h" />
     <ClInclude Include="SpriteHandler.h" />
   </ItemGroup>
   <ItemGroup>

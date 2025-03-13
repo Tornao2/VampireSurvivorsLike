@@ -30,14 +30,31 @@ void Engine::draw() {
 
 void Engine::handleEvents() {
     SceneLabels temp = sceneLabel;
-    while (std::optional event = display.getWindow()->pollEvent()){
-        bool finished = scene->logic(event);
-        if (finished) {
-            if (temp != sceneLabel) {
-                scene->cleanUp();
-            } else 
-                display.getWindow()->close();
-            break;
-        };
+    if (display.getWindow()->hasFocus()) {
+        while (std::optional event = display.getWindow()->pollEvent()) {
+            bool finished = scene->logic(event);
+            if (finished) {
+                if (temp != sceneLabel) {
+                    scene->cleanUp();
+                    delete scene;
+                    changeScene();
+                }
+                else
+                    display.getWindow()->close();
+                break;
+            };
+        }
     }
+}
+
+void Engine::changeScene() {
+    switch (sceneLabel) {
+    case MAINMENU:
+        scene = new MainMenu(&spriteHandler, &sceneLabel);
+        break;
+    case SETTINGS:
+        scene = new SettingsScene(&spriteHandler, &sceneLabel);
+        break;
+    }
+    scene->init();
 }

@@ -1,7 +1,7 @@
 #pragma once
 #include "Scene.h"
 
-class MainMenu : public Scene {
+class SettingsScene : public Scene {
 	int spriteHolderIndex;
 	int selectedButton;
 	void refreshSelection();
