@@ -1,0 +1,50 @@
+#pragma once
+#include <SFML/Graphics.hpp>
+#include <random>
+#include <FastNoiseLite.h>
+
+constexpr short int SCENEWIDTH = 432;
+constexpr short int SCENEHEIGHT = 270;
+
+constexpr int CHUNKSIZE = 16;
+constexpr int TILESIZE = 16;
+
+struct Tile {
+	sf::Sprite* sprite = nullptr;
+	int type;
+};
+
+struct Chunk {
+	Tile tiles[CHUNKSIZE][CHUNKSIZE];
+	bool generate = false;
+};
+
+struct PairHash {
+	size_t operator()(const std::pair<int, int>& p) const {
+		return std::hash<int>()(p.first) ^ (std::hash<int>()(p.second) << 1);
+	}
+};
+
+class ObjectsHandler {
+	std::unordered_map<std::string, sf::Texture> textureHolder;
+	sf::Font font;
+	std::vector <sf::Text> textHolder;
+	std::vector <std::vector<sf::Sprite>*> spriteHolder;
+	std::unordered_map<std::pair<int, int>, Chunk*, PairHash> chunkMap;
+public:
+	sf::Texture* loadTexture(sf::Vector2i size, std::string fileName);
+	void loadSpriteIntoHolder(sf::Texture& texture, sf::Vector2i size, sf::Vector2i position, int index);
+	int addVectorToSpriteHolder();
+	void clearSpriteHolder();
+	std::vector <std::vector<sf::Sprite>*>* getSpriteHolder();
+	sf::Sprite* getSpritePointer(int collectionIndex, int spriteIndex);
+	int getSpriteHolderSize(int collectionIndex);
+	bool loadFont();
+	std::vector <sf::Text>* getTextHolder();
+	sf::Text* getTextPointer(int textIndex);
+	void clearTextHolder();
+	void loadTextIntoHolder(std::string readText, unsigned char size, sf::Vector2f position);
+	float calculateTextWidth(std::string readText, unsigned char size);
+	void generateChunk(int chunkX, int chunkY);
+	std::unordered_map<std::pair<int, int>, Chunk*, PairHash> getChunkMap();
+};
