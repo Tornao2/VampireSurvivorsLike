@@ -15,7 +15,11 @@
 
 # Mono auto generated files
 mono_crash.*
-
+CharactersUnlocked.txt
+Upgrade.txt
+MapsUnlocked.txt
+Display.txt
+ErrorLogs/
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/

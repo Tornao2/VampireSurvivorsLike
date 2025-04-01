@@ -13,93 +13,111 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Scenes">
+      <UniqueIdentifier>{baadf6e1-96ba-413c-95e8-4ba75648a0ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scenes">
+      <UniqueIdentifier>{460de5f0-6bb0-498f-a2c8-429caace01f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scenes\Helpers">
+      <UniqueIdentifier>{bf0a71ff-8521-43e5-81fb-558d324557d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\High-Level">
+      <UniqueIdentifier>{12769e5f-5ac9-4f53-94ee-6fdf631fc7d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scenes\Helpers">
+      <UniqueIdentifier>{e7f725bb-a8da-4d38-8279-e8014a439f1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\High-Level">
+      <UniqueIdentifier>{2348061a-6ecf-4802-af57-43c24337050a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CharacterData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Display.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ExitHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MainMenu.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayChoice.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="PlaySpace.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="ResetChoice.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="UpgradeScene.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterData.cpp">
+      <Filter>Source Files\Scenes\Helpers</Filter>
     </ClCompile>
     <ClCompile Include="Modifiers.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Scenes\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Unlocks.cpp">
+      <Filter>Source Files\Scenes\Helpers</Filter>
     </ClCompile>
     <ClCompile Include="ObjectsHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PlayChoice.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Display.cpp">
+      <Filter>Source Files\High-Level</Filter>
     </ClCompile>
-    <ClCompile Include="ResetChoice.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Engine.cpp">
+      <Filter>Source Files\High-Level</Filter>
     </ClCompile>
-    <ClCompile Include="Settings.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Unlocks.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UpgradeScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PlaySpace.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="ExitHandler.cpp">
+      <Filter>Source Files\High-Level</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CharacterData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Display.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ExitHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MainMenu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Modifiers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectsHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayChoice.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PlaySpace.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ResetChoice.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="UpgradeScene.h">
+      <Filter>Header Files\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Settings.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="ResetChoice.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="PlaySpace.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayChoice.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>Header Files\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Unlocks.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Scenes\Helpers</Filter>
     </ClInclude>
-    <ClInclude Include="UpgradeScene.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Modifiers.h">
+      <Filter>Header Files\Scenes\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterData.h">
+      <Filter>Header Files\Scenes\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Display.h">
+      <Filter>Header Files\High-Level</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine.h">
+      <Filter>Header Files\High-Level</Filter>
+    </ClInclude>
+    <ClInclude Include="ExitHandler.h">
+      <Filter>Header Files\High-Level</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectsHandler.h">
+      <Filter>Header Files\High-Level</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
