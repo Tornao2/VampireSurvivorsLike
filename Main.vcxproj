@@ -86,10 +86,10 @@
       <AdditionalDependencies>$(ProjectDir)lib\sfml-audio.lib;$(ProjectDir)lib\sfml-graphics.lib;$(ProjectDir)lib\sfml-system.lib;$(ProjectDir)lib\sfml-window.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /Y /D "$(ProjectDir)bin\sfml-graphics-3.dll" "$(OutDir)"
-xcopy /Y /D "$(ProjectDir)bin\sfml-window-3.dll" "$(OutDir)"
-xcopy /Y /D "$(ProjectDir)bin\sfml-system-3.dll" "$(OutDir)"
-xcopy /Y /D "$(ProjectDir)bin\sfml-audio-3.dll" "$(OutDir)"</Command>
+      <Command>xcopy /Y /D "$(ProjectDir)include\sfml-graphics-3.dll" "$(OutDir)"
+xcopy /Y /D "$(ProjectDir)include\sfml-window-3.dll" "$(OutDir)"
+xcopy /Y /D "$(ProjectDir)include\sfml-system-3.dll" "$(OutDir)"
+xcopy /Y /D "$(ProjectDir)include\sfml-audio-3.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
@@ -116,10 +116,10 @@ xcopy /Y /D "$(ProjectDir)bin\sfml-audio-3.dll" "$(OutDir)"</Command>
       <AdditionalDependencies>$(ProjectDir)lib\sfml-audio.lib;$(ProjectDir)lib\sfml-graphics.lib;$(ProjectDir)lib\sfml-system.lib;$(ProjectDir)lib\sfml-window.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /Y /D "$(ProjectDir)bin\sfml-graphics-3.dll" "$(OutDir)"
-xcopy /Y /D "$(ProjectDir)bin\sfml-window-3.dll" "$(OutDir)"
-xcopy /Y /D "$(ProjectDir)bin\sfml-system-3.dll" "$(OutDir)"
-xcopy /Y /D "$(ProjectDir)bin\sfml-audio-3.dll" "$(OutDir)"</Command>
+      <Command>xcopy /Y /D "$(ProjectDir)include\sfml-graphics-3.dll" "$(OutDir)"
+xcopy /Y /D "$(ProjectDir)include\sfml-window-3.dll" "$(OutDir)"
+xcopy /Y /D "$(ProjectDir)include\sfml-system-3.dll" "$(OutDir)"
+xcopy /Y /D "$(ProjectDir)include\sfml-audio-3.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
@@ -142,10 +142,10 @@ xcopy /Y /D "$(ProjectDir)bin\sfml-audio-3.dll" "$(OutDir)"</Command>
       <AdditionalDependencies>$(ProjectDir)lib\sfml-audio.lib;$(ProjectDir)lib\sfml-graphics.lib;$(ProjectDir)lib\sfml-system.lib;$(ProjectDir)lib\sfml-window.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /Y /D "$(ProjectDir)bin\sfml-graphics-3.dll" "$(OutDir)"
-xcopy /Y /D "$(ProjectDir)bin\sfml-window-3.dll" "$(OutDir)"
-xcopy /Y /D "$(ProjectDir)bin\sfml-system-3.dll" "$(OutDir)"
-xcopy /Y /D "$(ProjectDir)bin\sfml-audio-3.dll" "$(OutDir)"</Command>
+      <Command>xcopy /Y /D "$(ProjectDir)include\sfml-graphics-3.dll" "$(OutDir)"
+xcopy /Y /D "$(ProjectDir)include\sfml-window-3.dll" "$(OutDir)"
+xcopy /Y /D "$(ProjectDir)include\sfml-system-3.dll" "$(OutDir)"
+xcopy /Y /D "$(ProjectDir)include\sfml-audio-3.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
@@ -172,10 +172,10 @@ xcopy /Y /D "$(ProjectDir)bin\sfml-audio-3.dll" "$(OutDir)"</Command>
       <AdditionalDependencies>$(ProjectDir)lib\sfml-audio.lib;$(ProjectDir)lib\sfml-graphics.lib;$(ProjectDir)lib\sfml-system.lib;$(ProjectDir)lib\sfml-window.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /Y /D "$(ProjectDir)bin\sfml-graphics-3.dll" "$(OutDir)"
-xcopy /Y /D "$(ProjectDir)bin\sfml-window-3.dll" "$(OutDir)"
-xcopy /Y /D "$(ProjectDir)bin\sfml-system-3.dll" "$(OutDir)"
-xcopy /Y /D "$(ProjectDir)bin\sfml-audio-3.dll" "$(OutDir)"</Command>
+      <Command>xcopy /Y /D "$(ProjectDir)include\sfml-graphics-3.dll" "$(OutDir)"
+xcopy /Y /D "$(ProjectDir)include\sfml-window-3.dll" "$(OutDir)"
+xcopy /Y /D "$(ProjectDir)include\sfml-system-3.dll" "$(OutDir)"
+xcopy /Y /D "$(ProjectDir)include\sfml-audio-3.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
