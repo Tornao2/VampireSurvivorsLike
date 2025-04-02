@@ -1,22 +1,19 @@
 #include "PlayChoice.h"
 
 bool PlayChoice::logic(std::optional<sf::Event> gameEvent) {
-    if (gameEvent->is<sf::Event::Closed>()) {
+    if (gameEvent->is<sf::Event::Closed>()) 
         return true;
-    }
     else if (gameEvent->is<sf::Event::KeyPressed>()) {
         if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Down) {
             selectedRow++;
-            if (selectedRow == 4) {
+            if (selectedRow == 4) 
                 selectedRow = 0;
-            }
             refreshSelection();
         }
         else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Up) {
             selectedRow--;
-            if (selectedRow == -1) {
+            if (selectedRow == -1) 
                 selectedRow = 3;
-            }
             refreshSelection();
         } else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Right) {
             if (selectedRow == 0) {
@@ -27,9 +24,8 @@ bool PlayChoice::logic(std::optional<sf::Event> gameEvent) {
                 if (*selectedPlayer != NUMBEROFCHARS - 1)
                     (*selectedPlayer)++;
             }
-            else {
+            else 
                 return false;
-            }
             refreshSelection();
         }
         else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Left) {
@@ -41,9 +37,8 @@ bool PlayChoice::logic(std::optional<sf::Event> gameEvent) {
                 if (*selectedPlayer != 0)
                     (*selectedPlayer)--;
             }
-            else {
+            else 
                 return false;
-            }
             refreshSelection();
         }
         else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Enter) {
@@ -65,9 +60,8 @@ bool PlayChoice::logic(std::optional<sf::Event> gameEvent) {
 bool PlayChoice::init() {
     *selectedMap = *selectedPlayer = selectedRow = 0;
     sf::Texture* playChoiceTexture = objectsHandler->loadTexture({ 237, 121 }, "PlaySelect");
-    if (!playChoiceTexture) {
+    if (!playChoiceTexture) 
         return true;
-    }
     spriteHolderIndex = objectsHandler->addVectorToSpriteHolder();
     objectsHandler->loadSpriteIntoHolder(*playChoiceTexture, { 136,75 }, { 0, 0 }, spriteHolderIndex);
     objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 148, 1});
@@ -91,9 +85,8 @@ bool PlayChoice::init() {
     objectsHandler->loadTextIntoHolder("Return", 42, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Return", 42)) / 2, 216 });
     objectsHandler->addVectorToSpriteHolder();
     playChoiceTexture = objectsHandler->loadTexture({ 272, 150 }, "MapThumbnails");
-    if (!playChoiceTexture) {
+    if (!playChoiceTexture) 
         return true;
-    }
     objectsHandler->loadSpriteIntoHolder(*playChoiceTexture, { 136,75 }, { 0, 75 }, spriteHolderIndex+1);
     objectsHandler->getSpritePointer(spriteHolderIndex+1, -1)->setPosition({ 148, 1 });
     objectsHandler->loadSpriteIntoHolder(*playChoiceTexture, { 136,75 }, { 0, 0 }, spriteHolderIndex+1);
@@ -102,9 +95,8 @@ bool PlayChoice::init() {
     objectsHandler->getSpritePointer(spriteHolderIndex + 1, -1)->setPosition({ 148, 1 });
     objectsHandler->addVectorToSpriteHolder();
     playChoiceTexture = objectsHandler->loadTexture({ 182, 188 }, "CharacterThumbnails");
-    if (!playChoiceTexture) {
+    if (!playChoiceTexture) 
         return true;
-    }
     objectsHandler->loadSpriteIntoHolder(*playChoiceTexture, { 91,94 }, { 0, 94 }, spriteHolderIndex + 2);
     objectsHandler->getSpritePointer(spriteHolderIndex + 2, -1)->setPosition({ 170, 78.0f });
     objectsHandler->loadSpriteIntoHolder(*playChoiceTexture, { 91,94 }, { 0, 0 }, spriteHolderIndex + 2);
@@ -112,8 +104,8 @@ bool PlayChoice::init() {
     objectsHandler->loadSpriteIntoHolder(*playChoiceTexture, { 91,94 }, { 91, 0 }, spriteHolderIndex + 2);
     objectsHandler->getSpritePointer(spriteHolderIndex + 2, -1)->setPosition({ 170, 78.0f });
     Unlocks unlocks;
-    unlockedChars = unlocks.loadUnlocked("CharactersUnlocked.txt");
-    unlockedMaps = unlocks.loadUnlocked("MapsUnlocked.txt");
+    unlockedChars = unlocks.loadUnlocked("CharactersUnlocked");
+    unlockedMaps = unlocks.loadUnlocked("MapsUnlocked");
     refreshSelection();
     return false;
 }
@@ -129,44 +121,31 @@ void PlayChoice::setPointers(int* readMap, int* readPlayer) {
 }
 
 void PlayChoice::refreshSelection() {
-    for (int i = 0; i < objectsHandler->getSpriteHolderSize(spriteHolderIndex); i++) {
+    for (int i = 0; i < objectsHandler->getSpriteHolderSize(spriteHolderIndex); i++) 
         objectsHandler->getSpritePointer(spriteHolderIndex, i)->setColor(sf::Color::White);
-    }
-    for (int i = 0; i < objectsHandler->getSpriteHolderSize(spriteHolderIndex+1); i++) {
+    for (int i = 0; i < objectsHandler->getSpriteHolderSize(spriteHolderIndex+1); i++) 
         objectsHandler->getSpritePointer(spriteHolderIndex+1, i)->setColor({255, 255, 255, 0});
-    }
-    if (unlockedMaps.at(*selectedMap)) {
+    if (unlockedMaps.at(*selectedMap)) 
         objectsHandler->getSpritePointer(spriteHolderIndex + 1, *selectedMap + 1)->setColor(sf::Color::White);
-    }
-    else {
+    else 
         objectsHandler->getSpritePointer(spriteHolderIndex + 1, 0)->setColor(sf::Color::White);
-    }
-    for (int i = 0; i < objectsHandler->getSpriteHolderSize(spriteHolderIndex + 2); i++) {
+    for (int i = 0; i < objectsHandler->getSpriteHolderSize(spriteHolderIndex + 2); i++) 
         objectsHandler->getSpritePointer(spriteHolderIndex + 2, i)->setColor({ 255, 255, 255, 0 });
-    }
-    if (unlockedChars.at(*selectedPlayer)) {
+    if (unlockedChars.at(*selectedPlayer)) 
         objectsHandler->getSpritePointer(spriteHolderIndex + 2, *selectedPlayer + 1)->setColor(sf::Color::White);
-    }
-    else {
+    else 
         objectsHandler->getSpritePointer(spriteHolderIndex + 2, 0)->setColor(sf::Color::White);
-    }
-    for (sf::Text& text: *objectsHandler->getTextHolder()) {
+    for (sf::Text& text: *objectsHandler->getTextHolder()) 
         text.setFillColor(sf::Color::White);
-    }
     objectsHandler->getSpritePointer(spriteHolderIndex, selectedRow)->setColor(GREEN);
-    if (selectedRow == 2 || selectedRow == 3) {
+    if (selectedRow == 2 || selectedRow == 3) 
         objectsHandler->getTextPointer(selectedRow-2)->setFillColor(GREEN);
-    }
-    if (*selectedMap == 0) {
+    if (*selectedMap == 0) 
         objectsHandler->getSpritePointer(spriteHolderIndex, 5)->setColor(DARKRED);
-    }
-    else if (*selectedMap == NUMBEROFMAPS - 1) {
+    else if (*selectedMap == NUMBEROFMAPS - 1) 
         objectsHandler->getSpritePointer(spriteHolderIndex, 4)->setColor(DARKRED);
-    }
-    if(*selectedPlayer == 0) {
+    if(*selectedPlayer == 0) 
         objectsHandler->getSpritePointer(spriteHolderIndex, 7)->setColor(DARKRED);
-    }
-    else if (*selectedPlayer == NUMBEROFCHARS - 1) {
+    else if (*selectedPlayer == NUMBEROFCHARS - 1) 
         objectsHandler->getSpritePointer(spriteHolderIndex, 6)->setColor(DARKRED);
-    }
 }

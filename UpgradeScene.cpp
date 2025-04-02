@@ -3,41 +3,36 @@
 void UpgradeScene::loadModifiers() {
     modifiers.loadModifiersFromFile();
     colAmounts = modifiers.getColumnAmounts();
-    upgrRows = modifiers.getRowAmount();
+    upgrRowsAmount = modifiers.getRowAmount();
 }
 
 bool UpgradeScene::logic(std::optional<sf::Event> gameEvent) {
-    if (gameEvent->is<sf::Event::Closed>()) {
+    if (gameEvent->is<sf::Event::Closed>()) 
         return true;
-    }
     else if (gameEvent->is<sf::Event::KeyPressed>()) {
         switch (gameEvent->getIf<sf::Event::KeyPressed>()->code) {
         case sf::Keyboard::Key::Down:
             selectedRow++;
-            if (selectedRow == upgrRows + 1) {
+            if (selectedRow == upgrRowsAmount + 1) 
                 selectedRow = 0;
-            }
-            if (selectedRow < upgrRows) {
-                if (selectedColumn > colAmounts[selectedRow] - 1) {
+            if (selectedRow < upgrRowsAmount) {
+                if (selectedColumn > colAmounts[selectedRow] - 1) 
                     selectedColumn = colAmounts[selectedRow] - 1;
-                }
             }
             refreshSelection();
             break;
         case sf::Keyboard::Key::Up:
             selectedRow--;
-            if (selectedRow == -1) {
-                selectedRow = upgrRows;
-            }
-            if (selectedRow < upgrRows) {
-                if (selectedColumn > colAmounts[selectedRow] - 1) {
+            if (selectedRow == -1) 
+                selectedRow = upgrRowsAmount;
+            if (selectedRow < upgrRowsAmount) {
+                if (selectedColumn > colAmounts[selectedRow] - 1) 
                     selectedColumn = colAmounts[selectedRow] - 1;
-                }
             }
             refreshSelection();
             break;
         case sf::Keyboard::Key::Left:
-            if (selectedRow < upgrRows) {
+            if (selectedRow < upgrRowsAmount) {
                 selectedColumn--;
                 if (selectedColumn == -1)
                     selectedColumn = colAmounts[selectedRow] - 1;
@@ -45,7 +40,7 @@ bool UpgradeScene::logic(std::optional<sf::Event> gameEvent) {
             }
             break;
         case sf::Keyboard::Key::Right:
-            if (selectedRow < upgrRows) {
+            if (selectedRow < upgrRowsAmount) {
                 selectedColumn++;
                 if (selectedColumn == colAmounts[selectedRow])
                     selectedColumn = 0;
@@ -53,7 +48,7 @@ bool UpgradeScene::logic(std::optional<sf::Event> gameEvent) {
             }
             break;
         case sf::Keyboard::Key::Enter:
-            if (selectedRow < upgrRows) {
+            if (selectedRow < upgrRowsAmount) {
                 modifiers.increaseLevel(selectedRow * 5 + selectedColumn);
                 objectsHandler->getTextPointer(0)->setString(modifiers.getCoins());
                 objectsHandler->getTextPointer(4 + 3 * (selectedRow * 5 + selectedColumn))->setString(modifiers.getModLevel(selectedRow * 5 + selectedColumn));
@@ -70,9 +65,8 @@ bool UpgradeScene::logic(std::optional<sf::Event> gameEvent) {
 
 bool UpgradeScene::init() {
     sf::Texture* upgradesTexture = objectsHandler->loadTexture({ 380, 242 }, "Upgrades");
-    if (!upgradesTexture) {
+    if (!upgradesTexture) 
         return true;
-    }
     spriteHolderIndex = objectsHandler->addVectorToSpriteHolder();
     objectsHandler->loadTextIntoHolder(modifiers.getCoins(), 30, { (SCENEWIDTH - objectsHandler->calculateTextWidth(modifiers.getCoins(), 30)) / 2, -4 });
     objectsHandler->loadSpriteIntoHolder(*upgradesTexture, { 380,190 }, { 0, 0 }, spriteHolderIndex);
@@ -100,20 +94,16 @@ void UpgradeScene::cleanUp() {
 }
 
 void UpgradeScene::refreshSelection() {
-    for (sf::Text& text : *objectsHandler->getTextHolder()) {
+    for (sf::Text& text : *objectsHandler->getTextHolder()) 
         text.setFillColor(sf::Color::White);
-    }
-    for (int i = 0; i < objectsHandler->getSpriteHolderSize(spriteHolderIndex); i++) {
+    for (int i = 0; i < objectsHandler->getSpriteHolderSize(spriteHolderIndex); i++) 
         objectsHandler->getSpritePointer(spriteHolderIndex, i)->setColor(sf::Color::White);
-    }
     for (int i = 0; i < modifiers.getVector()->size(); i++) {
-        if (modifiers.getVector()->at(i).currentLevel == modifiers.getVector()->at(i).maxLevel) {
+        if (modifiers.getVector()->at(i).currentLevel == modifiers.getVector()->at(i).maxLevel) 
             objectsHandler->getSpritePointer(spriteHolderIndex, 2 + i)->setColor(BLUE);
-        }
     }
-    if (selectedRow < upgrRows) {
+    if (selectedRow < upgrRowsAmount) 
         objectsHandler->getSpritePointer(spriteHolderIndex, 2 + 5 * selectedRow + selectedColumn)->setColor(GREEN);
-    }
     else {
         objectsHandler->getSpritePointer(spriteHolderIndex, 1)->setColor(GREEN);
         objectsHandler->getTextPointer(1)->setFillColor(GREEN);

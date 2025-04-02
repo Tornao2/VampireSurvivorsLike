@@ -11,7 +11,7 @@ constexpr int TILESIZE = 16;
 
 struct Tile {
 	sf::Sprite* sprite = nullptr;
-	int type;
+	int type = 0;
 };
 
 struct Chunk {

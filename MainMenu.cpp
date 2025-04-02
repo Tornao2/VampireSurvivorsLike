@@ -1,39 +1,37 @@
 #include "MainMenu.h"
 
 bool MainMenu::logic(std::optional<sf::Event> gameEvent) {
-    if (gameEvent->is<sf::Event::Closed>()) {
+    if (gameEvent->is<sf::Event::Closed>()) 
         return true;
-    } else if (gameEvent->is<sf::Event::KeyPressed>()){
+    else if (gameEvent->is<sf::Event::KeyPressed>()){
         if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Down) {
             selectedButton++;
-            if (selectedButton == 5) {
+            if (selectedButton == 5) 
                 selectedButton = 0;
-            }
             refreshSelection();
         }
         else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Up) {
             selectedButton--;
-            if (selectedButton == -1) {
+            if (selectedButton == -1) 
                 selectedButton = 4;
-            }
             refreshSelection();
         }
         else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Enter) {
             switch (selectedButton) {
-            case 0:
-                *sceneLabel = PLAYCHOICE;
-                break;
-            case 1:
-                *sceneLabel = UPGRADE;
-                break; 
-            case 2:
-                *sceneLabel = GALLERY;
-                break;
-            case 3:
-                *sceneLabel = SETTINGS;
-                break; 
-            case 4:
-                break;
+                case 0:
+                    *sceneLabel = PLAYCHOICE;
+                    break;
+                case 1:
+                    *sceneLabel = UPGRADE;
+                    break; 
+                case 2:
+                    *sceneLabel = GALLERY;
+                    break;
+                case 3:
+                    *sceneLabel = SETTINGS;
+                    break; 
+                case 4:
+                    break;
             }
             return true;
         }
@@ -44,9 +42,8 @@ bool MainMenu::logic(std::optional<sf::Event> gameEvent) {
 bool MainMenu::init() {
     selectedButton = 0;
     sf::Texture* mainMenuTexture = objectsHandler->loadTexture({ 200, 120 }, "MainMenu");
-    if (!mainMenuTexture) {
+    if (!mainMenuTexture) 
         return true;
-    }
     objectsHandler->loadTextIntoHolder("Start", 42, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Start", 42))/2, -2});
     objectsHandler->loadTextIntoHolder("Upgrades", 42, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Upgrades", 42)) / 2, 52 });
     objectsHandler->loadTextIntoHolder("Gallery", 42, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Gallery", 42)) / 2, 106 });

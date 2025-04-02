@@ -1,44 +1,31 @@
 #include "ExitHandler.h"
 
 std::string ExitHandler::getMessage(int exitCode) {
-	std::string returnMessage;
 	switch (exitCode) {
-	case -1:
-		returnMessage = "Failed in loading font";
-		break;
-	case 1:
-		returnMessage = "Failed in loading mainmenu textures";
-		break;
-	case 2:
-		returnMessage = "Failed in loading settings textures";
-		break;
-	case 3:
-		returnMessage = "Failed in loading resetchoice textures";
-		break;
-	case 4:
-		returnMessage = "Failed in loading upgrade textures";
-		break;
-	case 5:
-		returnMessage = "Failed in loading playchoice textures";
-		break;
-	case 6:
-		returnMessage = "Failed in loading gallery textures";
-		break;
-	case 7:
-		returnMessage = "Failed in loading playspace textures";
-		break;
+		case -1:
+			return "Failed in loading font";
+		case 1:
+			return "Failed in loading mainmenu textures";
+		case 2:
+			return "Failed in loading settings textures";
+		case 3:
+			return "Failed in loading resetchoice textures";
+		case 4:
+			return "Failed in loading upgrade textures";
+		case 5:
+			return "Failed in loading playchoice textures";
+		case 6:
+			return "Failed in loading gallery textures";
+		case 7:
+			return "Failed in loading playspace textures";
+		default:
+			return "";
 	}
-	return returnMessage;
 }
 
 void ExitHandler::saveToFile(std::string message) {
-	std::string folderPath = "ErrorLogs";
-	if (!std::filesystem::exists(folderPath)) {
-		std::filesystem::create_directories(folderPath);
-		if (!std::filesystem::exists(folderPath)) {
-			return;
-		}
-	}
+	if (!std::filesystem::exists("ErrorLogs"))
+		std::filesystem::create_directories("ErrorLogs");
 	std::string filePath = "ErrorLogs/ErrorLogs1.txt";
 	int i = 1;
 	while (std::filesystem::exists(filePath)) {

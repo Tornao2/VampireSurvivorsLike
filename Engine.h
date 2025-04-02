@@ -10,12 +10,12 @@ class Engine {
 	SceneLabels sceneLabel;
 	Display display;
 	ObjectsHandler objectsHandler;
-	Scene* scene;
+	Scene* scene = nullptr;
 	void draw();
 	void handleEvents();
 	void changeScene();
-	int errorCode;
-	int selectedMap, selectedChar;
+	int errorCode = 0;
+	int selectedMap = 0, selectedChar = 0;
 public:
 	Engine();
 	void mainLoop();

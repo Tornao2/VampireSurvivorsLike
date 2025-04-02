@@ -5,7 +5,7 @@
 class UpgradeScene : public Scene {
 	int spriteHolderIndex;
 	int selectedRow, selectedColumn;
-	unsigned char upgrRows;
+	unsigned char upgrRowsAmount;
 	unsigned char* colAmounts;
 	Modifiers modifiers;
 	void refreshSelection();

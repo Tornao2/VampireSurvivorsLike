@@ -20,7 +20,7 @@ protected:
 	ObjectsHandler* objectsHandler;
 	SceneLabels* sceneLabel;
 public:
-	Scene(ObjectsHandler* a, SceneLabels* b) :objectsHandler(a), sceneLabel(b) {};
+	Scene(ObjectsHandler* readObjectsHandler, SceneLabels* readLabel) :objectsHandler(readObjectsHandler), sceneLabel(readLabel) {};
 	virtual bool logic(std::optional<sf::Event> gameEvent) = 0;
 	virtual bool init() = 0;
 	virtual void cleanUp() = 0;

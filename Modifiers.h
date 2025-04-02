@@ -5,9 +5,9 @@
 #include <sstream>
 
 struct ModifierNode {
-	std::string name;
-	short int currentLevel, maxLevel;
-	float effectStrength;
+	std::string name = "";
+	short int currentLevel = 0, maxLevel =0;
+	float effectStrength =0;
 };
 
 class Modifiers {

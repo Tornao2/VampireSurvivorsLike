@@ -2,14 +2,12 @@
 
 bool ObjectsHandler::loadFont() {
     if (!font.openFromFile("Resources/font.otf"))
-    {
         return true;
-    }
     return false;
 }
 
 int ObjectsHandler::getSpriteHolderSize(int collectionIndex) {
-    return spriteHolder[collectionIndex]->size();
+    return (int) spriteHolder[collectionIndex]->size();
 }
 
 sf::Texture* ObjectsHandler::loadTexture(sf::Vector2i size, std::string fileName) {
@@ -31,7 +29,7 @@ void ObjectsHandler::loadSpriteIntoHolder(sf::Texture& texture, sf::Vector2i siz
 int ObjectsHandler::addVectorToSpriteHolder() {
     std::vector<sf::Sprite>* newVector = new std::vector<sf::Sprite>;
     spriteHolder.push_back(newVector);
-    return spriteHolder.size() - 1;
+    return (int)spriteHolder.size() - 1;
 }
 
 void ObjectsHandler::clearSpriteHolder() {
@@ -47,8 +45,7 @@ std::vector <std::vector<sf::Sprite>*>* ObjectsHandler::getSpriteHolder() {
 }
 
 sf::Sprite* ObjectsHandler::getSpritePointer(int collectionIndex, int spriteIndex) {
-    int realIndex = (spriteIndex == -1) ? spriteHolder.at(collectionIndex)->size() - 1 : spriteIndex;
-    return &(spriteHolder.at(collectionIndex))->at(realIndex);
+    return &(spriteHolder.at(collectionIndex))->at((spriteIndex == -1) ? spriteHolder.at(collectionIndex)->size() - 1 : spriteIndex);
 }
 
 std::vector <sf::Text>* ObjectsHandler::getTextHolder() {
@@ -56,8 +53,7 @@ std::vector <sf::Text>* ObjectsHandler::getTextHolder() {
 }
 
 sf::Text* ObjectsHandler::getTextPointer(int textIndex) {
-    int realIndex = (textIndex == -1) ? textHolder.size() - 1 : textIndex;
-    return &textHolder.at(realIndex);
+    return &textHolder.at((textIndex == -1) ? textHolder.size() - 1 : textIndex);
 }
 
 void ObjectsHandler::clearTextHolder() {
@@ -77,20 +73,19 @@ float ObjectsHandler::calculateTextWidth(std::string readText, unsigned char siz
 
 void ObjectsHandler::generateChunk(int chunkX, int chunkY) {
     std::pair pair{ chunkX, chunkY };
-    if (chunkMap.find(pair) != chunkMap.end()) return;
+    if (chunkMap.find(pair) != chunkMap.end()) 
+        return;
     Chunk* chunk = new Chunk;
     chunk->generate = true;
     chunkMap[pair] = chunk;
-    Chunk& storedChunk = *chunkMap[pair];
-    FastNoiseLite noise;
-    noise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
+    FastNoiseLite noise(FastNoiseLite::NoiseType_Perlin);
     sf::Texture* texture = loadTexture({ 32, 16 }, "TexturesMap1");
     for (int i = 0; i < CHUNKSIZE; i++) {
         for (int j = 0; j < CHUNKSIZE; j++) {
             float value = noise.GetNoise((float)chunkX * TILESIZE * CHUNKSIZE + i * TILESIZE, (float)chunkY * TILESIZE * CHUNKSIZE + j * TILESIZE);
             int terrain = (value < 0.55f) ? 1 : 0;
-            storedChunk.tiles[i][j].type = terrain;
-            storedChunk.tiles[i][j].sprite = new sf::Sprite(*texture, sf::IntRect({16 * storedChunk.tiles[i][j].type, 0}, {16, 16}));
+            chunk->tiles[i][j].type = terrain;
+            chunk->tiles[i][j].sprite = new sf::Sprite(*texture, sf::IntRect({16 * chunk->tiles[i][j].type, 0}, {16, 16}));
         }
     }
 }

@@ -6,9 +6,12 @@
 class PlaySpace : public Scene {
 	int enemyHolderIndex, playerHolderIndex, chunkHolderIndex, hudHolderIndex;
 	int mapNumber, charNumber;
-	CharacterData player;
+	CharacterData playerData;
 	sf::Clock timer;
-	void moveWithCollision(std::pair<float, float> move);
+	void moveWithCollision();
+	void setTimer();
+	void checkChunks();
+	void drawHud();
 public:
 	using Scene::Scene;
 	void setMapAndChar(int readMap, int readChar);

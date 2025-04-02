@@ -5,8 +5,10 @@ class CharacterData {
 private:
 	float x, y;
 	short int width, height;
+
 	float healthMod, damageMod, moveMod, expMod, aoeMod;
 	short int armorMod;
+
 	short int baseHp, currentHp, effectiveHp, xp, xpToNext, level;
 public:
 	void setSizes(float readX, float readY, int readWidth, int readHeight);

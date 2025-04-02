@@ -1,27 +1,25 @@
 #include "Settings.h"
 
 void SettingsScene::refreshSelection() {
-    for (sf::Text& text : *objectsHandler->getTextHolder()) {
+    for (sf::Text& text : *objectsHandler->getTextHolder()) 
         text.setFillColor(sf::Color::White);
-    }
-    for (int i = 0; i < objectsHandler->getSpriteHolderSize(spriteHolderIndex); i++) {
+    for (int i = 0; i < objectsHandler->getSpriteHolderSize(spriteHolderIndex); i++) 
         objectsHandler->getSpritePointer(spriteHolderIndex, i)->setColor(sf::Color::White);
-    }
     objectsHandler->getSpritePointer(spriteHolderIndex, 6)->setColor(DARKRED);
     objectsHandler->getTextPointer(8)->setFillColor(DARKRED);
-    switch (display->getWindowWidth()) {
-    case 1280:
-        objectsHandler->getTextPointer(2)->setFillColor(BLUE);
-        objectsHandler->getSpritePointer(spriteHolderIndex, 0)->setColor(BLUE);
-        break;
-    case 1440:
-        objectsHandler->getTextPointer(3)->setFillColor(BLUE);
-        objectsHandler->getSpritePointer(spriteHolderIndex, 1)->setColor(BLUE);
-        break;
-    case 1680:
-        objectsHandler->getTextPointer(4)->setFillColor(BLUE);
-        objectsHandler->getSpritePointer(spriteHolderIndex, 2)->setColor(BLUE);
-        break;
+    switch ((unsigned int) display->getWindowWidth()) {
+        case 1280:
+            objectsHandler->getTextPointer(2)->setFillColor(BLUE);
+            objectsHandler->getSpritePointer(spriteHolderIndex, 0)->setColor(BLUE);
+            break;
+        case 1440:
+            objectsHandler->getTextPointer(3)->setFillColor(BLUE);
+            objectsHandler->getSpritePointer(spriteHolderIndex, 1)->setColor(BLUE);
+            break;
+        case 1680:
+            objectsHandler->getTextPointer(4)->setFillColor(BLUE);
+            objectsHandler->getSpritePointer(spriteHolderIndex, 2)->setColor(BLUE);
+            break;
     }
     if (display->getFullscreen() == full) {
         objectsHandler->getTextPointer(5)->setFillColor(BLUE);
@@ -59,9 +57,8 @@ void SettingsScene::setDisplay(Display* readDisplay) {
 
 bool SettingsScene::logic(std::optional<sf::Event> gameEvent) {
     static unsigned char columnNumbers[] = { 3, 3, 1, 1 };
-    if (gameEvent->is<sf::Event::Closed>()) {
+    if (gameEvent->is<sf::Event::Closed>()) 
         return true;
-    }
     else if (gameEvent->is<sf::Event::KeyPressed>()) {
         switch (gameEvent->getIf<sf::Event::KeyPressed>()->code) {
         case sf::Keyboard::Key::Down:
@@ -93,27 +90,21 @@ bool SettingsScene::logic(std::optional<sf::Event> gameEvent) {
         case sf::Keyboard::Key::Enter:
             switch (selectedRow) {
             case 0:
-                if (selectedColumn == 0) {
+                if (selectedColumn == 0) 
                     display->setResolution(1280, 800);
-                }
-                else if (selectedColumn == 1) {
+                else if (selectedColumn == 1) 
                     display->setResolution(1440, 900);
-                }
-                else {
+                else 
                     display->setResolution(1680, 1050);
-                }
                 refreshSelection();
                 break;
             case 1:
-                if (selectedColumn == 0) {
+                if (selectedColumn == 0) 
                     display->setFullscreen(full);
-                }
-                else if (selectedColumn == 1) {
+                else if (selectedColumn == 1) 
                     display->setFullscreen(borders);
-                }
-                else {
+                else 
                     display->setFullscreen(windowed);
-                }
                 refreshSelection();
                 break;
             case 2:

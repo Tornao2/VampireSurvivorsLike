@@ -2,19 +2,18 @@
 
 void Modifiers::loadCleanModifiers() {
 	coins = 0;
-	modVector.push_back({ "Health%", 0, 5, 0.2 });
-	modVector.push_back({ "Damage%", 0, 5, 0.1 });
-	modVector.push_back({ "Move%", 0, 5, 0.05 });
-	modVector.push_back({ "Exp%", 0, 4, 0.05 });
+	modVector.push_back({ "Health%", 0, 5, (float) 0.2 });
+	modVector.push_back({ "Damage%", 0, 5, (float)0.1 });
+	modVector.push_back({ "Move%", 0, 5, (float) 0.05 });
+	modVector.push_back({ "Exp%", 0, 4, (float) 0.05 });
 	modVector.push_back({ "Armor", 0, 4, 1 });
-	modVector.push_back({ "AOE%", 0, 4, 0.05 });
+	modVector.push_back({ "AOE%", 0, 4, (float) 0.05 });
 }
 
 void Modifiers::loadModifiersFromFile() {
 	std::ifstream inFile("Resources/Upgrade.txt");
-	if (!inFile) {
+	if (!inFile) 
 		loadCleanModifiers();
-	}
 	else {
 		std::string line;
 		std::getline(inFile, line);
@@ -38,9 +37,8 @@ void Modifiers::loadModifiersFromFile() {
 void Modifiers::saveModifiersToFile() {
 	std::ofstream outFile("Resources/Upgrade.txt");
 	outFile << coins << "\n";
-	for (ModifierNode mod : modVector) {
+	for (ModifierNode mod : modVector) 
 		outFile << mod.name << ";" << mod.currentLevel << ";" << mod.maxLevel << ";" << mod.effectStrength << "\n";
-	}
 	outFile.close();
 }
 
@@ -62,9 +60,8 @@ std::string Modifiers::getModStrength(int readIndex) {
 		ret = std::to_string((int)(std::stof(ret) * 100));
 		ret.append("%");
 	}
-	else {
+	else 
 		ret = std::to_string((int)(std::stof(ret)));
-	}
 	return ret;
 }
 
@@ -78,7 +75,7 @@ std::string Modifiers::getCoins() {
 
 unsigned char* Modifiers::getColumnAmounts() {
 	unsigned char* returnArray = new unsigned char[3];
-	int i = modVector.size();
+	int i = (int) modVector.size();
 	if (i != 0) {
 		for (int j = 0; j < 3 && i > 0; j++) {
 			returnArray[j] = i >= 5?5:i;
@@ -89,8 +86,10 @@ unsigned char* Modifiers::getColumnAmounts() {
 }
 
 unsigned char Modifiers::getRowAmount() {
-	if (modVector.size() == 0) return 0;
-	return modVector.size() / 5 + 1;
+	if (modVector.size() == 0) 
+		return 0;
+	else 
+		return (unsigned char) modVector.size() / 5 + 1;
 }
 
 void Modifiers::increaseLevel(int index) {

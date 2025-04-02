@@ -24,10 +24,10 @@ void CharacterData::setMods() {
 	tempNode = mod.getNodeByName("Exp%");
 	expMod = tempNode->effectStrength * tempNode->currentLevel;
 	tempNode = mod.getNodeByName("Armor");
-	armorMod = tempNode->effectStrength * tempNode->currentLevel;
+	armorMod = (short int) tempNode->effectStrength * tempNode->currentLevel;
 	tempNode = mod.getNodeByName("AOE%");
 	aoeMod = tempNode->effectStrength * tempNode->currentLevel;
-	effectiveHp = baseHp * healthMod + baseHp;
+	effectiveHp = (short int) baseHp * healthMod + baseHp;
 }
 
 void CharacterData::move(float msX, float msY) {
@@ -56,7 +56,7 @@ short int CharacterData::getEffectiveHp() {
 }
 
 void CharacterData::recalculateHp() {
-	effectiveHp = baseHp + healthMod * baseHp;
+	effectiveHp = (short int) baseHp + healthMod * baseHp;
 }
 
 short int CharacterData::getXp() {
@@ -72,7 +72,7 @@ void CharacterData::increaseXp(short int readXp) {
 	while (xp >= xpToNext) {
 		level++;
 		xp -= xpToNext;
-		xpToNext *= 1.2;
+		xpToNext *= (short int) 1.2;
 	}
 }
 

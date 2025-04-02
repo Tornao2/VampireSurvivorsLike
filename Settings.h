@@ -4,9 +4,9 @@
 
 class SettingsScene : public Scene {
 	int spriteHolderIndex;
-	void refreshSelection();
 	int selectedRow, selectedColumn;
 	Display* display;
+	void refreshSelection();
 public:
 	using Scene::Scene;
 	void setDisplay(Display* readDisplay);

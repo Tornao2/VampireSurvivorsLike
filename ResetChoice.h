@@ -5,8 +5,8 @@
 class ResetChoice : public Scene {
 	int selectedButton;
 	int spriteHolderIndex;
-	void refreshSelection();
 	Display* display;
+	void refreshSelection();
 public:
 	using Scene::Scene;
 	void setDisplay(Display* readDisplay);
