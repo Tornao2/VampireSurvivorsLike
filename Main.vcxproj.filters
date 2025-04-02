@@ -63,9 +63,6 @@
     <ClCompile Include="Unlocks.cpp">
       <Filter>Source Files\Scenes\Helpers</Filter>
     </ClCompile>
-    <ClCompile Include="ObjectsHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Display.cpp">
       <Filter>Source Files\High-Level</Filter>
     </ClCompile>
@@ -73,6 +70,9 @@
       <Filter>Source Files\High-Level</Filter>
     </ClCompile>
     <ClCompile Include="ExitHandler.cpp">
+      <Filter>Source Files\High-Level</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectsHandler.cpp">
       <Filter>Source Files\High-Level</Filter>
     </ClCompile>
   </ItemGroup>

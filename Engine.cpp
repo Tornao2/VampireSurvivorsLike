@@ -28,6 +28,7 @@ void Engine::mainLoop() {
 void Engine::draw() {
     display.getWindow()->clear();
     sf::RenderTexture renderTexture({ 432, 270 });
+    renderTexture.clear();
     if (sceneLabel == PLAYSPACE) {
         sf::View camera({ (static_cast<PlaySpace*>(scene))->getPlayerData().getX()+8, (static_cast<PlaySpace*>(scene))->getPlayerData().getY()+12}, { 432, 270 });
         renderTexture.setView(camera);
@@ -70,10 +71,10 @@ void Engine::handleEvents() {
         while (std::optional event = display.getWindow()->pollEvent()) {
             bool finished = scene->logic(event);
             if (finished) {
-                if (scene)
                 scene->cleanUp();
-                if (temp != sceneLabel) 
+                if (temp != sceneLabel) {
                     changeScene();
+                }
                 else {
                     sceneLabel = MAINMENU;
                     display.getWindow()->close();
