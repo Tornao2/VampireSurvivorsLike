@@ -153,20 +153,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Resources\CharactersUnlocked.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="Resources\Display.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="Resources\MapsUnlocked.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="Resources\Upgrade.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
     <Font Include="Resources\Font.otf">
       <Filter>Resource Files</Filter>
     </Font>

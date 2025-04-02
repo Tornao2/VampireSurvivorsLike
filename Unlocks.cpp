@@ -12,7 +12,17 @@ void Unlocks::saveUnlocked(std::vector<bool> boolArray, std::string filename) {
 std::vector<bool> Unlocks::loadUnlocked(std::string filename) {
 	std::string filePath = std::string("Resources/").append(filename);
 	std::ifstream myfile(filePath);
-	if (!myfile.is_open()) return std::vector<bool>();
+	if (!myfile.is_open()) {
+		std::ofstream file(filePath);
+		if (filename == "CharactersUnlocked.txt") {
+			file << 1 << '\n' << 0;
+		}
+		else {
+			file << 1 << '\n' << 0;
+		}
+		file.close();
+		myfile.open(filePath);
+	}
 	std::string line;
 	std::vector<bool> returnVec;
 	while (getline(myfile, line))

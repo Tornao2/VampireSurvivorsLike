@@ -227,12 +227,6 @@ xcopy /Y /D "$(ProjectDir)include\sfml-audio-3.dll" "$(OutDir)"</Command>
     <Image Include="Resources\Upgrades.png" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Resources\CharactersUnlocked.txt" />
-    <Text Include="Resources\Display.txt" />
-    <Text Include="Resources\MapsUnlocked.txt" />
-    <Text Include="Resources\Upgrade.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <Font Include="Resources\Font.otf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
