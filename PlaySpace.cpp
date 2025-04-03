@@ -6,11 +6,48 @@ bool PlaySpace::logic(std::optional<sf::Event> gameEvent) {
     return false;
 }
 
-void PlaySpace::realTimeLogic() {
+bool PlaySpace::realTimeLogic() {
     checkChunks();
     moveWithCollision();
     setTimer();
     drawHud();
+    return respawnEnemies();
+}
+
+void PlaySpace::randomizePos(int& x, int& y) {
+    int side = rand() % 4;
+    if (side == 0) {
+        x = rand() % SCENEWIDTH+ (int) playerData.getX() - SCENEWIDTH / 2;
+        y = (int) playerData.getY() - SCENEHEIGHT/2 - 30;
+    }
+    else if (side == 1) {
+        x = rand() % SCENEWIDTH + (int)playerData.getX() - SCENEWIDTH / 2;
+        y = (int)playerData.getY() + SCENEHEIGHT / 2 + 30;
+    }
+    else if (side == 2) {
+        x = (int)playerData.getX() - SCENEWIDTH / 2 - 30;
+        y = rand() % SCENEHEIGHT + (int)playerData.getY() - SCENEHEIGHT/2;
+    }
+    else {
+        x = (int)playerData.getX() + SCENEWIDTH / 2 + 30;
+        y = rand() % SCENEHEIGHT + (int)playerData.getY() - SCENEHEIGHT / 2;
+    }
+}
+
+bool PlaySpace::respawnEnemies() {
+    int seconds = static_cast<int>(timer.getElapsedTime().asSeconds());
+    if (seconds - lastToggleTime >= 5) {
+        lastToggleTime = seconds;
+        sf::Texture* enemyTexture = objectsHandler->loadTexture({ 24, 32 }, "EnemySprites");
+        if (!enemyTexture)
+            return true;
+        for (int i = 0; i < 50; i++) {
+            int x, y;
+            randomizePos(x, y);
+            objectsHandler->addEnemy(0, x, y);
+        }
+    }
+    return false;
 }
 
 void PlaySpace::drawHud() {
@@ -73,6 +110,7 @@ bool PlaySpace::init() {
 void PlaySpace::cleanUp() {
     objectsHandler->clearSpriteHolder();
     objectsHandler->clearTextHolder();
+    objectsHandler->clearEnemyHolder();
     timer.stop();
 }
 

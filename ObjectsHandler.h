@@ -2,9 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <random>
 #include <FastNoiseLite.h>
-
-constexpr short int SCENEWIDTH = 432;
-constexpr short int SCENEHEIGHT = 270;
+#include "EnemyData.h"
 
 constexpr int CHUNKSIZE = 16;
 constexpr int TILESIZE = 16;
@@ -29,6 +27,7 @@ class ObjectsHandler {
 	std::unordered_map<std::string, sf::Texture> textureHolder;
 	sf::Font font;
 	std::vector <sf::Text> textHolder;
+	std::list <EnemyData*> enemyHolder;
 	std::vector <std::vector<sf::Sprite>*> spriteHolder;
 	std::unordered_map<std::pair<int, int>, Chunk*, PairHash> chunkMap;
 public:
@@ -47,4 +46,7 @@ public:
 	float calculateTextWidth(std::string readText, unsigned char size);
 	void generateChunk(int chunkX, int chunkY);
 	std::unordered_map<std::pair<int, int>, Chunk*, PairHash> getChunkMap();
+	void addEnemy(int enemyId, float readX, float readY);
+	void clearEnemyHolder();
+	std::list <EnemyData*>* getEnemyHolder();
 };

@@ -15,34 +15,39 @@ void Engine::mainLoop() {
     {
         handleEvents();
         if (sceneLabel == PLAYSPACE) 
-            (static_cast<PlaySpace*>(scene))->realTimeLogic();
+            if ((static_cast<PlaySpace*>(scene))->realTimeLogic()) 
+                errorCode = -2;
         draw();
         if (errorCode != 0) 
             return;
     }
 }
 
+void Engine::drawPlayScene(sf::RenderTexture* texture) {
+    sf::View camera({ (static_cast<PlaySpace*>(scene))->getPlayerData().getX() + 8, (static_cast<PlaySpace*>(scene))->getPlayerData().getY() + 12 }, { 432, 270 });
+    texture->setView(camera);
+    sf::FloatRect viewBounds(camera.getCenter() - camera.getSize() / 2.f, camera.getSize());
+    for (auto [key, chunk] : objectsHandler.getChunkMap()) {
+        sf::Vector2f chunkPos((float)key.first * CHUNKSIZE * TILESIZE, (float)key.second * CHUNKSIZE * TILESIZE);
+        if (!viewBounds.findIntersection(sf::FloatRect(chunkPos, sf::Vector2f(CHUNKSIZE * TILESIZE, CHUNKSIZE * TILESIZE))).has_value())
+            continue;
+        for (int i = 0; i < CHUNKSIZE; i++) {
+            for (int j = 0; j < CHUNKSIZE; j++) {
+                Tile& tile = chunk->tiles[i][j];
+                texture->draw(*tile.sprite);
+            }
+        }
+    }
+    for (EnemyData* node : *objectsHandler.getEnemyHolder())
+        texture->draw(*node->getEnemyDataNode()->sprite);
+}
+
 void Engine::draw() {
     display.getWindow()->clear();
     static sf::RenderTexture renderTexture({ 432, 270 });
     renderTexture.clear();
-    if (sceneLabel == PLAYSPACE) {
-        sf::View camera({ (static_cast<PlaySpace*>(scene))->getPlayerData().getX()+8, (static_cast<PlaySpace*>(scene))->getPlayerData().getY()+12}, { 432, 270 });
-        renderTexture.setView(camera);
-        sf::FloatRect viewBounds(camera.getCenter() - camera.getSize() / 2.f, camera.getSize());
-        for (auto [key, chunk] : objectsHandler.getChunkMap()) {
-            sf::Vector2f chunkPos((float) key.first * CHUNKSIZE * TILESIZE, (float) key.second * CHUNKSIZE * TILESIZE);
-            if (!viewBounds.findIntersection(sf::FloatRect(chunkPos, sf::Vector2f(CHUNKSIZE * TILESIZE, CHUNKSIZE * TILESIZE))).has_value())
-                continue;
-            for (int i = 0; i < CHUNKSIZE; i++) {
-                for (int j = 0; j < CHUNKSIZE; j++) {
-                    Tile& tile = chunk->tiles[i][j];
-                    tile.sprite->setPosition({ chunkPos.x + i * TILESIZE, chunkPos.y + j * TILESIZE });
-                    renderTexture.draw(*tile.sprite);
-                }
-            }
-        }
-    }
+    if (sceneLabel == PLAYSPACE) 
+        drawPlayScene(&renderTexture);
     for (std::vector<sf::Sprite>* var : *objectsHandler.getSpriteHolder()) 
         for (sf::Sprite& sprite : *var) 
             renderTexture.draw(sprite);

@@ -14,6 +14,7 @@ class Engine {
 	void draw();
 	void handleEvents();
 	void changeScene();
+	void drawPlayScene(sf::RenderTexture* texture);
 	int errorCode = 0;
 	int selectedMap = 0, selectedChar = 0;
 public:

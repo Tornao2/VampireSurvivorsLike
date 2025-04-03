@@ -4,6 +4,8 @@ std::string ExitHandler::getMessage(int exitCode) {
 	switch (exitCode) {
 		case -1:
 			return "Failed in loading font";
+		case -2:
+			return "Failed in loading enemy textures";
 		case 1:
 			return "Failed in loading mainmenu textures";
 		case 2:

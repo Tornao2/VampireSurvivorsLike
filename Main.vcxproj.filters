@@ -75,6 +75,9 @@
     <ClCompile Include="ObjectsHandler.cpp">
       <Filter>Source Files\High-Level</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyData.cpp">
+      <Filter>Source Files\Scenes\Helpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UpgradeScene.h">
@@ -119,6 +122,9 @@
     <ClInclude Include="ObjectsHandler.h">
       <Filter>Header Files\High-Level</Filter>
     </ClInclude>
+    <ClInclude Include="EnemyData.h">
+      <Filter>Header Files\Scenes\Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\CharacterSprites.png">
@@ -149,6 +155,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Resources\Upgrades.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\EnemySprites.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

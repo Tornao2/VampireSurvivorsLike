@@ -1,6 +1,5 @@
 #pragma once
 #include "Scene.h"
-#include "Display.h"
 
 class SettingsScene : public Scene {
 	int spriteHolderIndex;

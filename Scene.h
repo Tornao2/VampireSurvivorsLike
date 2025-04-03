@@ -1,5 +1,6 @@
 #pragma once
 #include "ObjectsHandler.h"
+#include "Display.h"
 
 constexpr sf::Color DARKRED = { 150, 0, 0};
 constexpr sf::Color GREEN = { 0, 120, 0 };

@@ -1,6 +1,5 @@
 #pragma once
 #include "Scene.h"
-#include "Display.h"
 
 class ResetChoice : public Scene {
 	int selectedButton;

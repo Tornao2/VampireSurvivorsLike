@@ -2,6 +2,9 @@
 #include <SFML/Graphics.hpp>
 #include <fstream>
 
+constexpr short int SCENEWIDTH = 432;
+constexpr short int SCENEHEIGHT = 270;
+
 enum DisplayMode {
 	windowed,
 	full,

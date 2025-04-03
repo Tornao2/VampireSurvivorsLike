@@ -86,10 +86,36 @@ void ObjectsHandler::generateChunk(int chunkX, int chunkY) {
             int terrain = (value < 0.55f) ? 1 : 0;
             chunk->tiles[i][j].type = terrain;
             chunk->tiles[i][j].sprite = new sf::Sprite(*texture, sf::IntRect({16 * chunk->tiles[i][j].type, 0}, {16, 16}));
+            chunk->tiles[i][j].sprite->setPosition({ (float) chunkX * TILESIZE *CHUNKSIZE + i * TILESIZE, (float) chunkY * TILESIZE * CHUNKSIZE + j * TILESIZE });
         }
     }
 }
 
 std::unordered_map<std::pair<int, int>, Chunk*, PairHash> ObjectsHandler::getChunkMap() {
     return chunkMap;
+}
+
+void ObjectsHandler::addEnemy(int enemyId, float readX, float readY) {
+    EnemyData* enemy = new EnemyData();
+    enemy->giveStats(enemyId, readX, readY);
+    EnemyDataNode* node = enemy->getEnemyDataNode();
+    switch (enemyId) {
+        case 0:
+            node->sprite = new sf::Sprite(textureHolder.at("Resources/EnemySprites.png"), { { 0,0 }, { 24, 32 } });
+            break;
+    }
+    node->sprite->setPosition({ readX, readY });
+    enemyHolder.push_back(enemy);
+}
+
+void ObjectsHandler::clearEnemyHolder() {
+    for (EnemyData* data : enemyHolder) {
+        delete data->getEnemyDataNode()->sprite;
+        delete data;
+    }
+    enemyHolder.clear();
+}
+
+std::list <EnemyData*>* ObjectsHandler::getEnemyHolder() {
+    return &enemyHolder;
 }
