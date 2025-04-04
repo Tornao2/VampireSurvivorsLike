@@ -3,7 +3,7 @@
 
 int main()
 {
-    srand(time(0));
+    srand((unsigned int) time(0));
     Engine engine;
     engine.mainLoop();
     ExitHandler exitHandler;

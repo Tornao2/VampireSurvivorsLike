@@ -10,6 +10,8 @@ void CharacterData::setSizes(float readX, float readY, int readWidth, int readHe
 	xpToNext = 100;
 	xp = 0;
 	level = 1;
+	invincibilityFrame = 0;
+	baseMs = 2;
 }
 
 void CharacterData::setMods() {
@@ -27,7 +29,7 @@ void CharacterData::setMods() {
 	armorMod = (short int) tempNode->effectStrength * tempNode->currentLevel;
 	tempNode = mod.getNodeByName("AOE%");
 	aoeMod = tempNode->effectStrength * tempNode->currentLevel;
-	effectiveHp = (short int) baseHp * healthMod + baseHp;
+	effectiveHp = (short int) (baseHp * healthMod + baseHp);
 }
 
 void CharacterData::move(float msX, float msY) {
@@ -56,7 +58,7 @@ short int CharacterData::getEffectiveHp() {
 }
 
 void CharacterData::recalculateHp() {
-	effectiveHp = (short int) baseHp + healthMod * baseHp;
+	effectiveHp = (short int) (baseHp + healthMod * baseHp);
 }
 
 short int CharacterData::getXp() {
@@ -85,9 +87,27 @@ void CharacterData::setHp(short int readHp) {
 }
 
 void CharacterData::changeHp(short int readChange) {
-	currentHp += readChange;
+	if (!invincibilityFrame) {
+		currentHp += readChange;
+		invincibilityFrame = 5;
+		if (currentHp < 0)
+			currentHp = 0;
+	}
 }
 
 short int CharacterData::getWidth() {
 	return width;
+}
+
+short int CharacterData::getHeight() {
+	return height;
+}
+
+void CharacterData::decrementInvincibility() {
+	if (invincibilityFrame)
+		invincibilityFrame--;
+}
+
+float CharacterData::getEffectiveMs() {
+	return moveMod * baseMs + baseMs;
 }

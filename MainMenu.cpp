@@ -1,6 +1,6 @@
 #include "MainMenu.h"
 
-bool MainMenu::logic(std::optional<sf::Event> gameEvent) {
+bool MainMenu::eventLogic(std::optional<sf::Event> gameEvent) {
     if (gameEvent->is<sf::Event::Closed>()) 
         return true;
     else if (gameEvent->is<sf::Event::KeyPressed>()){

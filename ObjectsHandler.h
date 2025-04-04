@@ -1,11 +1,10 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include <random>
 #include <FastNoiseLite.h>
 #include "EnemyData.h"
 
-constexpr int CHUNKSIZE = 16;
-constexpr int TILESIZE = 16;
+#define CHUNKSIZE 16
+#define TILESIZE 16
 
 struct Tile {
 	sf::Sprite* sprite = nullptr;

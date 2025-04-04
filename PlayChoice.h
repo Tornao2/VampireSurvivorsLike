@@ -10,7 +10,7 @@ class PlayChoice : public Scene {
 	void refreshSelection();
 public:
 	using Scene::Scene;
-	bool logic(std::optional<sf::Event> gameEvent);
+	bool eventLogic(std::optional<sf::Event> gameEvent);
 	bool init();
 	void cleanUp();
 	void setPointers(int* readMap, int* readPlayer);

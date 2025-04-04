@@ -9,17 +9,19 @@ void Engine::mainLoop() {
         errorCode = -1;
         return;
     }
-    scene = new MainMenu(&objectsHandler, &sceneLabel);
     changeScene();
     while (display.getWindow()->isOpen())
     {
         handleEvents();
-        if (sceneLabel == PLAYSPACE) 
-            if ((static_cast<PlaySpace*>(scene))->realTimeLogic()) 
-                errorCode = -2;
-        draw();
-        if (errorCode != 0) 
+        if (errorCode != 0)
             return;
+        if (sceneLabel == PLAYSPACE) {
+            if ((static_cast<PlaySpace*>(scene))->realTimeLogic()) {
+                scene->cleanUp();
+                changeScene();
+            }
+        }
+        draw();
     }
 }
 
@@ -46,10 +48,11 @@ void Engine::draw() {
     display.getWindow()->clear();
     static sf::RenderTexture renderTexture({ 432, 270 });
     renderTexture.clear();
+    renderTexture.setView(renderTexture.getDefaultView());
     if (sceneLabel == PLAYSPACE) 
         drawPlayScene(&renderTexture);
     for (std::vector<sf::Sprite>* var : *objectsHandler.getSpriteHolder()) 
-        for (sf::Sprite& sprite : *var) 
+        for (sf::Sprite& sprite : *var)
             renderTexture.draw(sprite);
     renderTexture.display();
     sf::Sprite finalSprite(renderTexture.getTexture());
@@ -69,7 +72,7 @@ void Engine::handleEvents() {
     if (display.getWindow()->hasFocus()) {
         SceneLabels temp = sceneLabel;
         while (std::optional event = display.getWindow()->pollEvent()) {
-            if (scene->logic(event)) {
+            if (scene->eventLogic(event)) {
                 scene->cleanUp();
                 if (temp != sceneLabel) 
                     changeScene();

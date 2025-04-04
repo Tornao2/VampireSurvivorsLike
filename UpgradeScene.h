@@ -12,7 +12,7 @@ class UpgradeScene : public Scene {
 public:
 	using Scene::Scene;
 	void loadModifiers();
-	bool logic(std::optional<sf::Event> gameEvent);
+	bool eventLogic(std::optional<sf::Event> gameEvent);
 	bool init();
 	void cleanUp();
 };

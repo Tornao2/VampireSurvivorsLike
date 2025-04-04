@@ -9,7 +9,7 @@ private:
 	float healthMod, damageMod, moveMod, expMod, aoeMod;
 	short int armorMod;
 
-	short int baseHp, currentHp, effectiveHp, xp, xpToNext, level;
+	short int baseHp, currentHp, baseMs, effectiveHp, xp, xpToNext, level, invincibilityFrame;
 public:
 	void setSizes(float readX, float readY, int readWidth, int readHeight);
 	void setMods();
@@ -27,4 +27,7 @@ public:
 	void increaseXp(short int readXp);
 	short int getLevel();
 	short int getWidth();
+	short int getHeight();
+	void decrementInvincibility();
+	float getEffectiveMs();
 };

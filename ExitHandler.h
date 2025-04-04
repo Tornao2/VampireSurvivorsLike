@@ -5,9 +5,9 @@
 #include <fstream>
 
 class ExitHandler {
-	std::string getMessage(int exitCode);
-	void saveToFile(std::string message);
-	void printOut(std::string message);
+	std::string getMessage(int readExitCode);
+	void saveToFile(std::string readMessage);
+	void printToConsole(std::string readMessage);
 public:
-	void handleExitCode(int exitCode);
+	void handleExitCode(int readExitCode);
 };

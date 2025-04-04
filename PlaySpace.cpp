@@ -1,17 +1,55 @@
     #include "PlaySpace.h"
 
-bool PlaySpace::logic(std::optional<sf::Event> gameEvent) {   
+bool PlaySpace::eventLogic(std::optional<sf::Event> gameEvent) {
     if (gameEvent->is<sf::Event::Closed>()) 
         return true;
     return false;
 }
 
 bool PlaySpace::realTimeLogic() {
-    checkChunks();
-    moveWithCollision();
-    setTimer();
-    drawHud();
-    return respawnEnemies();
+    if (playerData.getCurrentHp() != 0) {
+        playerData.decrementInvincibility();
+        checkChunks();
+        move();
+        moveEnemies();
+        checkEnemyCollision();
+        setTimer();
+        drawHud();
+        respawnEnemies();
+    }
+    else {
+        *sceneLabel = MAINMENU;
+        return true;
+    }
+    return false;
+}
+
+void PlaySpace::moveEnemies() {
+    for (EnemyData* enemy : *objectsHandler->getEnemyHolder()) {
+        float dirX = playerData.getX() - enemy->getX();
+        float dirY = playerData.getY() - enemy->getY();
+        float length = std::sqrt(dirX * dirX + dirY * dirY);
+        if (fabs(length) >= 0.5) {
+            dirX /= length;
+            dirY /= length;
+            enemy->move(dirX, dirY);
+        }
+    }
+}
+
+void PlaySpace::checkEnemyCollision() {
+    sf::FloatRect playerBounds(
+        { playerData.getX(),playerData.getY() + playerData.getHeight() - playerData.getWidth() },
+        { (float)playerData.getWidth(), (float)playerData.getWidth() }
+    );
+    for (EnemyData* enemy : *objectsHandler->getEnemyHolder()) {
+        sf::FloatRect enemyBounds({
+            enemy->getX(), enemy->getY()},
+            { (float) enemy->getWidth(), (float) enemy->getWidth()}
+        );
+        if (enemyBounds.findIntersection(playerBounds).has_value()) 
+            playerData.changeHp(-enemy->getDamage());
+    }
 }
 
 void PlaySpace::randomizePos(int& x, int& y) {
@@ -34,20 +72,16 @@ void PlaySpace::randomizePos(int& x, int& y) {
     }
 }
 
-bool PlaySpace::respawnEnemies() {
+void PlaySpace::respawnEnemies() {
     int seconds = static_cast<int>(timer.getElapsedTime().asSeconds());
-    if (seconds - lastToggleTime >= 5) {
-        lastToggleTime = seconds;
-        sf::Texture* enemyTexture = objectsHandler->loadTexture({ 24, 32 }, "EnemySprites");
-        if (!enemyTexture)
-            return true;
+    if (seconds - lastSpawnTime >= 5) {
+        lastSpawnTime = seconds;
         for (int i = 0; i < 50; i++) {
             int x, y;
             randomizePos(x, y);
-            objectsHandler->addEnemy(0, x, y);
+            objectsHandler->addEnemy(0, (float) x, (float) y);
         }
     }
-    return false;
 }
 
 void PlaySpace::drawHud() {
@@ -70,11 +104,9 @@ void PlaySpace::setTimer() {
 }
 
 void PlaySpace::checkChunks() {
-    int playerChunkX = (int)playerData.getX() / (CHUNKSIZE * TILESIZE);
-    int playerChunkY = (int)playerData.getY() / (CHUNKSIZE * TILESIZE);
     for (int dx = -2; dx < 3; dx++)
         for (int dy = -2; dy < 3; dy++)
-            objectsHandler->generateChunk(playerChunkX + dx, playerChunkY + dy);
+            objectsHandler->generateChunk((int)playerData.getX() / (CHUNKSIZE * TILESIZE) + dx, (int)playerData.getY() / (CHUNKSIZE * TILESIZE) + dy);
 }
 
 void PlaySpace::setMapAndChar(int readMap, int readChar) {
@@ -89,9 +121,6 @@ bool PlaySpace::init() {
     playerHolderIndex = objectsHandler->addVectorToSpriteHolder();
     objectsHandler->loadSpriteIntoHolder(*spaceTexture, { 16,24 }, { 16 * charNumber, 0 }, playerHolderIndex);
     objectsHandler->getSpritePointer(playerHolderIndex, -1)->setPosition({ 208, 123 });
-    playerData.setSizes(208, 123, 16, 24);
-    playerData.setMods();
-    playerData.setHp(playerData.getEffectiveHp());
     objectsHandler->loadTextIntoHolder("00:00", 24, { (SCENEWIDTH - objectsHandler->calculateTextWidth("00:00", 24)) / 2, 11 });
     objectsHandler->loadTextIntoHolder("LVL: 1", 8, { SCENEWIDTH/52 - objectsHandler->calculateTextWidth("LVL: 1", 8)/2 , 0 });
     sf::Texture* hudTexture = objectsHandler->loadTexture({ 414, 24 }, "HudElements");
@@ -104,6 +133,12 @@ bool PlaySpace::init() {
     objectsHandler->getSpritePointer(hudHolderIndex, -1)->setPosition({ 16, 10 });
     objectsHandler->loadSpriteIntoHolder(*hudTexture, { 200,8 }, { 0, 16 }, hudHolderIndex);
     objectsHandler->getSpritePointer(hudHolderIndex, -1)->setPosition({ 16, 10 });
+    sf::Texture* enemyTexture = objectsHandler->loadTexture({ 24, 32 }, "EnemySprites");
+    if (!enemyTexture)
+        return true;
+    playerData.setSizes(208, 123, 16, 24);
+    playerData.setMods();
+    playerData.setHp(playerData.getEffectiveHp());
     return false;
 }
 
@@ -118,9 +153,8 @@ CharacterData PlaySpace::getPlayerData() {
     return playerData;
 }
 
-void PlaySpace::moveWithCollision() {
-    float baseMs = 2;
-    float move = playerData.getMoveMod() * baseMs + baseMs;
+void PlaySpace::move() {
+    float move = playerData.getEffectiveMs();
     std::pair <float, float> moveStep = { 0, 0 };
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down))
         moveStep.second = move;
@@ -131,10 +165,10 @@ void PlaySpace::moveWithCollision() {
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
         moveStep.first = -move;
     playerData.move(moveStep.first, moveStep.second);
-    int playerChunkX = playerData.getX() / (CHUNKSIZE * TILESIZE);
-    int playerChunkY = playerData.getY() / (CHUNKSIZE * TILESIZE);
+    int playerChunkX = (int) playerData.getX() / (CHUNKSIZE * TILESIZE);
+    int playerChunkY = (int) playerData.getY() / (CHUNKSIZE * TILESIZE);
     sf::FloatRect playerBounds(
-        { playerData.getX(),playerData.getY() + 8},
+        { playerData.getX(),playerData.getY() + playerData.getHeight() - playerData.getWidth() },
         { (float)playerData.getWidth(), (float)playerData.getWidth() }
     );
     for (int a = -1; a <= 1; a++) {

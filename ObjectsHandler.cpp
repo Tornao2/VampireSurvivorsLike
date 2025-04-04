@@ -101,7 +101,7 @@ void ObjectsHandler::addEnemy(int enemyId, float readX, float readY) {
     EnemyDataNode* node = enemy->getEnemyDataNode();
     switch (enemyId) {
         case 0:
-            node->sprite = new sf::Sprite(textureHolder.at("Resources/EnemySprites.png"), { { 0,0 }, { 24, 32 } });
+            node->sprite = new sf::Sprite(textureHolder.at("Resources/EnemySprites.png"), { { 0,0 }, { 16, 24 } });
             break;
     }
     node->sprite->setPosition({ readX, readY });

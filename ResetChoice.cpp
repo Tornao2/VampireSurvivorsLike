@@ -4,7 +4,7 @@ void ResetChoice::setDisplay(Display* readDisplay) {
     display = readDisplay;
 }
 
-bool ResetChoice::logic(std::optional<sf::Event> gameEvent) {
+bool ResetChoice::eventLogic(std::optional<sf::Event> gameEvent) {
     if (gameEvent->is<sf::Event::Closed>()) 
         return true;
     else if (gameEvent->is<sf::Event::KeyPressed>()) {

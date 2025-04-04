@@ -55,7 +55,7 @@ void SettingsScene::setDisplay(Display* readDisplay) {
     display = readDisplay;
 }
 
-bool SettingsScene::logic(std::optional<sf::Event> gameEvent) {
+bool SettingsScene::eventLogic(std::optional<sf::Event> gameEvent) {
     static unsigned char columnNumbers[] = { 3, 3, 1, 1 };
     if (gameEvent->is<sf::Event::Closed>()) 
         return true;

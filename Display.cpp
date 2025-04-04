@@ -1,15 +1,15 @@
  #include "Display.h"
 
 Display::Display() {
-	window.create(sf::VideoMode({ 0, 0 }), "", sf::Style::Titlebar | sf::Style::Close);
+	windowInstance.create(sf::VideoMode({ 0, 0 }), "", sf::Style::Titlebar | sf::Style::Close);
 	windowWidth = 1440;
 	windowHeight = 900;
-	fullscreen = windowed;
+	fullscreenMode = windowed;
 	loadFromFile();
 	setResolution(windowWidth, windowHeight);
-	window.setTitle("PGK2 projekt");
-	window.setFramerateLimit(60);
-	setFullscreen(fullscreen);
+	windowInstance.setTitle("PGK2 projekt");
+	windowInstance.setFramerateLimit(60);
+	setFullscreen(fullscreenMode);
 }
 
 float Display::getWindowWidth() {
@@ -23,39 +23,39 @@ float Display::getWindowHeight() {
 void Display::setResolution(float readWidth, float readHeight) {
 	windowWidth = readWidth;
 	windowHeight = readHeight;
-	recalibrate();
+	recalibrateWindow();
 }
 
 sf::RenderWindow* Display::getWindow() {
-	return &window;
+	return &windowInstance;
 }
 
-void Display::setFullscreen(DisplayMode ifFullscreen) {
-	fullscreen = ifFullscreen;
-	recalibrate();	
+void Display::setFullscreen(DisplayMode readFullscreenMode) {
+	fullscreenMode = readFullscreenMode;
+	recalibrateWindow();
 }
 
-void Display::recalibrate() {
-	window.clear();
-	if (fullscreen == borders) {
-		window.create(sf::VideoMode({ sf::VideoMode::getDesktopMode().size.x, sf::VideoMode::getDesktopMode().size.y }), "PGK2 projekt", sf::Style::Titlebar | sf::Style::Close, sf::State::Fullscreen);
+void Display::recalibrateWindow() {
+	windowInstance.clear();
+	if (fullscreenMode == borders) {
+		windowInstance.create(sf::VideoMode({ sf::VideoMode::getDesktopMode().size.x, sf::VideoMode::getDesktopMode().size.y }), "PGK2 projekt", sf::Style::Titlebar | sf::Style::Close, sf::State::Fullscreen);
 		screenView = sf::View({(float)windowWidth / 2, (float)windowHeight / 2}, sf::Vector2f((float)sf::VideoMode::getDesktopMode().size.x, (float)sf::VideoMode::getDesktopMode().size.y));
 	}
-	else if (fullscreen == windowed) {
-		window.create(sf::VideoMode({ (unsigned int) windowWidth, (unsigned int) windowHeight }), "PGK2 projekt", sf::Style::Titlebar | sf::Style::Close, sf::State::Windowed);
+	else if (fullscreenMode == windowed) {
+		windowInstance.create(sf::VideoMode({ (unsigned int) windowWidth, (unsigned int) windowHeight }), "PGK2 projekt", sf::Style::Titlebar | sf::Style::Close, sf::State::Windowed);
 		screenView = sf::View({ (float)windowWidth / 2, (float)windowHeight / 2 }, sf::Vector2f((float)windowWidth, (float)windowHeight));
 	}
 	else {
-		window.create(sf::VideoMode({ (unsigned int)windowWidth, (unsigned int)windowHeight }), "PGK2 projekt", sf::Style::Titlebar | sf::Style::Close, sf::State::Fullscreen);
+		windowInstance.create(sf::VideoMode({ (unsigned int)windowWidth, (unsigned int)windowHeight }), "PGK2 projekt", sf::Style::Titlebar | sf::Style::Close, sf::State::Fullscreen);
 		screenView = sf::View({ (float)windowWidth / 2, (float)windowHeight / 2 }, sf::Vector2f((float)windowWidth, (float)windowHeight));
 	}
-	window.setView(screenView);
-	window.setFramerateLimit(60);
-	window.setMouseCursorVisible(false);
+	windowInstance.setView(screenView);
+	windowInstance.setFramerateLimit(60);
+	windowInstance.setMouseCursorVisible(false);
 }
 
 DisplayMode Display::getFullscreen(){
-	return fullscreen;
+	return fullscreenMode;
 }
 
 void Display::loadFromFile() {
@@ -65,17 +65,17 @@ void Display::loadFromFile() {
 		std::string fullscreenStat;
 		inFile >> windowWidth >> delimiter >> windowHeight >> delimiter >> fullscreenStat;
 		if (std::stoi(fullscreenStat) == 0) 
-			fullscreen = windowed;
+			fullscreenMode = windowed;
 		else if (std::stoi(fullscreenStat) == 1) 
-			fullscreen = full;
+			fullscreenMode = full;
 		else 
-			fullscreen = borders;
+			fullscreenMode = borders;
 		inFile.close();
 	}
 }
 
 void Display::saveToFile() {
 	std::ofstream outFile("Resources/Display.txt");
-	outFile << windowWidth << ";" << windowHeight << ";" << (int)fullscreen << "\n";
+	outFile << windowWidth << ";" << windowHeight << ";" << (int)fullscreenMode << "\n";
 	outFile.close();
 }

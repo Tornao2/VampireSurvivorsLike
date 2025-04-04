@@ -4,8 +4,8 @@
 #include <fstream>
 #include <iostream>
 
-constexpr int NUMBEROFMAPS = 2;
-constexpr int NUMBEROFCHARS = 2;
+#define NUMBEROFMAPS 2
+#define NUMBEROFCHARS 2
 
 class Unlocks {
 public:

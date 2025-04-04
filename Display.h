@@ -2,8 +2,8 @@
 #include <SFML/Graphics.hpp>
 #include <fstream>
 
-constexpr short int SCENEWIDTH = 432;
-constexpr short int SCENEHEIGHT = 270;
+#define SCENEWIDTH 432
+#define SCENEHEIGHT 270
 
 enum DisplayMode {
 	windowed,
@@ -13,15 +13,15 @@ enum DisplayMode {
 
 class Display {
 	float windowWidth, windowHeight;
-	DisplayMode fullscreen;
+	DisplayMode fullscreenMode;
 	sf::View screenView;
-	sf::RenderWindow window;
-	void recalibrate();
+	sf::RenderWindow windowInstance;
+	void recalibrateWindow();
 public:
 	Display();
 	void setResolution(float readWidth, float readHeight);
 	sf::RenderWindow* getWindow();
-	void setFullscreen(DisplayMode ifFullscreen);
+	void setFullscreen(DisplayMode readFullscreenMode);
 	float getWindowWidth();
 	float getWindowHeight();
 	DisplayMode getFullscreen();

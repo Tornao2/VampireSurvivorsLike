@@ -1,24 +1,25 @@
 #pragma once
 #include "Scene.h"
 #include "CharacterData.h"
-#include <iomanip>
 
 class PlaySpace : public Scene {
-	int enemyHolderIndex, playerHolderIndex, chunkHolderIndex, hudHolderIndex;
+	int playerHolderIndex, hudHolderIndex;
 	int mapNumber, charNumber;
-	int lastToggleTime = 0;
+	int lastSpawnTime = 0;
 	CharacterData playerData;
 	sf::Clock timer;
-	void moveWithCollision();
+	void move();
 	void setTimer();
 	void checkChunks();
 	void drawHud();
-	bool respawnEnemies();
+	void respawnEnemies();
 	void randomizePos(int& x, int& y);
+	void checkEnemyCollision();
+	void moveEnemies();
 public:
 	using Scene::Scene;
 	void setMapAndChar(int readMap, int readChar);
-	bool logic(std::optional<sf::Event> gameEvent);
+	bool eventLogic(std::optional<sf::Event> gameEvent);
 	bool init();
 	void cleanUp();
 	bool realTimeLogic();

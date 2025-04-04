@@ -1,11 +1,9 @@
 #include "ExitHandler.h"
 
-std::string ExitHandler::getMessage(int exitCode) {
-	switch (exitCode) {
+std::string ExitHandler::getMessage(int readExitCode) {
+	switch (readExitCode) {
 		case -1:
 			return "Failed in loading font";
-		case -2:
-			return "Failed in loading enemy textures";
 		case 1:
 			return "Failed in loading mainmenu textures";
 		case 2:
@@ -25,32 +23,32 @@ std::string ExitHandler::getMessage(int exitCode) {
 	}
 }
 
-void ExitHandler::saveToFile(std::string message) {
+void ExitHandler::saveToFile(std::string readMessage) {
 	if (!std::filesystem::exists("ErrorLogs"))
 		std::filesystem::create_directories("ErrorLogs");
 	std::string filePath = "ErrorLogs/ErrorLogs1.txt";
-	int i = 1;
+	int fileNum = 1;
 	while (std::filesystem::exists(filePath)) {
-		i++;
-		filePath = "ErrorLogs/ErrorLogs" + std::to_string(i) + ".txt";
+		fileNum++;
+		filePath = "ErrorLogs/ErrorLogs" + std::to_string(fileNum) + ".txt";
 	}
 	std::ofstream file(filePath);
 	if (file.is_open()) {
-		file << message << std::endl;
+		file << readMessage << std::endl;
 		file.close();
 	}
 }
 
-void ExitHandler::printOut(std::string message) {
+void ExitHandler::printToConsole(std::string readMessage) {
 	std::cerr << std::endl << "*******************************" << std::endl;
-	std::cerr << message;
+	std::cerr << readMessage;
 	std::cerr << std::endl << "*******************************" << std::endl;
 }
 
-void ExitHandler::handleExitCode(int exitCode) {
-	if (exitCode != 0) {
-		std::string message = getMessage(exitCode);
+void ExitHandler::handleExitCode(int readExitCode) {
+	if (readExitCode != 0) {
+		std::string message = getMessage(readExitCode);
 		saveToFile(message);
-		printOut(message);
+		printToConsole(message);
 	}
 }

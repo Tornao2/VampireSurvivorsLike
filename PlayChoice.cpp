@@ -1,6 +1,6 @@
 #include "PlayChoice.h"
 
-bool PlayChoice::logic(std::optional<sf::Event> gameEvent) {
+bool PlayChoice::eventLogic(std::optional<sf::Event> gameEvent) {
     if (gameEvent->is<sf::Event::Closed>()) 
         return true;
     else if (gameEvent->is<sf::Event::KeyPressed>()) {

@@ -6,7 +6,7 @@ void UpgradeScene::loadModifiers() {
     upgrRowsAmount = modifiers.getRowAmount();
 }
 
-bool UpgradeScene::logic(std::optional<sf::Event> gameEvent) {
+bool UpgradeScene::eventLogic(std::optional<sf::Event> gameEvent) {
     if (gameEvent->is<sf::Event::Closed>()) 
         return true;
     else if (gameEvent->is<sf::Event::KeyPressed>()) {
@@ -74,14 +74,14 @@ bool UpgradeScene::init() {
     objectsHandler->loadSpriteIntoHolder(*upgradesTexture, { 122,42 }, { 67, 190 }, spriteHolderIndex);
     objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 155, 224 });
     objectsHandler->loadTextIntoHolder("Exit", 36, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Exit", 36)) / 2, 221 });
-    int i = 0;
+    int modNumber = 0;
     for (ModifierNode node : *modifiers.getVector()) {
         objectsHandler->loadSpriteIntoHolder(*upgradesTexture, { 67,52 }, { 0, 190 }, spriteHolderIndex);
-        objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 34 + 74.0f * (i % 5), 37 + 60.0f * (i / 5) });
-        objectsHandler->loadTextIntoHolder(node.name, 14, {68 + 74.0f * (i % 5) - objectsHandler->calculateTextWidth(node.name, 14)/2, 38 + 60.0f * (i / 5)});
-        objectsHandler->loadTextIntoHolder(modifiers.getModStrength(i), 10, {68 + 74.0f * (i % 5) - objectsHandler->calculateTextWidth(modifiers.getModStrength(i), 10) / 2, 74 + 60.0f * (i / 5)});
-        objectsHandler->loadTextIntoHolder(modifiers.getModLevel(i), 22, {68 + 74.0f * (i % 5) - objectsHandler->calculateTextWidth(modifiers.getModLevel(i), 22) / 2, 52 + 60.0f * (i / 5)});
-        i++;
+        objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 34 + 74.0f * (modNumber % 5), 37 + 60.0f * (modNumber / 5) });
+        objectsHandler->loadTextIntoHolder(node.name, 14, {68 + 74.0f * (modNumber % 5) - objectsHandler->calculateTextWidth(node.name, 14)/2, 38 + 60.0f * (modNumber / 5)});
+        objectsHandler->loadTextIntoHolder(modifiers.getModStrength(modNumber), 10, {68 + 74.0f * (modNumber % 5) - objectsHandler->calculateTextWidth(modifiers.getModStrength(modNumber), 10) / 2, 74 + 60.0f * (modNumber / 5)});
+        objectsHandler->loadTextIntoHolder(modifiers.getModLevel(modNumber), 22, {68 + 74.0f * (modNumber % 5) - objectsHandler->calculateTextWidth(modifiers.getModLevel(modNumber), 22) / 2, 52 + 60.0f * (modNumber / 5)});
+        modNumber++;
     }
     refreshSelection();
     return false;
