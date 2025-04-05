@@ -1,37 +1,52 @@
 #include "EnemyData.h"
 
-void EnemyData::giveStats(int enemyId, float readX, float readY){
-	x = readX;
-	y = readY;
+void EnemyData::giveStats(int enemyId, sf::Vector2f readPos){
+	pos = readPos;
 	enemyStats = enemyArray[enemyId];
+	currentHp = (int) enemyStats.baseHp;
 }
 
 EnemyDataNode* EnemyData::getEnemyDataNode() {
 	return &enemyStats;
 }
 
-short int EnemyData::getWidth() {
-	return enemyStats.width;
+sf::Vector2f EnemyData::getSize() {
+	return enemyStats.size;
 }
 
-short int EnemyData::getHeight() {
-	return enemyStats.height;
+sf::Vector2f EnemyData::getPos() {
+	return pos;
 }
 
-float EnemyData::getX() {
-	return x;
-}
-
-float EnemyData::getY() {
-	return y;
-}
-
-short int EnemyData::getDamage() {
+float EnemyData::getDamage() {
 	return enemyStats.damage;
 }
 
-void EnemyData::move(float readX, float readY) {
-	x += readX * enemyStats.move;
-	y += readY * enemyStats.move;
-	enemyStats.sprite->move({ readX * enemyStats.move , readY * enemyStats.move });
+void EnemyData::move(sf::Vector2f ms) {
+	pos += ms * enemyStats.move;
+	enemyStats.sprite->move(ms * enemyStats.move);
+}
+
+void EnemyData::changeHealthBy(float readChange) {
+	if (readChange < 0) {
+		if (readChange + enemyStats.armor < 0) {
+			currentHp += readChange + enemyStats.armor;
+			if (currentHp < 0)
+				currentHp = 0;
+		}
+	}
+	else {
+		currentHp += readChange;
+		if (currentHp > enemyStats.baseHp)
+			currentHp = enemyStats.baseHp;
+	}
+}
+
+float EnemyData::getHealth() {
+	return currentHp;
+}
+
+void EnemyData::clearSprite() {
+	delete enemyStats.sprite;
+	enemyStats.sprite = nullptr;
 }

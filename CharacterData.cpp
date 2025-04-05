@@ -1,10 +1,8 @@
 #include "CharacterData.h"
 
-void CharacterData::setSizes(float readX, float readY, int readWidth, int readHeight) {
-	x = readX;
-	y = readY;
-	width = readWidth;
-	height = readHeight;
+void CharacterData::setSizes(sf::Vector2f readPos, sf::Vector2f readSize) {
+	pos = readPos;
+	size = readSize;
 	baseHp = 100;
 	effectiveHp = 100;
 	xpToNext = 100;
@@ -26,81 +24,81 @@ void CharacterData::setMods() {
 	tempNode = mod.getNodeByName("Exp%");
 	expMod = tempNode->effectStrength * tempNode->currentLevel;
 	tempNode = mod.getNodeByName("Armor");
-	armorMod = (short int) tempNode->effectStrength * tempNode->currentLevel;
+	armorMod = (int) tempNode->effectStrength * tempNode->currentLevel;
 	tempNode = mod.getNodeByName("AOE%");
 	aoeMod = tempNode->effectStrength * tempNode->currentLevel;
-	effectiveHp = (short int) (baseHp * healthMod + baseHp);
+	effectiveHp = (int) (baseHp * healthMod + baseHp);
 }
 
-void CharacterData::move(float msX, float msY) {
-	x += msX;
-	y += msY;
+void CharacterData::move(sf::Vector2f ms) {
+	pos += ms;
 }
 
 float CharacterData::getMoveMod() {
 	return moveMod;
 }
 
-float CharacterData::getX() {
-	return x;
+sf::Vector2f CharacterData::getPos() {
+	return pos;
 }
 
-float CharacterData::getY() {
-	return y;
-}
-
-short int CharacterData::getCurrentHp() {
+float CharacterData::getCurrentHp() {
 	return currentHp;
 }
 
-short int CharacterData::getEffectiveHp() {
+int CharacterData::getEffectiveHp() {
 	return effectiveHp;
 }
 
 void CharacterData::recalculateHp() {
-	effectiveHp = (short int) (baseHp + healthMod * baseHp);
+	effectiveHp = (int) (baseHp + healthMod * baseHp);
 }
 
-short int CharacterData::getXp() {
+int CharacterData::getXp() {
 	return xp;
 }
 
-short int CharacterData::getXpToNext() {
+int CharacterData::getXpToNext() {
 	return xpToNext;
 }
 
-void CharacterData::increaseXp(short int readXp) {
+void CharacterData::increaseXp(int readXp) {
 	xp += readXp;
 	while (xp >= xpToNext) {
 		level++;
 		xp -= xpToNext;
-		xpToNext *= (short int) 1.2;
+		xpToNext *= (int) 1.2;
 	}
 }
 
-short int CharacterData::getLevel() {
+int CharacterData::getLevel() {
 	return level;
 }
 
-void CharacterData::setHp(short int readHp) {
+void CharacterData::setHp(float readHp) {
 	currentHp = readHp;
 }
 
-void CharacterData::changeHp(short int readChange) {
-	if (!invincibilityFrame) {
+void CharacterData::changeHp(float readChange) {
+	if (readChange < 0) {
+		if (!invincibilityFrame) {
+			if (readChange + armorMod < 0) {
+				currentHp += readChange + armorMod;
+				invincibilityFrame = 5;
+				if (currentHp < 0)
+					currentHp = 0;
+			}
+		}
+	}
+	else {
 		currentHp += readChange;
-		invincibilityFrame = 5;
-		if (currentHp < 0)
-			currentHp = 0;
+		if (currentHp > effectiveHp)
+			currentHp = effectiveHp;
 	}
 }
 
-short int CharacterData::getWidth() {
-	return width;
-}
-
-short int CharacterData::getHeight() {
-	return height;
+sf::Vector2f CharacterData::getSize() {
+	return size;
 }
 
 void CharacterData::decrementInvincibility() {

@@ -7,7 +7,7 @@ void SettingsScene::refreshSelection() {
         objectsHandler->getSpritePointer(spriteHolderIndex, i)->setColor(sf::Color::White);
     objectsHandler->getSpritePointer(spriteHolderIndex, 6)->setColor(DARKRED);
     objectsHandler->getTextPointer(8)->setFillColor(DARKRED);
-    switch ((unsigned int) display->getWindowWidth()) {
+    switch ((unsigned int) display->getWindowSize().x) {
         case 1280:
             objectsHandler->getTextPointer(2)->setFillColor(BLUE);
             objectsHandler->getSpritePointer(spriteHolderIndex, 0)->setColor(BLUE);
@@ -91,11 +91,11 @@ bool SettingsScene::eventLogic(std::optional<sf::Event> gameEvent) {
             switch (selectedRow) {
             case 0:
                 if (selectedColumn == 0) 
-                    display->setResolution(1280, 800);
+                    display->setResolution({ 1280, 800 });
                 else if (selectedColumn == 1) 
-                    display->setResolution(1440, 900);
+                    display->setResolution({1440, 900});
                 else 
-                    display->setResolution(1680, 1050);
+                    display->setResolution({ 1680, 1050 });
                 refreshSelection();
                 break;
             case 1:

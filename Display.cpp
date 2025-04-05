@@ -2,27 +2,21 @@
 
 Display::Display() {
 	windowInstance.create(sf::VideoMode({ 0, 0 }), "", sf::Style::Titlebar | sf::Style::Close);
-	windowWidth = 1440;
-	windowHeight = 900;
+	windowSize = { 1440, 900 };
 	fullscreenMode = windowed;
 	loadFromFile();
-	setResolution(windowWidth, windowHeight);
+	setResolution(windowSize);
 	windowInstance.setTitle("PGK2 projekt");
 	windowInstance.setFramerateLimit(60);
 	setFullscreen(fullscreenMode);
 }
 
-float Display::getWindowWidth() {
-	return windowWidth;
+sf::Vector2f Display::getWindowSize() {
+	return windowSize;
 }
 
-float Display::getWindowHeight() {
-	return windowHeight;
-}
-
-void Display::setResolution(float readWidth, float readHeight) {
-	windowWidth = readWidth;
-	windowHeight = readHeight;
+void Display::setResolution(sf::Vector2f readResolution) {
+	windowSize = readResolution;
 	recalibrateWindow();
 }
 
@@ -39,15 +33,15 @@ void Display::recalibrateWindow() {
 	windowInstance.clear();
 	if (fullscreenMode == borders) {
 		windowInstance.create(sf::VideoMode({ sf::VideoMode::getDesktopMode().size.x, sf::VideoMode::getDesktopMode().size.y }), "PGK2 projekt", sf::Style::Titlebar | sf::Style::Close, sf::State::Fullscreen);
-		screenView = sf::View({(float)windowWidth / 2, (float)windowHeight / 2}, sf::Vector2f((float)sf::VideoMode::getDesktopMode().size.x, (float)sf::VideoMode::getDesktopMode().size.y));
+		screenView = sf::View({windowSize.x / 2, windowSize.y / 2}, sf::Vector2f((float)sf::VideoMode::getDesktopMode().size.x, (float)sf::VideoMode::getDesktopMode().size.y));
 	}
 	else if (fullscreenMode == windowed) {
-		windowInstance.create(sf::VideoMode({ (unsigned int) windowWidth, (unsigned int) windowHeight }), "PGK2 projekt", sf::Style::Titlebar | sf::Style::Close, sf::State::Windowed);
-		screenView = sf::View({ (float)windowWidth / 2, (float)windowHeight / 2 }, sf::Vector2f((float)windowWidth, (float)windowHeight));
+		windowInstance.create(sf::VideoMode({ (unsigned int) windowSize.x, (unsigned int) windowSize.y}), "PGK2 projekt", sf::Style::Titlebar | sf::Style::Close, sf::State::Windowed);
+		screenView = sf::View({windowSize.x / 2,windowSize.y / 2 }, windowSize);
 	}
 	else {
-		windowInstance.create(sf::VideoMode({ (unsigned int)windowWidth, (unsigned int)windowHeight }), "PGK2 projekt", sf::Style::Titlebar | sf::Style::Close, sf::State::Fullscreen);
-		screenView = sf::View({ (float)windowWidth / 2, (float)windowHeight / 2 }, sf::Vector2f((float)windowWidth, (float)windowHeight));
+		windowInstance.create(sf::VideoMode({ (unsigned int)windowSize.x, (unsigned int)windowSize.y }), "PGK2 projekt", sf::Style::Titlebar | sf::Style::Close, sf::State::Fullscreen);
+		screenView = sf::View({ windowSize.x / 2,windowSize.y / 2 }, windowSize);
 	}
 	windowInstance.setView(screenView);
 	windowInstance.setFramerateLimit(60);
@@ -63,7 +57,7 @@ void Display::loadFromFile() {
 	if (inFile) {
 		char delimiter;
 		std::string fullscreenStat;
-		inFile >> windowWidth >> delimiter >> windowHeight >> delimiter >> fullscreenStat;
+		inFile >> windowSize.x >> delimiter >> windowSize.y >> delimiter >> fullscreenStat;
 		if (std::stoi(fullscreenStat) == 0) 
 			fullscreenMode = windowed;
 		else if (std::stoi(fullscreenStat) == 1) 
@@ -76,6 +70,6 @@ void Display::loadFromFile() {
 
 void Display::saveToFile() {
 	std::ofstream outFile("Resources/Display.txt");
-	outFile << windowWidth << ";" << windowHeight << ";" << (int)fullscreenMode << "\n";
+	outFile << windowSize.x << ";" << windowSize.y << ";" << (int)fullscreenMode << "\n";
 	outFile.close();
 }

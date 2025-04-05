@@ -26,7 +26,7 @@ void Engine::mainLoop() {
 }
 
 void Engine::drawPlayScene(sf::RenderTexture* texture) {
-    sf::View camera({ (static_cast<PlaySpace*>(scene))->getPlayerData().getX() + 8, (static_cast<PlaySpace*>(scene))->getPlayerData().getY() + 12 }, { 432, 270 });
+    sf::View camera({ (static_cast<PlaySpace*>(scene))->getPlayerData().getPos().x + 8, (static_cast<PlaySpace*>(scene))->getPlayerData().getPos().y + 12 }, { 432, 270 });
     texture->setView(camera);
     sf::FloatRect viewBounds(camera.getCenter() - camera.getSize() / 2.f, camera.getSize());
     for (auto [key, chunk] : objectsHandler.getChunkMap()) {
@@ -56,13 +56,13 @@ void Engine::draw() {
             renderTexture.draw(sprite);
     renderTexture.display();
     sf::Sprite finalSprite(renderTexture.getTexture());
-    finalSprite.setScale({display.getWindowWidth()/ 432.0f,display.getWindowHeight() / 270.f });
+    finalSprite.setScale({display.getWindowSize().x/ 432.0f,display.getWindowSize().y / 270.f });
     display.getWindow()->draw(finalSprite);
     for (sf::Text text : *objectsHandler.getTextHolder())
     {
         sf::Text copy = text;
-        copy.setPosition({ copy.getPosition().x * display.getWindowWidth() / 432.0f, copy.getPosition().y * display.getWindowHeight() / 270.f });
-        copy.setCharacterSize(copy.getCharacterSize() * (unsigned int) display.getWindowHeight() / 270);
+        copy.setPosition({ copy.getPosition().x * display.getWindowSize().x / 432.0f, copy.getPosition().y * display.getWindowSize().y / 270.f });
+        copy.setCharacterSize(copy.getCharacterSize() * (unsigned int)display.getWindowSize().y / 270);
         display.getWindow()->draw(copy);
     }
     display.getWindow()->display();

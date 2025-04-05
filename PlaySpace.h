@@ -13,9 +13,11 @@ class PlaySpace : public Scene {
 	void checkChunks();
 	void drawHud();
 	void respawnEnemies();
-	void randomizePos(int& x, int& y);
+	sf::Vector2f randomizePos();
 	void checkEnemyCollision();
 	void moveEnemies();
+	void checkEnemyHp();
+	void weaponLogic();
 public:
 	using Scene::Scene;
 	void setMapAndChar(int readMap, int readChar);

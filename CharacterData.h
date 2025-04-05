@@ -1,33 +1,32 @@
 #pragma once
 #include "Modifiers.h"
+#include <SFML/System/Vector2.hpp>
 
 class CharacterData {
 private:
-	float x, y;
-	short int width, height;
+	sf::Vector2f pos, size;
 
 	float healthMod, damageMod, moveMod, expMod, aoeMod;
-	short int armorMod;
+	int armorMod;
 
-	short int baseHp, currentHp, baseMs, effectiveHp, xp, xpToNext, level, invincibilityFrame;
+	float currentHp;
+	int baseHp, baseMs, effectiveHp, xp, xpToNext, level, invincibilityFrame;
 public:
-	void setSizes(float readX, float readY, int readWidth, int readHeight);
+	void setSizes(sf::Vector2f readPos, sf::Vector2f readSize);
 	void setMods();
-	void move(float msX, float msY);
+	void move(sf::Vector2f ms);
 	float getMoveMod();
-	float getX();
-	float getY();
-	short int getCurrentHp();
-	short int getEffectiveHp();
-	void setHp(short int readHp);
-	void changeHp(short int readChange);
+	sf::Vector2f getPos();
+	float getCurrentHp();
+	int getEffectiveHp();
+	void setHp(float readHp);
+	void changeHp(float readChange);
 	void recalculateHp();
-	short int getXp();
-	short int getXpToNext();
-	void increaseXp(short int readXp);
-	short int getLevel();
-	short int getWidth();
-	short int getHeight();
+	int getXp();
+	int getXpToNext();
+	void increaseXp(int readXp);
+	int getLevel();
+	sf::Vector2f getSize();
 	void decrementInvincibility();
 	float getEffectiveMs();
 };

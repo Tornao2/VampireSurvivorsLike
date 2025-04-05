@@ -12,6 +12,8 @@ bool PlaySpace::realTimeLogic() {
         checkChunks();
         move();
         moveEnemies();
+        weaponLogic();
+        checkEnemyHp();
         checkEnemyCollision();
         setTimer();
         drawHud();
@@ -24,73 +26,82 @@ bool PlaySpace::realTimeLogic() {
     return false;
 }
 
+void PlaySpace::weaponLogic() {
+    if (objectsHandler->getEnemyHolder()->size() != 0) {
+        sf::Vector2f target = objectsHandler->getClosestEnemyCords(playerData.getPos());
+    }
+}
+
+void PlaySpace::checkEnemyHp() {
+    std::list <EnemyData*> enemiesToKill;
+    for (EnemyData* enemy : *objectsHandler->getEnemyHolder()) 
+        if (enemy->getHealth() == 0) 
+            enemiesToKill.push_back(enemy);
+    objectsHandler->killEnemy(enemiesToKill);
+}
+
 void PlaySpace::moveEnemies() {
     for (EnemyData* enemy : *objectsHandler->getEnemyHolder()) {
-        float dirX = playerData.getX() - enemy->getX();
-        float dirY = playerData.getY() - enemy->getY();
-        float length = std::sqrt(dirX * dirX + dirY * dirY);
+        sf::Vector2f dirVec = playerData.getPos() - enemy->getPos();
+        float length = std::sqrt(dirVec.x * dirVec.x + dirVec.y * dirVec.y);
         if (fabs(length) >= 0.5) {
-            dirX /= length;
-            dirY /= length;
-            enemy->move(dirX, dirY);
+            dirVec /= length;
+            enemy->move(dirVec);
         }
     }
 }
 
 void PlaySpace::checkEnemyCollision() {
     sf::FloatRect playerBounds(
-        { playerData.getX(),playerData.getY() + playerData.getHeight() - playerData.getWidth() },
-        { (float)playerData.getWidth(), (float)playerData.getWidth() }
-    );
+        { playerData.getSize().x,playerData.getSize().y + playerData.getSize().y - playerData.getSize().x },
+        playerData.getSize());
     for (EnemyData* enemy : *objectsHandler->getEnemyHolder()) {
-        sf::FloatRect enemyBounds({
-            enemy->getX(), enemy->getY()},
-            { (float) enemy->getWidth(), (float) enemy->getWidth()}
-        );
-        if (enemyBounds.findIntersection(playerBounds).has_value()) 
+        sf::FloatRect enemyBounds(enemy->getPos(), enemy->getSize());
+        if (playerBounds.findIntersection(enemyBounds).has_value()) {
             playerData.changeHp(-enemy->getDamage());
+            break;
+        }
     }
 }
 
-void PlaySpace::randomizePos(int& x, int& y) {
+sf::Vector2f PlaySpace::randomizePos() {
+    sf::Vector2f returnVec;
     int side = rand() % 4;
     if (side == 0) {
-        x = rand() % SCENEWIDTH+ (int) playerData.getX() - SCENEWIDTH / 2;
-        y = (int) playerData.getY() - SCENEHEIGHT/2 - 30;
+        returnVec.x = rand() % SCENEWIDTH+ (int) playerData.getPos().x - SCENEWIDTH / 2;
+        returnVec.y = (int) playerData.getPos().y - SCENEHEIGHT/2 - 30;
     }
     else if (side == 1) {
-        x = rand() % SCENEWIDTH + (int)playerData.getX() - SCENEWIDTH / 2;
-        y = (int)playerData.getY() + SCENEHEIGHT / 2 + 30;
+        returnVec.x = rand() % SCENEWIDTH + (int)playerData.getPos().x - SCENEWIDTH / 2;
+        returnVec.y = (int)playerData.getPos().y + SCENEHEIGHT / 2 + 30;
     }
     else if (side == 2) {
-        x = (int)playerData.getX() - SCENEWIDTH / 2 - 30;
-        y = rand() % SCENEHEIGHT + (int)playerData.getY() - SCENEHEIGHT/2;
+        returnVec.x = (int)playerData.getPos().x - SCENEWIDTH / 2 - 30;
+        returnVec.y = rand() % SCENEHEIGHT + (int)playerData.getPos().y - SCENEHEIGHT/2;
     }
     else {
-        x = (int)playerData.getX() + SCENEWIDTH / 2 + 30;
-        y = rand() % SCENEHEIGHT + (int)playerData.getY() - SCENEHEIGHT / 2;
+        returnVec.x = (int)playerData.getPos().x + SCENEWIDTH / 2 + 30;
+        returnVec.y = rand() % SCENEHEIGHT + (int)playerData.getPos().y - SCENEHEIGHT / 2;
     }
+    return returnVec;
 }
 
 void PlaySpace::respawnEnemies() {
     int seconds = static_cast<int>(timer.getElapsedTime().asSeconds());
     if (seconds - lastSpawnTime >= 5) {
         lastSpawnTime = seconds;
-        for (int i = 0; i < 50; i++) {
-            int x, y;
-            randomizePos(x, y);
-            objectsHandler->addEnemy(0, (float) x, (float) y);
-        }
+        for (int i = 0; i < 50; i++) 
+            objectsHandler->addEnemy(0, randomizePos());
     }
 }
 
 void PlaySpace::drawHud() {
     objectsHandler->getSpritePointer(hudHolderIndex, 1)->setTextureRect({ {0, 8} , { (int)(((float)playerData.getXp() / playerData.getXpToNext()) * 414), 8} });
     objectsHandler->getSpritePointer(hudHolderIndex, 3)->setTextureRect({ {0, 16} , { (int)(((float)playerData.getCurrentHp() / playerData.getEffectiveHp()) * 200), 8} });
-    objectsHandler->getSpritePointer(hudHolderIndex, 0)->setPosition({ 16 + playerData.getX() - 208, 1 + playerData.getY() - 123 });
-    objectsHandler->getSpritePointer(hudHolderIndex, 1)->setPosition({ 16 + playerData.getX() - 208, 1 + playerData.getY() - 123 });
-    objectsHandler->getSpritePointer(hudHolderIndex, 2)->setPosition({ 16 + playerData.getX() - 208, 10 + playerData.getY() - 123 });
-    objectsHandler->getSpritePointer(hudHolderIndex, 3)->setPosition({ 16 + playerData.getX() - 208, 10 + playerData.getY() - 123 });
+    objectsHandler->getSpritePointer(hudHolderIndex, 0)->setPosition({ 16 + playerData.getPos().x - 208, 1 + playerData.getPos().y - 123 });
+    objectsHandler->getSpritePointer(hudHolderIndex, 1)->setPosition({ 16 + playerData.getPos().x - 208, 1 + playerData.getPos().y - 123 });
+    objectsHandler->getSpritePointer(hudHolderIndex, 2)->setPosition({ 16 + playerData.getPos().x - 208, 10 + playerData.getPos().y - 123 });
+    objectsHandler->getSpritePointer(hudHolderIndex, 3)->setPosition({ 16 + playerData.getPos().x - 208, 10 + playerData.getPos().y - 123 });
 }
 
 void PlaySpace::setTimer() {
@@ -106,7 +117,7 @@ void PlaySpace::setTimer() {
 void PlaySpace::checkChunks() {
     for (int dx = -2; dx < 3; dx++)
         for (int dy = -2; dy < 3; dy++)
-            objectsHandler->generateChunk((int)playerData.getX() / (CHUNKSIZE * TILESIZE) + dx, (int)playerData.getY() / (CHUNKSIZE * TILESIZE) + dy);
+            objectsHandler->generateChunk((int)playerData.getPos().x / (CHUNKSIZE * TILESIZE) + dx, (int)playerData.getPos().y / (CHUNKSIZE * TILESIZE) + dy);
 }
 
 void PlaySpace::setMapAndChar(int readMap, int readChar) {
@@ -136,9 +147,9 @@ bool PlaySpace::init() {
     sf::Texture* enemyTexture = objectsHandler->loadTexture({ 24, 32 }, "EnemySprites");
     if (!enemyTexture)
         return true;
-    playerData.setSizes(208, 123, 16, 24);
+    playerData.setSizes({ 208, 123 }, { 16, 24 });
     playerData.setMods();
-    playerData.setHp(playerData.getEffectiveHp());
+    playerData.setHp((float) playerData.getEffectiveHp());
     return false;
 }
 
@@ -155,22 +166,21 @@ CharacterData PlaySpace::getPlayerData() {
 
 void PlaySpace::move() {
     float move = playerData.getEffectiveMs();
-    std::pair <float, float> moveStep = { 0, 0 };
+    sf::Vector2f moveStep = { 0, 0 };
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down))
-        moveStep.second = move;
+        moveStep.y = move;
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
-        moveStep.second = -move;
+        moveStep.y = -move;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
-        moveStep.first =  move;
+        moveStep.x =  move;
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
-        moveStep.first = -move;
-    playerData.move(moveStep.first, moveStep.second);
-    int playerChunkX = (int) playerData.getX() / (CHUNKSIZE * TILESIZE);
-    int playerChunkY = (int) playerData.getY() / (CHUNKSIZE * TILESIZE);
+        moveStep.x = -move;
+    playerData.move(moveStep);
+    int playerChunkX = (int) playerData.getSize().x / (CHUNKSIZE * TILESIZE);
+    int playerChunkY = (int) playerData.getSize().y / (CHUNKSIZE * TILESIZE);
     sf::FloatRect playerBounds(
-        { playerData.getX(),playerData.getY() + playerData.getHeight() - playerData.getWidth() },
-        { (float)playerData.getWidth(), (float)playerData.getWidth() }
-    );
+        { playerData.getSize().x,playerData.getSize().y + playerData.getSize().y - playerData.getSize().x },
+        playerData.getSize());
     for (int a = -1; a <= 1; a++) {
         for (int b = -1; b <= 1; b++) {
             auto tempMap = objectsHandler->getChunkMap().at({ playerChunkX + a, playerChunkY + b });
@@ -182,7 +192,7 @@ void PlaySpace::move() {
                             { (float)TILESIZE, (float)TILESIZE }
                         );
                         if (tileBounds.findIntersection(playerBounds).has_value()) {
-                            playerData.move(-moveStep.first, -moveStep.second);
+                            playerData.move(-moveStep);
                             return;
                         }
                     }
@@ -190,5 +200,5 @@ void PlaySpace::move() {
             }
         }
     }
-    objectsHandler->getSpritePointer(playerHolderIndex, -1)->move({ moveStep.first, moveStep.second });
+    objectsHandler->getSpritePointer(playerHolderIndex, -1)->move(moveStep);
 }

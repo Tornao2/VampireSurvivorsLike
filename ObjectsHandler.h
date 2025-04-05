@@ -45,7 +45,9 @@ public:
 	float calculateTextWidth(std::string readText, unsigned char size);
 	void generateChunk(int chunkX, int chunkY);
 	std::unordered_map<std::pair<int, int>, Chunk*, PairHash> getChunkMap();
-	void addEnemy(int enemyId, float readX, float readY);
+	void addEnemy(int enemyId, sf::Vector2f readPos);
 	void clearEnemyHolder();
 	std::list <EnemyData*>* getEnemyHolder();
+	void killEnemy(std::list<EnemyData*> enemiesToKill);
+	sf::Vector2f getClosestEnemyCords(sf::Vector2f readPlayerPos);
 };

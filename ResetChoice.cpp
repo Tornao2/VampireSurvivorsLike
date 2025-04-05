@@ -27,7 +27,7 @@ bool ResetChoice::eventLogic(std::optional<sf::Event> gameEvent) {
                 break;
             case 1:
                 *sceneLabel = MAINMENU;
-                display->setResolution(1440, 900);
+                display->setResolution({ 1440, 900 });
                 display->setFullscreen(windowed);
                 std::remove("Upgrade.txt");
                 std::remove("Display.txt");

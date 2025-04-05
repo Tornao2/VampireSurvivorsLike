@@ -95,16 +95,16 @@ std::unordered_map<std::pair<int, int>, Chunk*, PairHash> ObjectsHandler::getChu
     return chunkMap;
 }
 
-void ObjectsHandler::addEnemy(int enemyId, float readX, float readY) {
+void ObjectsHandler::addEnemy(int enemyId, sf::Vector2f readPos) {
     EnemyData* enemy = new EnemyData();
-    enemy->giveStats(enemyId, readX, readY);
+    enemy->giveStats(enemyId, readPos);
     EnemyDataNode* node = enemy->getEnemyDataNode();
     switch (enemyId) {
         case 0:
             node->sprite = new sf::Sprite(textureHolder.at("Resources/EnemySprites.png"), { { 0,0 }, { 16, 24 } });
             break;
     }
-    node->sprite->setPosition({ readX, readY });
+    node->sprite->setPosition(readPos);
     enemyHolder.push_back(enemy);
 }
 
@@ -118,4 +118,35 @@ void ObjectsHandler::clearEnemyHolder() {
 
 std::list <EnemyData*>* ObjectsHandler::getEnemyHolder() {
     return &enemyHolder;
+}
+
+void ObjectsHandler::killEnemy(std::list<EnemyData*> enemiesToKill) {
+    bool erased;
+    for (auto it = enemyHolder.begin(); it != enemyHolder.end(); ) {
+        erased = false;
+        for (EnemyData* enemy : enemiesToKill) {
+            if (*it == enemy) {
+                enemy->clearSprite();
+                it = enemyHolder.erase(it);
+                erased = true;
+                break;
+            }
+        }
+        if (!erased)
+            it++;
+    }
+}
+
+sf::Vector2f ObjectsHandler::getClosestEnemyCords(sf::Vector2f readPlayerPos) {
+    sf::Vector2f enemyPos, target;
+    float closestDistance = std::numeric_limits<float>::max();
+    for (EnemyData* enemy : enemyHolder) {
+        sf::Vector2f d = readPlayerPos - enemy->getPos();
+        float distanceSq = d.x * d.x + d.y * d.y;
+        if (distanceSq < closestDistance) {
+            closestDistance = distanceSq;
+            target = enemyPos;
+        }
+    }
+    return target;
 }

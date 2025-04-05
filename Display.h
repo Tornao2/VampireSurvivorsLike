@@ -12,18 +12,17 @@ enum DisplayMode {
 };
 
 class Display {
-	float windowWidth, windowHeight;
+	sf::Vector2f windowSize;
 	DisplayMode fullscreenMode;
 	sf::View screenView;
 	sf::RenderWindow windowInstance;
 	void recalibrateWindow();
 public:
 	Display();
-	void setResolution(float readWidth, float readHeight);
+	void setResolution(sf::Vector2f readResolution);
 	sf::RenderWindow* getWindow();
 	void setFullscreen(DisplayMode readFullscreenMode);
-	float getWindowWidth();
-	float getWindowHeight();
+	sf::Vector2f getWindowSize();
 	DisplayMode getFullscreen();
 	void loadFromFile();
 	void saveToFile();
