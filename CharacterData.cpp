@@ -109,3 +109,7 @@ void CharacterData::decrementInvincibility() {
 float CharacterData::getEffectiveMs() {
 	return moveMod * baseMs + baseMs;
 }
+
+float CharacterData::getDamageMod() {
+	return damageMod;
+}

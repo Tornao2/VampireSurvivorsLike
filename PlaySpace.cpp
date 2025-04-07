@@ -13,8 +13,10 @@ bool PlaySpace::realTimeLogic() {
         move();
         moveEnemies();
         weaponLogic();
+        moveProjectiles();
+        checkProjectileCollision();
         checkEnemyHp();
-        checkEnemyCollision();
+        checkEnemyCollision();   
         setTimer();
         drawHud();
         respawnEnemies();
@@ -29,7 +31,38 @@ bool PlaySpace::realTimeLogic() {
 void PlaySpace::weaponLogic() {
     if (objectsHandler->getEnemyHolder()->size() != 0) {
         sf::Vector2f target = objectsHandler->getClosestEnemyCords(playerData.getPos());
+        static int lastFireTime = 0;
+        if (static_cast<int>(timer.getElapsedTime().asSeconds()) - lastFireTime > 1) {
+            lastFireTime = static_cast<int>(timer.getElapsedTime().asSeconds());
+            objectsHandler->addProjectile(playerData.getDamageMod(), 0, playerData.getPos(), target);
+        }
     }
+}
+
+void PlaySpace::moveProjectiles() {
+    for (Projectiles* node : *objectsHandler->getProjectileHolder()) 
+        node->move();
+    std::list <Projectiles*> proj;
+    for (Projectiles* projectile : *objectsHandler->getProjectileHolder())
+        if ((projectile->getPos() - playerData.getPos()).length() >= 400)
+            proj.push_back(projectile);
+    objectsHandler->destroyProjectiles(proj);
+}
+
+void PlaySpace::checkProjectileCollision() {
+    std::list <Projectiles*> proj;
+    for (Projectiles* node : *objectsHandler->getProjectileHolder()) {
+        sf::FloatRect projectileBounds(node->getPos(), node->getSize());
+        for (EnemyData* enemy : *objectsHandler->getEnemyHolder()) {
+            sf::FloatRect enemyBounds(enemy->getPos(), enemy->getSize());
+            if (enemyBounds.findIntersection(projectileBounds).has_value()) {
+                enemy->changeHealthBy(-node->getDamage());
+                proj.push_back(node);
+                break;
+            }
+        }
+    }
+    objectsHandler->destroyProjectiles(proj);
 }
 
 void PlaySpace::checkEnemyHp() {
@@ -53,7 +86,7 @@ void PlaySpace::moveEnemies() {
 
 void PlaySpace::checkEnemyCollision() {
     sf::FloatRect playerBounds(
-        { playerData.getSize().x,playerData.getSize().y + playerData.getSize().y - playerData.getSize().x },
+        { playerData.getPos().x,playerData.getPos().y + playerData.getSize().y - playerData.getSize().x },
         playerData.getSize());
     for (EnemyData* enemy : *objectsHandler->getEnemyHolder()) {
         sf::FloatRect enemyBounds(enemy->getPos(), enemy->getSize());
@@ -145,7 +178,10 @@ bool PlaySpace::init() {
     objectsHandler->loadSpriteIntoHolder(*hudTexture, { 200,8 }, { 0, 16 }, hudHolderIndex);
     objectsHandler->getSpritePointer(hudHolderIndex, -1)->setPosition({ 16, 10 });
     sf::Texture* enemyTexture = objectsHandler->loadTexture({ 24, 32 }, "EnemySprites");
+    sf::Texture* projectileTexture = objectsHandler->loadTexture({ 12, 12 }, "ProjectileSprites");
     if (!enemyTexture)
+        return true;
+    if (!projectileTexture)
         return true;
     playerData.setSizes({ 208, 123 }, { 16, 24 });
     playerData.setMods();
@@ -157,6 +193,7 @@ void PlaySpace::cleanUp() {
     objectsHandler->clearSpriteHolder();
     objectsHandler->clearTextHolder();
     objectsHandler->clearEnemyHolder();
+    objectsHandler->clearProjectileHolder();
     timer.stop();
 }
 
@@ -179,7 +216,7 @@ void PlaySpace::move() {
     int playerChunkX = (int) playerData.getSize().x / (CHUNKSIZE * TILESIZE);
     int playerChunkY = (int) playerData.getSize().y / (CHUNKSIZE * TILESIZE);
     sf::FloatRect playerBounds(
-        { playerData.getSize().x,playerData.getSize().y + playerData.getSize().y - playerData.getSize().x },
+        { playerData.getPos().x,playerData.getPos().y + playerData.getSize().y - playerData.getSize().x },
         playerData.getSize());
     for (int a = -1; a <= 1; a++) {
         for (int b = -1; b <= 1; b++) {

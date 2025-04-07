@@ -110,7 +110,7 @@ void ObjectsHandler::addEnemy(int enemyId, sf::Vector2f readPos) {
 
 void ObjectsHandler::clearEnemyHolder() {
     for (EnemyData* data : enemyHolder) {
-        delete data->getEnemyDataNode()->sprite;
+        data->clearSprite();
         delete data;
     }
     enemyHolder.clear();
@@ -138,15 +138,61 @@ void ObjectsHandler::killEnemy(std::list<EnemyData*> enemiesToKill) {
 }
 
 sf::Vector2f ObjectsHandler::getClosestEnemyCords(sf::Vector2f readPlayerPos) {
-    sf::Vector2f enemyPos, target;
-    float closestDistance = std::numeric_limits<float>::max();
-    for (EnemyData* enemy : enemyHolder) {
-        sf::Vector2f d = readPlayerPos - enemy->getPos();
-        float distanceSq = d.x * d.x + d.y * d.y;
-        if (distanceSq < closestDistance) {
-            closestDistance = distanceSq;
-            target = enemyPos;
+    sf::Vector2f target;
+    if (enemyHolder.size() != 0){
+        float closestDistance = std::numeric_limits<float>::max();
+        for (EnemyData* enemy : enemyHolder) {
+            sf::Vector2f d = readPlayerPos - enemy->getPos();
+            float distanceSq = d.x * d.x + d.y * d.y;
+            if (distanceSq < closestDistance) {
+                closestDistance = distanceSq;
+                target = enemy->getPos();
+            }
         }
     }
+    else {
+        target = { readPlayerPos.x + (rand() % 2) - 1, readPlayerPos.y + (rand() % 2) - 1 };
+    }
     return target;
+}
+
+void ObjectsHandler::addProjectile(float damageMod, int projectileId, sf::Vector2f readPos, sf::Vector2f readEndPos) {
+    sf::Sprite* sprite = nullptr;
+    switch (projectileId) {
+    case 0:
+        sprite = new sf::Sprite(textureHolder.at("Resources/ProjectileSprites.png"), { { 0,0 }, { 12, 12 } });
+        break;
+    }
+    sprite->setPosition(readPos);
+    Projectiles* projectile = new Projectiles(sprite, damageMod, readPos, readEndPos, projectileId);
+    projectileHolder.push_back(projectile);
+}
+
+void ObjectsHandler::clearProjectileHolder() {
+    for (Projectiles* projectile : projectileHolder) {
+        projectile->clearSprite();
+        delete projectile;
+    }
+    projectileHolder.clear();
+}
+
+std::list <Projectiles*>* ObjectsHandler::getProjectileHolder() {
+    return &projectileHolder;
+}
+
+void ObjectsHandler::destroyProjectiles(std::list<Projectiles*> projectilesToDestroy) {
+    bool erased;
+    for (auto it = projectileHolder.begin(); it != projectileHolder.end(); ) {
+        erased = false;
+        for (Projectiles* proj : projectilesToDestroy) {
+            if (*it == proj) {
+                proj->clearSprite();
+                it = projectileHolder.erase(it);
+                erased = true;
+                break;
+            }
+        }
+        if (!erased)
+            it++;
+    }
 }

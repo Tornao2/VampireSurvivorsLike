@@ -194,6 +194,7 @@ xcopy /Y /D "$(ProjectDir)include\sfml-audio-3.dll" "$(OutDir)"</Command>
     <ClCompile Include="ObjectsHandler.cpp" />
     <ClCompile Include="PlayChoice.cpp" />
     <ClCompile Include="PlaySpace.cpp" />
+    <ClCompile Include="Projectiles.cpp" />
     <ClCompile Include="ResetChoice.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="Unlocks.cpp" />
@@ -210,6 +211,7 @@ xcopy /Y /D "$(ProjectDir)include\sfml-audio-3.dll" "$(OutDir)"</Command>
     <ClInclude Include="ObjectsHandler.h" />
     <ClInclude Include="PlayChoice.h" />
     <ClInclude Include="PlaySpace.h" />
+    <ClInclude Include="Projectiles.h" />
     <ClInclude Include="ResetChoice.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Settings.h" />
@@ -224,6 +226,7 @@ xcopy /Y /D "$(ProjectDir)include\sfml-audio-3.dll" "$(OutDir)"</Command>
     <Image Include="Resources\MainMenu.png" />
     <Image Include="Resources\MapThumbnails.png" />
     <Image Include="Resources\PlaySelect.png" />
+    <Image Include="Resources\ProjectileSprites.png" />
     <Image Include="Resources\ResetChoice.png" />
     <Image Include="Resources\Settings.png" />
     <Image Include="Resources\TexturesMap1.png" />

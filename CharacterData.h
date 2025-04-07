@@ -29,4 +29,5 @@ public:
 	sf::Vector2f getSize();
 	void decrementInvincibility();
 	float getEffectiveMs();
+	float getDamageMod();
 };

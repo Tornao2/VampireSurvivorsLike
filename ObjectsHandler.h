@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <FastNoiseLite.h>
 #include "EnemyData.h"
+#include "Projectiles.h"
 
 #define CHUNKSIZE 16
 #define TILESIZE 16
@@ -29,6 +30,7 @@ class ObjectsHandler {
 	std::list <EnemyData*> enemyHolder;
 	std::vector <std::vector<sf::Sprite>*> spriteHolder;
 	std::unordered_map<std::pair<int, int>, Chunk*, PairHash> chunkMap;
+	std::list <Projectiles*> projectileHolder;
 public:
 	sf::Texture* loadTexture(sf::Vector2i size, std::string fileName);
 	void loadSpriteIntoHolder(sf::Texture& texture, sf::Vector2i size, sf::Vector2i position, int index);
@@ -50,4 +52,8 @@ public:
 	std::list <EnemyData*>* getEnemyHolder();
 	void killEnemy(std::list<EnemyData*> enemiesToKill);
 	sf::Vector2f getClosestEnemyCords(sf::Vector2f readPlayerPos);
+	void addProjectile(float damageMod, int projectileId, sf::Vector2f readPos, sf::Vector2f readEndPos);
+	void clearProjectileHolder();
+	std::list <Projectiles*>* getProjectileHolder();
+	void destroyProjectiles(std::list<Projectiles*> projectilesToDestroy);
 };

@@ -9,6 +9,7 @@ class PlaySpace : public Scene {
 	CharacterData playerData;
 	sf::Clock timer;
 	void move();
+	void moveProjectiles();
 	void setTimer();
 	void checkChunks();
 	void drawHud();
@@ -18,6 +19,7 @@ class PlaySpace : public Scene {
 	void moveEnemies();
 	void checkEnemyHp();
 	void weaponLogic();
+	void checkProjectileCollision();
 public:
 	using Scene::Scene;
 	void setMapAndChar(int readMap, int readChar);
