@@ -41,7 +41,7 @@ void Engine::drawPlayScene(sf::RenderTexture* texture) {
         }
     }
     for (EnemyData* node : *objectsHandler.getEnemyHolder())
-        texture->draw(*node->getEnemyDataNode()->sprite);
+        texture->draw(*node->getSprite());
     for (Projectiles* node : *objectsHandler.getProjectileHolder())
         texture->draw(*node->getSprite());
 }

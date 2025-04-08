@@ -5,7 +5,7 @@
 class PlaySpace : public Scene {
 	int playerHolderIndex, hudHolderIndex;
 	int mapNumber, charNumber;
-	int lastSpawnTime = 0;
+	int lastSpawnTime = -10;
 	CharacterData playerData;
 	sf::Clock timer;
 	sf::Vector2f determineMovement();

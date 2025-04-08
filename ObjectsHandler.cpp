@@ -100,13 +100,8 @@ std::unordered_map<std::pair<int, int>, Chunk*, PairHash> ObjectsHandler::getChu
 void ObjectsHandler::addEnemy(int enemyId, sf::Vector2f readPos) {
     EnemyData* enemy = new EnemyData();
     enemy->giveStats(enemyId, readPos);
-    EnemyDataNode* node = enemy->getEnemyDataNode();
-    switch (enemyId) {
-        case 0:
-            node->sprite = new sf::Sprite(textureHolder.at("Resources/EnemySprites.png"), { { 0,0 }, { 16, 24 } });
-            break;
-    }
-    node->sprite->setPosition(readPos);
+    enemy->setSprite(new sf::Sprite(textureHolder.at("Resources/EnemySprites.png"), { {0,0}, {16, 24} }));
+    enemy->getSprite()->setPosition(readPos);
     enemyHolder.push_back(enemy);
 }
 

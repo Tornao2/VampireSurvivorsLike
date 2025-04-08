@@ -7,6 +7,11 @@ bool PlaySpace::eventLogic(std::optional<sf::Event> gameEvent) {
 }
 
 bool PlaySpace::realTimeLogic() {
+    int seconds = static_cast<int>(timer.getElapsedTime().asSeconds());
+    if (seconds >= 600) {
+        *sceneLabel = MAINMENU;
+        return true;
+    }
     if (playerData.getCurrentHp() != 0) {
         playerData.decrementInvincibility();
         chunkLogic();
@@ -121,10 +126,10 @@ sf::Vector2f PlaySpace::randomizePos() {
 
 void PlaySpace::respawnEnemies() {
     int seconds = static_cast<int>(timer.getElapsedTime().asSeconds());
-    if (seconds - lastSpawnTime >= 5) {
+    if (seconds - lastSpawnTime >= 10) {
         lastSpawnTime = seconds;
-        for (int i = 0; i < 50; i++) 
-            objectsHandler->addEnemy(0, randomizePos());
+        for (int i = 0; i < 30; i++) 
+            objectsHandler->addEnemy(static_cast<int>(timer.getElapsedTime().asSeconds()/60), randomizePos());
     }
 }
 

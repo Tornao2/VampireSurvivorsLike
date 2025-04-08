@@ -24,7 +24,7 @@ float EnemyData::getDamage() {
 
 void EnemyData::move(sf::Vector2f ms) {
 	pos += ms * enemyStats.move;
-	enemyStats.sprite->move(ms * enemyStats.move);
+	sprite->move(ms * enemyStats.move);
 }
 
 void EnemyData::changeHealthBy(float readChange) {
@@ -47,6 +47,14 @@ float EnemyData::getHealth() {
 }
 
 void EnemyData::clearSprite() {
-	delete enemyStats.sprite;
-	enemyStats.sprite = nullptr;
+	delete sprite;
+	sprite = nullptr;
+}
+
+sf::Sprite* EnemyData::getSprite() {
+	return sprite;
+}
+
+void EnemyData::setSprite(sf::Sprite* readSprite) {
+	sprite = readSprite;
 }
