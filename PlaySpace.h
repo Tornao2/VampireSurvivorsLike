@@ -11,7 +11,7 @@ class PlaySpace : public Scene {
 	void move();
 	void moveProjectiles();
 	void setTimer();
-	void checkChunks();
+	void chunkLogic();
 	void drawHud();
 	void respawnEnemies();
 	sf::Vector2f randomizePos();

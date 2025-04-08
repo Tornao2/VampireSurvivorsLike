@@ -46,6 +46,8 @@ public:
 	void loadTextIntoHolder(std::string readText, unsigned char size, sf::Vector2f position);
 	float calculateTextWidth(std::string readText, unsigned char size);
 	void generateChunk(int chunkX, int chunkY);
+	void deleteUnusedChunks();
+	void falseAllChunks();
 	std::unordered_map<std::pair<int, int>, Chunk*, PairHash> getChunkMap();
 	void addEnemy(int enemyId, sf::Vector2f readPos);
 	void clearEnemyHolder();
@@ -56,4 +58,5 @@ public:
 	void clearProjectileHolder();
 	std::list <Projectiles*>* getProjectileHolder();
 	void destroyProjectiles(std::list<Projectiles*> projectilesToDestroy);
+	void cleanChunkHolder();
 };

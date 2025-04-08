@@ -9,7 +9,7 @@ bool PlaySpace::eventLogic(std::optional<sf::Event> gameEvent) {
 bool PlaySpace::realTimeLogic() {
     if (playerData.getCurrentHp() != 0) {
         playerData.decrementInvincibility();
-        checkChunks();
+        chunkLogic();
         move();
         moveEnemies();
         weaponLogic();
@@ -147,10 +147,12 @@ void PlaySpace::setTimer() {
     objectsHandler->getTextPointer(0)->setString(timeStream.str());
 }
 
-void PlaySpace::checkChunks() {
-    for (int dx = -2; dx < 3; dx++)
-        for (int dy = -2; dy < 3; dy++)
+void PlaySpace::chunkLogic() {
+    objectsHandler->falseAllChunks();
+    for (int dx = -3; dx < 4; dx++)
+        for (int dy = -3; dy < 4; dy++)
             objectsHandler->generateChunk((int)playerData.getPos().x / (CHUNKSIZE * TILESIZE) + dx, (int)playerData.getPos().y / (CHUNKSIZE * TILESIZE) + dy);
+    objectsHandler->deleteUnusedChunks();
 }
 
 void PlaySpace::setMapAndChar(int readMap, int readChar) {
@@ -194,6 +196,7 @@ void PlaySpace::cleanUp() {
     objectsHandler->clearTextHolder();
     objectsHandler->clearEnemyHolder();
     objectsHandler->clearProjectileHolder();
+    objectsHandler->cleanChunkHolder();
     timer.stop();
 }
 
@@ -213,8 +216,8 @@ void PlaySpace::move() {
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
         moveStep.x = -move;
     playerData.move(moveStep);
-    int playerChunkX = (int) playerData.getSize().x / (CHUNKSIZE * TILESIZE);
-    int playerChunkY = (int) playerData.getSize().y / (CHUNKSIZE * TILESIZE);
+    int playerChunkX = (int) playerData.getPos().x / (CHUNKSIZE * TILESIZE);
+    int playerChunkY = (int) playerData.getPos().y / (CHUNKSIZE * TILESIZE);
     sf::FloatRect playerBounds(
         { playerData.getPos().x,playerData.getPos().y + playerData.getSize().y - playerData.getSize().x },
         playerData.getSize());

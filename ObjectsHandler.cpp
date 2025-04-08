@@ -73,8 +73,10 @@ float ObjectsHandler::calculateTextWidth(std::string readText, unsigned char siz
 
 void ObjectsHandler::generateChunk(int chunkX, int chunkY) {
     std::pair pair{ chunkX, chunkY };
-    if (chunkMap.find(pair) != chunkMap.end()) 
+    if (chunkMap.find(pair) != chunkMap.end()) {
+        chunkMap.find(pair)->second->generate = true;
         return;
+    }
     Chunk* chunk = new Chunk;
     chunk->generate = true;
     chunkMap[pair] = chunk;
@@ -194,5 +196,39 @@ void ObjectsHandler::destroyProjectiles(std::list<Projectiles*> projectilesToDes
         }
         if (!erased)
             it++;
+    }
+}
+
+void ObjectsHandler::deleteUnusedChunks() {
+    for (auto it = chunkMap.begin(); it != chunkMap.end(); ) {
+        auto& value = it->second;
+        if (!value->generate) {
+            for (Tile* tile : value->tiles) {
+                delete tile->sprite;
+                tile->sprite = nullptr;
+            }
+            delete value;
+            it = chunkMap.erase(it);
+        }
+        else 
+            ++it;
+    }
+}
+
+void ObjectsHandler::falseAllChunks() {
+    for (auto& [key, value] : chunkMap) {
+        value->generate = false;
+    }
+}
+
+void ObjectsHandler::cleanChunkHolder() {
+    for (auto it = chunkMap.begin(); it != chunkMap.end(); ) {
+        auto& value = it->second;
+        for (Tile* tile : value->tiles) {
+            delete tile->sprite;
+            tile->sprite = nullptr;
+        }
+        delete value;
+        it = chunkMap.erase(it);
     }
 }
