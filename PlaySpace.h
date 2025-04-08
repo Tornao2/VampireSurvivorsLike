@@ -8,7 +8,9 @@ class PlaySpace : public Scene {
 	int lastSpawnTime = 0;
 	CharacterData playerData;
 	sf::Clock timer;
-	void move();
+	sf::Vector2f determineMovement();
+	void terrainCollision(sf::Vector2f moveStep);
+	void movementLogic();
 	void moveProjectiles();
 	void setTimer();
 	void chunkLogic();

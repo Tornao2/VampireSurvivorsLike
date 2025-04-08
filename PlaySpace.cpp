@@ -10,7 +10,7 @@ bool PlaySpace::realTimeLogic() {
     if (playerData.getCurrentHp() != 0) {
         playerData.decrementInvincibility();
         chunkLogic();
-        move();
+        movementLogic();
         moveEnemies();
         weaponLogic();
         moveProjectiles();
@@ -166,7 +166,7 @@ bool PlaySpace::init() {
         return true;
     playerHolderIndex = objectsHandler->addVectorToSpriteHolder();
     objectsHandler->loadSpriteIntoHolder(*spaceTexture, { 16,24 }, { 16 * charNumber, 0 }, playerHolderIndex);
-    objectsHandler->getSpritePointer(playerHolderIndex, -1)->setPosition({ 208, 123 });
+    objectsHandler->getSpritePointer(playerHolderIndex, -1)->setPosition({ 208, 124 });
     objectsHandler->loadTextIntoHolder("00:00", 24, { (SCENEWIDTH - objectsHandler->calculateTextWidth("00:00", 24)) / 2, 11 });
     objectsHandler->loadTextIntoHolder("LVL: 1", 8, { SCENEWIDTH/52 - objectsHandler->calculateTextWidth("LVL: 1", 8)/2 , 0 });
     sf::Texture* hudTexture = objectsHandler->loadTexture({ 414, 24 }, "HudElements");
@@ -185,7 +185,7 @@ bool PlaySpace::init() {
         return true;
     if (!projectileTexture)
         return true;
-    playerData.setSizes({ 208, 123 }, { 16, 24 });
+    playerData.setSizes({ 208, 124 }, { 16, 24 });
     playerData.setMods();
     playerData.setHp((float) playerData.getEffectiveHp());
     return false;
@@ -204,23 +204,17 @@ CharacterData PlaySpace::getPlayerData() {
     return playerData;
 }
 
-void PlaySpace::move() {
-    float move = playerData.getEffectiveMs();
-    sf::Vector2f moveStep = { 0, 0 };
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down))
-        moveStep.y = move;
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
-        moveStep.y = -move;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
-        moveStep.x =  move;
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
-        moveStep.x = -move;
-    playerData.move(moveStep);
-    int playerChunkX = (int) playerData.getPos().x / (CHUNKSIZE * TILESIZE);
-    int playerChunkY = (int) playerData.getPos().y / (CHUNKSIZE * TILESIZE);
+void PlaySpace::movementLogic() {
+    sf::Vector2 movement = determineMovement();
+    terrainCollision(movement);
+}
+
+void PlaySpace::terrainCollision(sf::Vector2f moveStep) {
+    int playerChunkX = (int)playerData.getPos().x / (CHUNKSIZE * TILESIZE);
+    int playerChunkY = (int)playerData.getPos().y / (CHUNKSIZE * TILESIZE);
     sf::FloatRect playerBounds(
         { playerData.getPos().x,playerData.getPos().y + playerData.getSize().y - playerData.getSize().x },
-        playerData.getSize());
+        { playerData.getSize().x, playerData.getSize().x });
     for (int a = -1; a <= 1; a++) {
         for (int b = -1; b <= 1; b++) {
             auto tempMap = objectsHandler->getChunkMap().at({ playerChunkX + a, playerChunkY + b });
@@ -228,17 +222,48 @@ void PlaySpace::move() {
                 for (int j = 0; j < CHUNKSIZE; j++) {
                     if (tempMap->tiles[i][j].type == 0) {
                         sf::FloatRect tileBounds({
-                            (float)(playerChunkX+a)*TILESIZE * CHUNKSIZE + i * TILESIZE, (float)(playerChunkY+b)*TILESIZE * CHUNKSIZE + j * TILESIZE},
+                            (float)(playerChunkX + a) * TILESIZE * CHUNKSIZE + i * TILESIZE, (float)(playerChunkY + b) * TILESIZE * CHUNKSIZE + j * TILESIZE },
                             { (float)TILESIZE, (float)TILESIZE }
                         );
                         if (tileBounds.findIntersection(playerBounds).has_value()) {
-                            playerData.move(-moveStep);
-                            return;
+                            playerBounds.position.x -= moveStep.x;
+                            if (tileBounds.findIntersection(playerBounds).has_value()) {
+                                playerBounds.position.x += moveStep.x;
+                                playerBounds.position.y -= moveStep.y;
+                                if (tileBounds.findIntersection(playerBounds).has_value()) {
+                                    playerBounds.position.y += moveStep.y;
+                                    playerData.move(-moveStep);
+                                    objectsHandler->getSpritePointer(playerHolderIndex, -1)->move(-moveStep);
+                                }
+                                else {
+                                    playerData.move({ 0, -moveStep.y });
+                                    objectsHandler->getSpritePointer(playerHolderIndex, -1)->move({ 0, -moveStep.y });
+                                }
+                            }
+                            else {
+                                playerData.move({ -moveStep.x, 0 });
+                                objectsHandler->getSpritePointer(playerHolderIndex, -1)->move({ -moveStep.x, 0 });
+                            }
                         }
                     }
                 }
             }
         }
     }
+}
+
+sf::Vector2f PlaySpace::determineMovement() {
+    float move = playerData.getEffectiveMs();
+    sf::Vector2f moveStep = { 0, 0 };
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down))
+        moveStep.y = move;
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
+        moveStep.y = -move;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
+        moveStep.x = move;
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
+        moveStep.x = -move;
+    playerData.move(moveStep);
     objectsHandler->getSpritePointer(playerHolderIndex, -1)->move(moveStep);
+    return moveStep;
 }
