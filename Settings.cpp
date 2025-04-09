@@ -3,52 +3,32 @@
 void SettingsScene::refreshSelection() {
     for (sf::Text& text : *objectsHandler->getTextHolder()) 
         text.setFillColor(sf::Color::White);
-    for (int i = 0; i < objectsHandler->getSpriteHolderSize(spriteHolderIndex); i++) 
-        objectsHandler->getSpritePointer(spriteHolderIndex, i)->setColor(sf::Color::White);
-    objectsHandler->getSpritePointer(spriteHolderIndex, 6)->setColor(DARKRED);
     objectsHandler->getTextPointer(8)->setFillColor(DARKRED);
     switch ((unsigned int) display->getWindowSize().x) {
         case 1280:
             objectsHandler->getTextPointer(2)->setFillColor(BLUE);
-            objectsHandler->getSpritePointer(spriteHolderIndex, 0)->setColor(BLUE);
             break;
         case 1440:
             objectsHandler->getTextPointer(3)->setFillColor(BLUE);
-            objectsHandler->getSpritePointer(spriteHolderIndex, 1)->setColor(BLUE);
             break;
         case 1680:
             objectsHandler->getTextPointer(4)->setFillColor(BLUE);
-            objectsHandler->getSpritePointer(spriteHolderIndex, 2)->setColor(BLUE);
             break;
     }
-    if (display->getFullscreen() == full) {
+    if (display->getFullscreen() == full) 
         objectsHandler->getTextPointer(5)->setFillColor(BLUE);
-        objectsHandler->getSpritePointer(spriteHolderIndex, 3)->setColor(BLUE);
-    }
-    else if (display->getFullscreen() == borders){
+    else if (display->getFullscreen() == borders)
         objectsHandler->getTextPointer(6)->setFillColor(BLUE);
-        objectsHandler->getSpritePointer(spriteHolderIndex, 4)->setColor(BLUE);
-    }
-    else {
+    else 
         objectsHandler->getTextPointer(7)->setFillColor(BLUE);
-        objectsHandler->getSpritePointer(spriteHolderIndex, 5)->setColor(BLUE);
-    }
-    if (selectedRow == 0) {
+    if (selectedRow == 0) 
         objectsHandler->getTextPointer(selectedColumn + 2)->setFillColor(GREEN);
-        objectsHandler->getSpritePointer(spriteHolderIndex, selectedColumn)->setColor(GREEN);
-    }
-    else if (selectedRow == 1) {
+    else if (selectedRow == 1) 
         objectsHandler->getTextPointer(selectedColumn + 5)->setFillColor(GREEN);
-        objectsHandler->getSpritePointer(spriteHolderIndex, selectedColumn + 3)->setColor(GREEN);
-    }
-    else if (selectedRow == 2) {
+    else if (selectedRow == 2) 
         objectsHandler->getTextPointer(8)->setFillColor(GREEN);
-        objectsHandler->getSpritePointer(spriteHolderIndex, 6)->setColor(GREEN);
-    }
-    else {
+    else 
         objectsHandler->getTextPointer(9)->setFillColor(GREEN);
-        objectsHandler->getSpritePointer(spriteHolderIndex, 7)->setColor(GREEN);
-    } 
 }
 
 void SettingsScene::setDisplay(Display* readDisplay) {
@@ -122,33 +102,37 @@ bool SettingsScene::eventLogic(std::optional<sf::Event> gameEvent) {
 
 bool SettingsScene::init() {
     selectedRow = selectedColumn = 0;
-    sf::Texture* settingsMenuTexture = objectsHandler->loadTexture({ 120, 50 }, "Settings");
-    if (!settingsMenuTexture) return true;
+    sf::Texture* settingsMenuTexture = objectsHandler->loadTexture({ 432, 270 }, "SettingsBG");
+    if (!settingsMenuTexture) 
+        return true;
     spriteHolderIndex = objectsHandler->addVectorToSpriteHolder();
-    objectsHandler->loadTextIntoHolder("Resolution", 30, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Resolution", 30)) / 2, -4 });
-    objectsHandler->loadTextIntoHolder("Mode", 30, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Mode", 30)) / 2, 80 });
-    objectsHandler->loadTextIntoHolder("1280x800", 17, { (SCENEWIDTH - objectsHandler->calculateTextWidth("1280x800", 17)) / 2 - 136.0f, 50 });
-    objectsHandler->loadTextIntoHolder("1440x900", 17, { (SCENEWIDTH - objectsHandler->calculateTextWidth("1440x900", 17)) / 2, 50 });
-    objectsHandler->loadTextIntoHolder("1680x1050", 17, { (SCENEWIDTH - objectsHandler->calculateTextWidth("1680x1050", 17)) / 2 + 140.0f, 50 });
+    objectsHandler->loadSpriteIntoHolder(*settingsMenuTexture, { 432,270 }, { 0, 0 }, spriteHolderIndex);
+    sf::Texture* buttonsTexture = objectsHandler->loadTexture({ 434, 76 }, "ButtonSprites");
+    if (!buttonsTexture) 
+        return true;
     for (int i = 0; i < 3; i++) {
-        objectsHandler->loadSpriteIntoHolder(*settingsMenuTexture, { 120,50 }, { 0, 0 }, spriteHolderIndex);
-        objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 20 + 138.0f * i, 35 });
+        objectsHandler->loadSpriteIntoHolder(*buttonsTexture, { 90,38 }, { 270, 38 }, spriteHolderIndex);
+        objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 27 + 144.0f * i, 38 });
     }
-    objectsHandler->loadTextIntoHolder("Fullscreen", 14, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Fullscreen", 14)) / 2 - 135.0f, 130 });
-    objectsHandler->loadTextIntoHolder("With bars", 14, { (SCENEWIDTH - objectsHandler->calculateTextWidth("With bars", 14)) / 2 - 1.0f, 130 });
-    objectsHandler->loadTextIntoHolder("Windowed", 14, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Windowed", 14)) / 2 + 142.0f, 130 });
     for (int i = 0; i < 3; i++) {
-        objectsHandler->loadSpriteIntoHolder(*settingsMenuTexture, { 120,50 }, { 0, 0 }, spriteHolderIndex);
-        objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 20 + 138.0f * i, 115 });
+        objectsHandler->loadSpriteIntoHolder(*buttonsTexture, { 90,38 }, { 270, 38 }, spriteHolderIndex);
+        objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 27 + 144.0f * i, 118 });
     }
-    objectsHandler->loadTextIntoHolder("Reset", 19, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Reset", 19)) / 2, 177 });
+    objectsHandler->loadSpriteIntoHolder(*buttonsTexture, { 90,38 }, { 270, 0 }, spriteHolderIndex);
+    objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 171, 170 });
+    objectsHandler->loadSpriteIntoHolder(*buttonsTexture, { 90,38 }, { 270, 38 }, spriteHolderIndex);
+    objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 171, 223 });
+    objectsHandler->loadTextIntoHolder("Resolution", 32, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Resolution", 32)) / 2, -4 });
+    objectsHandler->loadTextIntoHolder("Mode", 32, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Mode", 32)) / 2, 80 });
+    objectsHandler->loadTextIntoHolder("1280x800", 21, { (SCENEWIDTH - objectsHandler->calculateTextWidth("1280x800", 21)) / 2 - 144.0f, 43 });
+    objectsHandler->loadTextIntoHolder("1440x900", 21, { (SCENEWIDTH - objectsHandler->calculateTextWidth("1440x900", 21)) / 2, 43 });
+    objectsHandler->loadTextIntoHolder("1680x1050", 21, { (SCENEWIDTH - objectsHandler->calculateTextWidth("1680x1050", 21)) / 2 + 144.0f, 43 });
+    objectsHandler->loadTextIntoHolder("Fullscreen", 21, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Fullscreen", 21)) / 2 - 144.0f, 122 });
+    objectsHandler->loadTextIntoHolder("With bars", 21, { (SCENEWIDTH - objectsHandler->calculateTextWidth("With bars", 21)) / 2 - 1.0f, 122 });
+    objectsHandler->loadTextIntoHolder("Windowed", 21, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Windowed", 21)) / 2 + 144.0f, 122 });
+    objectsHandler->loadTextIntoHolder("Reset", 27, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Reset", 27)) / 2, 171 });
     objectsHandler->getTextPointer(-1)->setFillColor(DARKRED);
-    objectsHandler->loadTextIntoHolder("Exit", 19, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Exit", 19)) / 2, 232 });
-    objectsHandler->loadSpriteIntoHolder(*settingsMenuTexture, { 120,50 }, { 0, 0 }, spriteHolderIndex);
-    objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 158, 167 });
-    objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setColor(DARKRED);
-    objectsHandler->loadSpriteIntoHolder(*settingsMenuTexture, { 120,50 }, { 0, 0 }, spriteHolderIndex);
-    objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 158, 220 });
+    objectsHandler->loadTextIntoHolder("Exit", 27, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Exit", 27)) / 2, 224 });
     refreshSelection();
     return false;
 }

@@ -41,21 +41,24 @@ bool MainMenu::eventLogic(std::optional<sf::Event> gameEvent) {
 
 bool MainMenu::init() {
     selectedButton = 0;
-    sf::Texture* mainMenuTexture = objectsHandler->loadTexture({ 200, 120 }, "MainMenu");
+    sf::Texture* mainMenuTexture = objectsHandler->loadTexture({ 432, 270 }, "MainMenuBG");
     if (!mainMenuTexture) 
         return true;
-    objectsHandler->loadTextIntoHolder("Start", 35, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Start", 35))/2, 2});
-    objectsHandler->loadTextIntoHolder("Upgrades", 30, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Upgrades", 30)) / 2, 60 });
-    objectsHandler->loadTextIntoHolder("Gallery", 30, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Gallery", 30)) / 2, 114 });
-    objectsHandler->loadTextIntoHolder("Settings", 30, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Settings", 30)) / 2, 168 });
-    objectsHandler->loadTextIntoHolder("Exit", 30, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Exit", 30)) / 2, 222 });
+    objectsHandler->loadTextIntoHolder("Play", 27, { 352 - (objectsHandler->calculateTextWidth("Play", 27))/2, 34 });
+    objectsHandler->loadTextIntoHolder("Upgrade", 27, { 352 - (objectsHandler->calculateTextWidth("Upgrade", 27)) / 2, 79 });
+    objectsHandler->loadTextIntoHolder("Gallery", 27, { 352 - (objectsHandler->calculateTextWidth("Gallery", 27)) / 2, 124 });
+    objectsHandler->loadTextIntoHolder("Settings", 27, { 352 - (objectsHandler->calculateTextWidth("Settings", 27)) / 2, 169 });
+    objectsHandler->loadTextIntoHolder("Exit", 27, { 352 - (objectsHandler->calculateTextWidth("Exit", 27)) / 2, 214 });
     spriteHolderIndex = objectsHandler->addVectorToSpriteHolder();
+    objectsHandler->loadSpriteIntoHolder(*mainMenuTexture, { 432,270 }, { 0, 0 }, spriteHolderIndex);
+    sf::Texture* buttonTexture = objectsHandler->loadTexture({ 434, 76 }, "ButtonSprites");
+    if (!buttonTexture)
+        return true;
     for (int i = 0; i < 5; i++) {
-        objectsHandler->loadSpriteIntoHolder(*mainMenuTexture, { 200,50 }, { 0, 50 }, spriteHolderIndex);
-        objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({116, 2.0f + 54 * i});
+        objectsHandler->loadSpriteIntoHolder(*buttonTexture, { 90,38 }, { 270, 38 }, spriteHolderIndex);
+        objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 310, 45.0f * i+35 });
     }
-    objectsHandler->loadSpriteIntoHolder(*mainMenuTexture, { 200,50 }, { 0, 0 }, spriteHolderIndex);
-    objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 116, 2.0f });
+    refreshSelection();
     return false;
 }
 
@@ -65,7 +68,6 @@ void MainMenu::cleanUp() {
 }
 
 void MainMenu::refreshSelection() {
-    objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 116, 2.0f + 54 * selectedButton });
     for (sf::Text& text : *objectsHandler->getTextHolder()) 
         text.setFillColor(sf::Color::White);
     objectsHandler->getTextPointer(selectedButton)->setFillColor(GREEN);
