@@ -44,11 +44,11 @@ bool MainMenu::init() {
     sf::Texture* mainMenuTexture = objectsHandler->loadTexture({ 200, 120 }, "MainMenu");
     if (!mainMenuTexture) 
         return true;
-    objectsHandler->loadTextIntoHolder("Start", 42, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Start", 42))/2, -2});
-    objectsHandler->loadTextIntoHolder("Upgrades", 42, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Upgrades", 42)) / 2, 52 });
-    objectsHandler->loadTextIntoHolder("Gallery", 42, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Gallery", 42)) / 2, 106 });
-    objectsHandler->loadTextIntoHolder("Settings", 42, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Settings", 42)) / 2, 160 });
-    objectsHandler->loadTextIntoHolder("Exit", 42, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Exit", 42)) / 2, 214 });
+    objectsHandler->loadTextIntoHolder("Start", 35, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Start", 35))/2, 2});
+    objectsHandler->loadTextIntoHolder("Upgrades", 30, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Upgrades", 30)) / 2, 60 });
+    objectsHandler->loadTextIntoHolder("Gallery", 30, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Gallery", 30)) / 2, 114 });
+    objectsHandler->loadTextIntoHolder("Settings", 30, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Settings", 30)) / 2, 168 });
+    objectsHandler->loadTextIntoHolder("Exit", 30, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Exit", 30)) / 2, 222 });
     spriteHolderIndex = objectsHandler->addVectorToSpriteHolder();
     for (int i = 0; i < 5; i++) {
         objectsHandler->loadSpriteIntoHolder(*mainMenuTexture, { 200,50 }, { 0, 50 }, spriteHolderIndex);

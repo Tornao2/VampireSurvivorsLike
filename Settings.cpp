@@ -125,25 +125,25 @@ bool SettingsScene::init() {
     sf::Texture* settingsMenuTexture = objectsHandler->loadTexture({ 120, 50 }, "Settings");
     if (!settingsMenuTexture) return true;
     spriteHolderIndex = objectsHandler->addVectorToSpriteHolder();
-    objectsHandler->loadTextIntoHolder("Resolution", 36, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Resolution", 36)) / 2, -4 });
-    objectsHandler->loadTextIntoHolder("Mode", 36, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Mode", 36)) / 2, 77 });
-    objectsHandler->loadTextIntoHolder("1280x800", 30, { (SCENEWIDTH - objectsHandler->calculateTextWidth("1280x800", 30)) / 2 - 136.0f, 40 });
-    objectsHandler->loadTextIntoHolder("1440x900", 30, { (SCENEWIDTH - objectsHandler->calculateTextWidth("1440x900", 30)) / 2, 40 });
-    objectsHandler->loadTextIntoHolder("1680x1050", 30, { (SCENEWIDTH - objectsHandler->calculateTextWidth("1680x1050", 30)) / 2 + 138.0f, 40 });
+    objectsHandler->loadTextIntoHolder("Resolution", 30, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Resolution", 30)) / 2, -4 });
+    objectsHandler->loadTextIntoHolder("Mode", 30, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Mode", 30)) / 2, 80 });
+    objectsHandler->loadTextIntoHolder("1280x800", 17, { (SCENEWIDTH - objectsHandler->calculateTextWidth("1280x800", 17)) / 2 - 136.0f, 50 });
+    objectsHandler->loadTextIntoHolder("1440x900", 17, { (SCENEWIDTH - objectsHandler->calculateTextWidth("1440x900", 17)) / 2, 50 });
+    objectsHandler->loadTextIntoHolder("1680x1050", 17, { (SCENEWIDTH - objectsHandler->calculateTextWidth("1680x1050", 17)) / 2 + 140.0f, 50 });
     for (int i = 0; i < 3; i++) {
         objectsHandler->loadSpriteIntoHolder(*settingsMenuTexture, { 120,50 }, { 0, 0 }, spriteHolderIndex);
         objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 20 + 138.0f * i, 35 });
     }
-    objectsHandler->loadTextIntoHolder("Fullscreen", 36, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Fullscreen", 30)) / 2 - 145.0f, 117 });
-    objectsHandler->loadTextIntoHolder("With bars", 36, { (SCENEWIDTH - objectsHandler->calculateTextWidth("With bars", 30)) / 2 - 5.0f, 117 });
-    objectsHandler->loadTextIntoHolder("Windowed", 36, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Windowed", 30)) / 2 + 132.0f, 117 });
+    objectsHandler->loadTextIntoHolder("Fullscreen", 14, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Fullscreen", 14)) / 2 - 135.0f, 130 });
+    objectsHandler->loadTextIntoHolder("With bars", 14, { (SCENEWIDTH - objectsHandler->calculateTextWidth("With bars", 14)) / 2 - 1.0f, 130 });
+    objectsHandler->loadTextIntoHolder("Windowed", 14, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Windowed", 14)) / 2 + 142.0f, 130 });
     for (int i = 0; i < 3; i++) {
         objectsHandler->loadSpriteIntoHolder(*settingsMenuTexture, { 120,50 }, { 0, 0 }, spriteHolderIndex);
         objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 20 + 138.0f * i, 115 });
     }
-    objectsHandler->loadTextIntoHolder("Reset", 36, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Reset", 36)) / 2, 167 });
+    objectsHandler->loadTextIntoHolder("Reset", 19, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Reset", 19)) / 2, 177 });
     objectsHandler->getTextPointer(-1)->setFillColor(DARKRED);
-    objectsHandler->loadTextIntoHolder("Exit", 36, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Exit", 36)) / 2, 222 });
+    objectsHandler->loadTextIntoHolder("Exit", 19, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Exit", 19)) / 2, 232 });
     objectsHandler->loadSpriteIntoHolder(*settingsMenuTexture, { 120,50 }, { 0, 0 }, spriteHolderIndex);
     objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 158, 167 });
     objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setColor(DARKRED);

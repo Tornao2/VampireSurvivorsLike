@@ -81,8 +81,8 @@ bool PlayChoice::init() {
     objectsHandler->loadSpriteIntoHolder(*playChoiceTexture, { 59,27 }, { 136, 0 }, spriteHolderIndex);
     objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setScale({ -1, 1 });
     objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 108, 111 });
-    objectsHandler->loadTextIntoHolder("Start", 42, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Start", 42)) / 2, 168 });
-    objectsHandler->loadTextIntoHolder("Return", 42, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Return", 42)) / 2, 216 });
+    objectsHandler->loadTextIntoHolder("Start", 25, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Start", 25)) / 2, 178 });
+    objectsHandler->loadTextIntoHolder("Return", 25, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Return", 25)) / 2, 226 });
     objectsHandler->addVectorToSpriteHolder();
     playChoiceTexture = objectsHandler->loadTexture({ 272, 150 }, "MapThumbnails");
     if (!playChoiceTexture) 

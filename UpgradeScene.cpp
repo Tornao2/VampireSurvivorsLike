@@ -73,7 +73,7 @@ bool UpgradeScene::init() {
     objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 26, 30 });
     objectsHandler->loadSpriteIntoHolder(*upgradesTexture, { 122,42 }, { 67, 190 }, spriteHolderIndex);
     objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 155, 224 });
-    objectsHandler->loadTextIntoHolder("Exit", 36, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Exit", 36)) / 2, 221 });
+    objectsHandler->loadTextIntoHolder("Exit", 25, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Exit", 25)) / 2, 226 });
     int modNumber = 0;
     for (ModifierNode node : *modifiers.getVector()) {
         objectsHandler->loadSpriteIntoHolder(*upgradesTexture, { 67,52 }, { 0, 190 }, spriteHolderIndex);

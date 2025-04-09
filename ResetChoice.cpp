@@ -45,10 +45,10 @@ bool ResetChoice::init() {
     if (!resetTexture) 
         return true;
     spriteHolderIndex = objectsHandler->addVectorToSpriteHolder();
-    objectsHandler->loadTextIntoHolder("Are you sure you want to reset?", 42, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Are you sure you want to reset?", 42)) / 2, 0 });
+    objectsHandler->loadTextIntoHolder("Are you sure you want to reset?", 20, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Are you sure you want to reset?", 20)) / 2, 20 });
     objectsHandler->getTextPointer(0)->setFillColor(DARKRED);
-    objectsHandler->loadTextIntoHolder("No", 42, { (SCENEWIDTH - objectsHandler->calculateTextWidth("No", 42)) / 4 - 10.0f, 126 });
-    objectsHandler->loadTextIntoHolder("Yes", 42, { 3*(SCENEWIDTH - objectsHandler->calculateTextWidth("Yes", 42)) / 4 + 10.0f, 126 });
+    objectsHandler->loadTextIntoHolder("No", 25, { (SCENEWIDTH - objectsHandler->calculateTextWidth("No", 25)) / 4 - 10.0f, 136 });
+    objectsHandler->loadTextIntoHolder("Yes", 25, { 3*(SCENEWIDTH - objectsHandler->calculateTextWidth("Yes", 25)) / 4 + 10.0f, 136 });
     for (int i = 0; i < 2; i++) {
         objectsHandler->loadSpriteIntoHolder(*resetTexture, { 120,50 }, { 0, 0 }, spriteHolderIndex);
         objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 48 + 216.0f * i, 130 });
