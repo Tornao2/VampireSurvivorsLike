@@ -2,9 +2,9 @@
 #include "ObjectsHandler.h"
 #include "Display.h"
 
-#define DARKRED { 190, 0, 0}
-#define GREEN { 0, 130, 0 }
-#define BLUE { 100, 80, 200 }
+#define DARKRED { 200, 10, 10}
+#define GREEN { 40, 210, 40 }
+#define BLUE { 50, 90, 250 }
 
 enum SceneLabels {
 	MAINMENU = 1,

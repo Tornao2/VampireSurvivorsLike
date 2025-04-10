@@ -64,23 +64,25 @@ bool UpgradeScene::eventLogic(std::optional<sf::Event> gameEvent) {
 }
 
 bool UpgradeScene::init() {
-    sf::Texture* upgradesTexture = objectsHandler->loadTexture({ 380, 242 }, "Upgrades");
+    sf::Texture* upgradesTexture = objectsHandler->loadTexture({ 432, 270 }, "UpgradesBG");
     if (!upgradesTexture) 
         return true;
     spriteHolderIndex = objectsHandler->addVectorToSpriteHolder();
+    objectsHandler->loadSpriteIntoHolder(*upgradesTexture, { 432,270 }, { 0, 0 }, spriteHolderIndex);
+    sf::Texture* buttonTexture = objectsHandler->loadTexture({ 434, 76 }, "ButtonSprites");
+    if (!buttonTexture)
+        return true;
+    objectsHandler->loadSpriteIntoHolder(*buttonTexture, { 90,38 }, { 270, 38 }, spriteHolderIndex);
+    objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 171, 224 });
     objectsHandler->loadTextIntoHolder(modifiers.getCoins(), 30, { (SCENEWIDTH - objectsHandler->calculateTextWidth(modifiers.getCoins(), 30)) / 2, -4 });
-    objectsHandler->loadSpriteIntoHolder(*upgradesTexture, { 380,190 }, { 0, 0 }, spriteHolderIndex);
-    objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 26, 30 });
-    objectsHandler->loadSpriteIntoHolder(*upgradesTexture, { 122,42 }, { 67, 190 }, spriteHolderIndex);
-    objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 155, 224 });
-    objectsHandler->loadTextIntoHolder("Exit", 25, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Exit", 25)) / 2, 226 });
+    objectsHandler->loadTextIntoHolder("Exit", 27, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Exit", 27)) / 2, 224 });
     int modNumber = 0;
     for (ModifierNode node : *modifiers.getVector()) {
-        objectsHandler->loadSpriteIntoHolder(*upgradesTexture, { 67,52 }, { 0, 190 }, spriteHolderIndex);
-        objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 34 + 74.0f * (modNumber % 5), 37 + 60.0f * (modNumber / 5) });
-        objectsHandler->loadTextIntoHolder(node.name, 14, {68 + 74.0f * (modNumber % 5) - objectsHandler->calculateTextWidth(node.name, 14)/2, 38 + 60.0f * (modNumber / 5)});
-        objectsHandler->loadTextIntoHolder(modifiers.getModStrength(modNumber), 10, {68 + 74.0f * (modNumber % 5) - objectsHandler->calculateTextWidth(modifiers.getModStrength(modNumber), 10) / 2, 74 + 60.0f * (modNumber / 5)});
-        objectsHandler->loadTextIntoHolder(modifiers.getModLevel(modNumber), 22, {68 + 74.0f * (modNumber % 5) - objectsHandler->calculateTextWidth(modifiers.getModLevel(modNumber), 22) / 2, 52 + 60.0f * (modNumber / 5)});
+        objectsHandler->loadSpriteIntoHolder(*buttonTexture, { 74,56 }, { 360, 0 }, spriteHolderIndex);
+        objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 34 + 76.0f * (modNumber % 5), 37 + 60.0f * (modNumber / 5) });
+        objectsHandler->loadTextIntoHolder(node.name, 16, {72 + 76.0f * (modNumber % 5) - objectsHandler->calculateTextWidth(node.name, 16)/2, 37 + 60.0f * (modNumber / 5)});
+        objectsHandler->loadTextIntoHolder(modifiers.getModStrength(modNumber), 13, { 71 + 76.0f * (modNumber % 5) - objectsHandler->calculateTextWidth(modifiers.getModStrength(modNumber), 13) / 2, 74 + 60.0f * (modNumber / 5)});
+        objectsHandler->loadTextIntoHolder(modifiers.getModLevel(modNumber), 24, { 71 + 76.0f * (modNumber % 5) - objectsHandler->calculateTextWidth(modifiers.getModLevel(modNumber), 24) / 2, 51 + 60.0f * (modNumber / 5)});
         modNumber++;
     }
     refreshSelection();
@@ -100,12 +102,11 @@ void UpgradeScene::refreshSelection() {
         objectsHandler->getSpritePointer(spriteHolderIndex, i)->setColor(sf::Color::White);
     for (int i = 0; i < modifiers.getVector()->size(); i++) {
         if (modifiers.getVector()->at(i).currentLevel == modifiers.getVector()->at(i).maxLevel) 
-            objectsHandler->getSpritePointer(spriteHolderIndex, 2 + i)->setColor(BLUE);
+            objectsHandler->getSpritePointer(spriteHolderIndex, 2 + i)->setColor(DARKRED);
     }
     if (selectedRow < upgrRowsAmount) 
         objectsHandler->getSpritePointer(spriteHolderIndex, 2 + 5 * selectedRow + selectedColumn)->setColor(GREEN);
     else {
-        objectsHandler->getSpritePointer(spriteHolderIndex, 1)->setColor(GREEN);
         objectsHandler->getTextPointer(1)->setFillColor(GREEN);
     }
 }

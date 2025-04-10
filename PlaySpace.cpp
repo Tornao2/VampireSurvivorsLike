@@ -72,9 +72,13 @@ void PlaySpace::checkProjectileCollision() {
 
 void PlaySpace::checkEnemyHp() {
     std::list <EnemyData*> enemiesToKill;
-    for (EnemyData* enemy : *objectsHandler->getEnemyHolder()) 
-        if (enemy->getHealth() == 0) 
+    for (EnemyData* enemy : *objectsHandler->getEnemyHolder()) {
+        if (enemy->getHealth() == 0) {
             enemiesToKill.push_back(enemy);
+            playerData.increaseXp(enemy->getXpForKill());
+            objectsHandler->getTextPointer(1)->setString(std::string("LVL:").append(std::to_string(playerData.getLevel())));
+        }
+    }
     objectsHandler->killEnemy(enemiesToKill);
 }
 
@@ -173,7 +177,7 @@ bool PlaySpace::init() {
     objectsHandler->loadSpriteIntoHolder(*spaceTexture, { 16,24 }, { 16 * charNumber, 0 }, playerHolderIndex);
     objectsHandler->getSpritePointer(playerHolderIndex, -1)->setPosition({ 208, 124 });
     objectsHandler->loadTextIntoHolder("00:00", 24, { (SCENEWIDTH - objectsHandler->calculateTextWidth("00:00", 24)) / 2, 11 });
-    objectsHandler->loadTextIntoHolder("LVL: 1", 8, { SCENEWIDTH/52 - objectsHandler->calculateTextWidth("LVL: 1", 8)/2 , 0 });
+    objectsHandler->loadTextIntoHolder("LVL:1", 9, { SCENEWIDTH/52 - objectsHandler->calculateTextWidth("LVL:1",9)/2 , 0 });
     sf::Texture* hudTexture = objectsHandler->loadTexture({ 414, 24 }, "HudElements");
     hudHolderIndex = objectsHandler->addVectorToSpriteHolder();
     objectsHandler->loadSpriteIntoHolder(*hudTexture, { 414,8 }, { 0, 0 }, hudHolderIndex);

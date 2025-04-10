@@ -48,7 +48,7 @@ bool MainMenu::init() {
     objectsHandler->loadTextIntoHolder("Upgrade", 27, { 352 - (objectsHandler->calculateTextWidth("Upgrade", 27)) / 2, 79 });
     objectsHandler->loadTextIntoHolder("Gallery", 27, { 352 - (objectsHandler->calculateTextWidth("Gallery", 27)) / 2, 124 });
     objectsHandler->loadTextIntoHolder("Settings", 27, { 352 - (objectsHandler->calculateTextWidth("Settings", 27)) / 2, 169 });
-    objectsHandler->loadTextIntoHolder("Exit", 27, { 352 - (objectsHandler->calculateTextWidth("Exit", 27)) / 2, 214 });
+    objectsHandler->loadTextIntoHolder("Exit", 27, { 352 - (objectsHandler->calculateTextWidth("Exit", 27)) / 2, 215 });
     spriteHolderIndex = objectsHandler->addVectorToSpriteHolder();
     objectsHandler->loadSpriteIntoHolder(*mainMenuTexture, { 432,270 }, { 0, 0 }, spriteHolderIndex);
     sf::Texture* buttonTexture = objectsHandler->loadTexture({ 434, 76 }, "ButtonSprites");

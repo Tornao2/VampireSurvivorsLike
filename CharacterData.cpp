@@ -67,7 +67,8 @@ void CharacterData::increaseXp(int readXp) {
 	while (xp >= xpToNext) {
 		level++;
 		xp -= xpToNext;
-		xpToNext *= (int) 1.2;
+		xpToNext *=  1.2;
+		currentHp = effectiveHp;
 	}
 }
 

@@ -157,7 +157,7 @@ void ObjectsHandler::addProjectile(float damageMod, int projectileId, sf::Vector
     sf::Sprite* sprite = nullptr;
     switch (projectileId) {
     case 0:
-        sprite = new sf::Sprite(textureHolder.at("Resources/ProjectileSprites.png"), { { 0,0 }, { 12, 12 } });
+        sprite = new sf::Sprite(textureHolder.at("Resources/ProjectileSprites.png"), { { 0,0 }, { 9, 9 } });
         break;
     }
     sprite->setPosition(readPos);

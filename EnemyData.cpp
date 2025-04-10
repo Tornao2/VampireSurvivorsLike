@@ -58,3 +58,7 @@ sf::Sprite* EnemyData::getSprite() {
 void EnemyData::setSprite(sf::Sprite* readSprite) {
 	sprite = readSprite;
 }
+
+int EnemyData::getXpForKill() {
+	return enemyStats.xp;
+}
