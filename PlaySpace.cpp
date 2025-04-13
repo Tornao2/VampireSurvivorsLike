@@ -8,11 +8,11 @@ bool PlaySpace::eventLogic(std::optional<sf::Event> gameEvent) {
 
 bool PlaySpace::realTimeLogic() {
     int seconds = static_cast<int>(timer.getElapsedTime().asSeconds());
-    if (seconds >= 600) {
-        *sceneLabel = MAINMENU;
+    if (playerData.getCurrentHp() == 0 || seconds >= 600) {
+        *sceneLabel = FINISHSCREEN;
         return true;
     }
-    if (playerData.getCurrentHp() != 0) {
+    else {
         playerData.decrementInvincibility();
         chunkLogic();
         movementLogic();
@@ -21,14 +21,10 @@ bool PlaySpace::realTimeLogic() {
         moveProjectiles();
         checkProjectileCollision();
         checkEnemyHp();
-        checkEnemyCollision();   
+        checkEnemyCollision();
         setTimer();
         drawHud();
         respawnEnemies();
-    }
-    else {
-        *sceneLabel = MAINMENU;
-        return true;
     }
     return false;
 }
@@ -36,7 +32,6 @@ bool PlaySpace::realTimeLogic() {
 void PlaySpace::weaponLogic() {
     if (objectsHandler->getEnemyHolder()->size() != 0) {
         sf::Vector2f target = objectsHandler->getClosestEnemyCords(playerData.getPos());
-        static int lastFireTime = 0;
         if (static_cast<int>(timer.getElapsedTime().asSeconds()) - lastFireTime > 1) {
             lastFireTime = static_cast<int>(timer.getElapsedTime().asSeconds());
             objectsHandler->addProjectile(playerData.getDamageMod(), 0, playerData.getPos(), target);
@@ -285,4 +280,8 @@ sf::Vector2f PlaySpace::determineMovement() {
     playerData.move(moveStep);
     objectsHandler->getSpritePointer(playerHolderIndex, -1)->move(moveStep);
     return moveStep;
+}
+
+int PlaySpace::getCoins() {
+    return static_cast<int>(timer.getElapsedTime().asSeconds());
 }

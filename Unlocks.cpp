@@ -1,7 +1,7 @@
 #include "Unlocks.h"
 
 void Unlocks::saveUnlocked(std::vector<bool> boolArray, std::string filename) {
-	std::string filePath = std::string("Resources/").append(filename);
+	std::string filePath = std::string("Resources/").append(filename).append(".txt");
 	std::ofstream file(filePath);
 	for (bool b : boolArray) 
 		file << b << '\n';

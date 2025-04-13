@@ -81,6 +81,9 @@
     <ClCompile Include="Projectiles.cpp">
       <Filter>Source Files\Scenes\Helpers</Filter>
     </ClCompile>
+    <ClCompile Include="FinishScreen.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UpgradeScene.h">
@@ -130,6 +133,9 @@
     </ClInclude>
     <ClInclude Include="Projectiles.h">
       <Filter>Header Files\Scenes\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="FinishScreen.h">
+      <Filter>Header Files\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

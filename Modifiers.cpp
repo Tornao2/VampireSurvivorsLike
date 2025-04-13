@@ -98,3 +98,7 @@ void Modifiers::increaseLevel(int index) {
 		modVector.at(index).currentLevel++;
 	}
 }
+
+void Modifiers::changeCoins(int readCoinChange) {
+	coins += readCoinChange;
+}

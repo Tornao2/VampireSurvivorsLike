@@ -24,4 +24,5 @@ public:
 	unsigned char* getColumnAmounts();
 	unsigned char getRowAmount();
 	void increaseLevel(int index);
+	void changeCoins(int readCoinChange);
 };

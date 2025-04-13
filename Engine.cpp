@@ -18,6 +18,7 @@ void Engine::mainLoop() {
         if (sceneLabel == PLAYSPACE) {
             if ((static_cast<PlaySpace*>(scene))->realTimeLogic()) {
                 scene->cleanUp();
+                tempVariable = (static_cast<PlaySpace*>(scene))->getCoins();
                 changeScene();
             }
         }
@@ -89,6 +90,7 @@ void Engine::handleEvents() {
 }
 
 void Engine::changeScene() {
+    delete scene;
     switch (sceneLabel) {
         case MAINMENU:
             scene = new MainMenu(&objectsHandler, &sceneLabel);
@@ -114,6 +116,11 @@ void Engine::changeScene() {
         case PLAYSPACE:
             scene = new PlaySpace(&objectsHandler, &sceneLabel);
             (static_cast<PlaySpace*>(scene))->setMapAndChar(selectedMap, selectedChar);
+            break;
+        case FINISHSCREEN:
+            scene = new FinishScreen(&objectsHandler, &sceneLabel);
+            (static_cast<FinishScreen*>(scene))->setCoins(tempVariable, selectedMap, selectedChar);
+            tempVariable = 0;
             break;
     }
     if (scene->init()) 

@@ -6,6 +6,7 @@ class PlaySpace : public Scene {
 	int playerHolderIndex, hudHolderIndex;
 	int mapNumber, charNumber;
 	int lastSpawnTime = -10;
+	int lastFireTime = 0;
 	CharacterData playerData;
 	sf::Clock timer;
 	sf::Vector2f determineMovement();
@@ -30,4 +31,5 @@ public:
 	void cleanUp();
 	bool realTimeLogic();
 	CharacterData getPlayerData();
+	int getCoins();
 };

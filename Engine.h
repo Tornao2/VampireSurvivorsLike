@@ -5,6 +5,7 @@
 #include "UpgradeScene.h"
 #include "PlayChoice.h"
 #include "PlaySpace.h"
+#include "FinishScreen.h"
 
 class Engine {
 	SceneLabels sceneLabel;
@@ -16,7 +17,7 @@ class Engine {
 	void changeScene();
 	void drawPlayScene(sf::RenderTexture* texture);
 	int errorCode = 0;
-	int selectedMap = 0, selectedChar = 0;
+	int selectedMap = 0, selectedChar = 0, tempVariable = 0;
 public:
 	Engine();
 	void mainLoop();

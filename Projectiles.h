@@ -1,9 +1,9 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
-//Damage-ms(distribute with angle)-max range-sizex-sizey
+//Damage, ms, range, sizes
 static std::vector<std::vector<float>> baseProjectileStats = {
-	{1000, 3, 1000, 8, 8}
+	{1000, 3, 600, 8, 8}
 };
 
 class Projectiles {

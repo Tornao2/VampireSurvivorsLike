@@ -13,7 +13,8 @@ enum SceneLabels {
 	UPGRADE,
 	PLAYCHOICE,
 	GALLERY,
-	PLAYSPACE
+	PLAYSPACE,
+	FINISHSCREEN
 };
 
 class Scene {
