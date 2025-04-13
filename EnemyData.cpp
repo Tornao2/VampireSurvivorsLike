@@ -11,6 +11,7 @@ void EnemyData::giveStats(int enemyId, sf::Vector2f readPos, bool readIsBoss){
 		enemyStats.size = { 32, 48 };
 		enemyStats.xp *= 10;
 	}
+	isBoss = readIsBoss;
 	currentHp = (int) enemyStats.baseHp;
 }
 
@@ -73,4 +74,9 @@ int EnemyData::getXpForKill() {
 
 bool EnemyData::getIfBoss() {
 	return isBoss;
+}
+
+void EnemyData::setPosition(sf::Vector2f readPosition) {
+	pos = readPosition;
+	sprite->setPosition(readPosition);
 }

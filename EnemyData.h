@@ -40,4 +40,5 @@ public:
 	void setSprite(sf::Sprite* readSprite);
 	int getXpForKill();
 	bool getIfBoss();
+	void setPosition(sf::Vector2f readPosition);
 };

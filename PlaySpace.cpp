@@ -45,12 +45,12 @@ void PlaySpace::weaponLogic() {
 }
 
 void PlaySpace::moveProjectiles() {
-    for (Projectiles* node : *objectsHandler->getProjectileHolder()) 
-        node->move();
     std::list <Projectiles*> proj;
-    for (Projectiles* projectile : *objectsHandler->getProjectileHolder())
-        if ((projectile->getPos() - playerData.getPos()).length() >= 400)
-            proj.push_back(projectile);
+    for (Projectiles* node : *objectsHandler->getProjectileHolder()) {
+        node->move();
+        if ((node->getPos() - playerData.getPos()).length() >= 400)
+            proj.push_back(node);
+    }
     objectsHandler->destroyProjectiles(proj);
 }
 
@@ -83,6 +83,7 @@ void PlaySpace::checkEnemyHp() {
 }
 
 void PlaySpace::moveEnemies() {
+    std::list <EnemyData*> enemiesToKill;
     for (EnemyData* enemy : *objectsHandler->getEnemyHolder()) {
         sf::Vector2f dirVec = playerData.getPos() - enemy->getPos();
         float length = std::sqrt(dirVec.x * dirVec.x + dirVec.y * dirVec.y);
@@ -90,7 +91,16 @@ void PlaySpace::moveEnemies() {
             dirVec /= length;
             enemy->move(dirVec);
         }
+        if ((enemy->getPos() - playerData.getPos()).length() >= 400) {
+            if (enemy->getIfBoss()) {
+                sf::Vector2f getDifference = (playerData.getPos() - enemy->getPos())/1.5f;
+                enemy->setPosition(playerData.getPos() + getDifference);
+            }
+            else 
+                enemiesToKill.push_back(enemy);
+        }
     }
+    objectsHandler->killEnemy(enemiesToKill);
 }
 
 void PlaySpace::checkEnemyCollision() {

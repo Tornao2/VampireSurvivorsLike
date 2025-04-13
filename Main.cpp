@@ -10,6 +10,3 @@ int main()
     exitHandler.handleExitCode(engine.getErrorCode());
     return 0;
 }
-
-//ADD BOSS ENEMIES
-//ADD REMOVING ENEMIES WHEN THEY ARE TOO FAR/MOVING BOSS ENEMIES
