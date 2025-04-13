@@ -1,8 +1,16 @@
 #include "EnemyData.h"
 
-void EnemyData::giveStats(int enemyId, sf::Vector2f readPos){
+void EnemyData::giveStats(int enemyId, sf::Vector2f readPos, bool readIsBoss){
 	pos = readPos;
 	enemyStats = enemyArray[enemyId];
+	if (readIsBoss) {
+		enemyStats.armor *= 5;
+		enemyStats.damage *= 4;
+		enemyStats.baseHp *= 20;
+		enemyStats.move *= 1.4;
+		enemyStats.size = { 32, 48 };
+		enemyStats.xp *= 10;
+	}
 	currentHp = (int) enemyStats.baseHp;
 }
 
@@ -61,4 +69,8 @@ void EnemyData::setSprite(sf::Sprite* readSprite) {
 
 int EnemyData::getXpForKill() {
 	return enemyStats.xp;
+}
+
+bool EnemyData::getIfBoss() {
+	return isBoss;
 }

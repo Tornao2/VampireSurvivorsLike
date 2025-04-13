@@ -133,7 +133,7 @@ void PlaySpace::respawnEnemies() {
     if (seconds - lastSpawnTime >= 10) {
         lastSpawnTime = seconds;
         for (int i = 0; i < 30; i++) 
-            objectsHandler->addEnemy(static_cast<int>(timer.getElapsedTime().asSeconds()/60), randomizePos());
+            objectsHandler->addEnemy(static_cast<int>(timer.getElapsedTime().asSeconds() / 60), randomizePos(), (seconds % 30 == 0 && i == 0) ? true : false);
     }
 }
 

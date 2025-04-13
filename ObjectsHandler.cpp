@@ -97,10 +97,12 @@ std::unordered_map<std::pair<int, int>, Chunk*, PairHash> ObjectsHandler::getChu
     return chunkMap;
 }
 
-void ObjectsHandler::addEnemy(int enemyId, sf::Vector2f readPos) {
+void ObjectsHandler::addEnemy(int enemyId, sf::Vector2f readPos, bool readIsBoss) {
     EnemyData* enemy = new EnemyData();
-    enemy->giveStats(enemyId, readPos);
+    enemy->giveStats(enemyId, readPos, readIsBoss);
     enemy->setSprite(new sf::Sprite(textureHolder.at("Resources/EnemySprites.png"), { {0,0}, {16, 24} }));
+    if (readIsBoss)
+        enemy->getSprite()->setScale({ 2, 2 });
     enemy->getSprite()->setPosition(readPos);
     enemyHolder.push_back(enemy);
 }

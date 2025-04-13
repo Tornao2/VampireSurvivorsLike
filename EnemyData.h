@@ -25,8 +25,9 @@ class EnemyData {
 	float currentHp;
 	EnemyDataNode enemyStats;
 	sf::Sprite* sprite;
+	bool isBoss;
 public:
-	void giveStats(int enemyId, sf::Vector2f readPos);
+	void giveStats(int enemyId, sf::Vector2f readPos, bool readIsBoss);
 	EnemyDataNode* getEnemyDataNode();
 	sf::Vector2f getSize();
 	sf::Vector2f getPos();
@@ -38,4 +39,5 @@ public:
 	sf::Sprite* getSprite();
 	void setSprite(sf::Sprite* readSprite);
 	int getXpForKill();
+	bool getIfBoss();
 };

@@ -49,7 +49,7 @@ public:
 	void deleteUnusedChunks();
 	void falseAllChunks();
 	std::unordered_map<std::pair<int, int>, Chunk*, PairHash> getChunkMap();
-	void addEnemy(int enemyId, sf::Vector2f readPos);
+	void addEnemy(int enemyId, sf::Vector2f readPos, bool readIsBoss);
 	void clearEnemyHolder();
 	std::list <EnemyData*>* getEnemyHolder();
 	void killEnemy(std::list<EnemyData*> enemiesToKill);
