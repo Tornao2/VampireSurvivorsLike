@@ -8,51 +8,34 @@ bool PlayChoice::eventLogic(std::optional<sf::Event> gameEvent) {
             selectedRow++;
             if (selectedRow == 4) 
                 selectedRow = 0;
-            refreshSelection();
         }
         else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Up) {
             selectedRow--;
             if (selectedRow == -1) 
                 selectedRow = 3;
-            refreshSelection();
         } else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Right) {
-            if (selectedRow == 0) {
-                if (*selectedMap != NUMBEROFMAPS -1)
-                    (*selectedMap)++;
-            }
-            else if (selectedRow == 1) {
-                if (*selectedPlayer != NUMBEROFCHARS - 1)
-                    (*selectedPlayer)++;
-            }
-            else 
-                return false;
-            refreshSelection();
+            if (selectedRow == 0 && *selectedMap != NUMBEROFMAPS - 1) 
+                (*selectedMap)++;
+            else if (selectedRow == 1 && *selectedPlayer != NUMBEROFCHARS - 1) 
+                (*selectedPlayer)++;
         }
         else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Left) {
-            if (selectedRow == 0) {
-                if (*selectedMap != 0)
-                    (*selectedMap)--;
-            }
-            else if (selectedRow == 1) {
-                if (*selectedPlayer != 0)
-                    (*selectedPlayer)--;
-            }
-            else 
-                return false;
-            refreshSelection();
+            if (selectedRow == 0 && *selectedMap != 0) 
+                (*selectedMap)--;
+            else if (selectedRow == 1 && *selectedPlayer != 0) 
+                (*selectedPlayer)--;
         }
         else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Enter) {
-            if (selectedRow == 2) {
-                if (unlockedMaps.at(*selectedMap) && unlockedChars.at(*selectedPlayer)) {
-                    *sceneLabel = PLAYSPACE;
-                    return true;
-                }
+            if (selectedRow == 2 && unlockedMaps.at(*selectedMap) && unlockedChars.at(*selectedPlayer)){
+                *sceneLabel = PLAYSPACE;
+                return true;
             }
             else if (selectedRow == 3) {
                 *sceneLabel = MAINMENU;
                 return true;
             }
         }
+        refreshSelection();
     }
     return false;
 }
@@ -121,6 +104,10 @@ void PlayChoice::setPointers(int* readMap, int* readPlayer) {
 }
 
 void PlayChoice::refreshSelection() {
+    for (sf::Text& text : *objectsHandler->getTextHolder())
+        text.setFillColor(sf::Color::White);
+    if (selectedRow == 2 || selectedRow == 3)
+        objectsHandler->getTextPointer(selectedRow - 2)->setFillColor(GREEN);
     for (int i = 0; i < objectsHandler->getSpriteHolderSize(spriteHolderIndex); i++) 
         objectsHandler->getSpritePointer(spriteHolderIndex, i)->setColor(sf::Color::White);
     for (int i = 0; i < objectsHandler->getSpriteHolderSize(spriteHolderIndex+1); i++) 
@@ -135,17 +122,13 @@ void PlayChoice::refreshSelection() {
         objectsHandler->getSpritePointer(spriteHolderIndex + 2, *selectedPlayer + 1)->setColor(sf::Color::White);
     else 
         objectsHandler->getSpritePointer(spriteHolderIndex + 2, 0)->setColor(sf::Color::White);
-    for (sf::Text& text: *objectsHandler->getTextHolder()) 
-        text.setFillColor(sf::Color::White);
-    objectsHandler->getSpritePointer(spriteHolderIndex, selectedRow)->setColor(GREEN);
-    if (selectedRow == 2 || selectedRow == 3) 
-        objectsHandler->getTextPointer(selectedRow-2)->setFillColor(GREEN);
     if (*selectedMap == 0) 
-        objectsHandler->getSpritePointer(spriteHolderIndex, 5)->setColor(DARKRED);
+        objectsHandler->getSpritePointer(spriteHolderIndex, 5)->setColor(RED);
     else if (*selectedMap == NUMBEROFMAPS - 1) 
-        objectsHandler->getSpritePointer(spriteHolderIndex, 4)->setColor(DARKRED);
+        objectsHandler->getSpritePointer(spriteHolderIndex, 4)->setColor(RED);
     if(*selectedPlayer == 0) 
-        objectsHandler->getSpritePointer(spriteHolderIndex, 7)->setColor(DARKRED);
+        objectsHandler->getSpritePointer(spriteHolderIndex, 7)->setColor(RED);
     else if (*selectedPlayer == NUMBEROFCHARS - 1) 
-        objectsHandler->getSpritePointer(spriteHolderIndex, 6)->setColor(DARKRED);
+        objectsHandler->getSpritePointer(spriteHolderIndex, 6)->setColor(RED);
+    objectsHandler->getSpritePointer(spriteHolderIndex, selectedRow)->setColor(GREEN);
 }

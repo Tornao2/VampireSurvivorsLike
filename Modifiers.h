@@ -5,8 +5,8 @@
 
 struct ModifierNode {
 	std::string name = "";
-	int currentLevel = 0, maxLevel =0;
-	float effectStrength =0;
+	int currentLevel = 0, maxLevel = 0;
+	float effectStrength = 0;
 };
 
 class Modifiers {

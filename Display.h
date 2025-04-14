@@ -4,6 +4,7 @@
 
 #define SCENEWIDTH 432
 #define SCENEHEIGHT 270
+static char breakCharacter = ';';
 
 enum DisplayMode {
 	windowed,

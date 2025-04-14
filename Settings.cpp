@@ -3,7 +3,7 @@
 void SettingsScene::refreshSelection() {
     for (sf::Text& text : *objectsHandler->getTextHolder()) 
         text.setFillColor(sf::Color::White);
-    objectsHandler->getTextPointer(8)->setFillColor(DARKRED);
+    objectsHandler->getTextPointer(8)->setFillColor(RED);
     switch ((unsigned int) display->getWindowSize().x) {
         case 1280:
             objectsHandler->getTextPointer(2)->setFillColor(BLUE);
@@ -45,68 +45,64 @@ bool SettingsScene::eventLogic(std::optional<sf::Event> gameEvent) {
             selectedRow++;
             if (selectedRow == 4)
                 selectedRow = 0;
-            selectedColumn = 0;
-            refreshSelection();
             break;
         case sf::Keyboard::Key::Up:
             selectedRow--;
             if (selectedRow == -1)
                 selectedRow = 3;
-            selectedColumn = 0;
-            refreshSelection();
             break;
         case sf::Keyboard::Key::Left:
-            selectedColumn--;
-            if (selectedColumn == -1)
-                selectedColumn = columnNumbers[selectedRow] - 1;
-            refreshSelection();
+            if (selectedRow == 0 || selectedRow == 1) {
+                selectedColumn--;
+                if (selectedColumn == -1)
+                    selectedColumn = columnNumbers[selectedRow] - 1;
+            }
             break;
         case sf::Keyboard::Key::Right:
-            selectedColumn++;
-            if (selectedColumn == columnNumbers[selectedRow])
-                selectedColumn = 0;
-            refreshSelection();
+            if (selectedRow == 0 || selectedRow == 1) {
+                selectedColumn++;
+                if (selectedColumn == columnNumbers[selectedRow])
+                    selectedColumn = 0;
+            }
             break;
         case sf::Keyboard::Key::Enter:
             switch (selectedRow) {
-            case 0:
-                if (selectedColumn == 0) 
-                    display->setResolution({ 1280, 800 });
-                else if (selectedColumn == 1) 
-                    display->setResolution({1440, 900});
-                else 
-                    display->setResolution({ 1680, 1050 });
-                refreshSelection();
-                break;
-            case 1:
-                if (selectedColumn == 0) 
-                    display->setFullscreen(full);
-                else if (selectedColumn == 1) 
-                    display->setFullscreen(borders);
-                else 
-                    display->setFullscreen(windowed);
-                refreshSelection();
-                break;
-            case 2:
-                *sceneLabel = RESETCHOICE;
-                return true;
-            case 3:
-                *sceneLabel = MAINMENU;
-                return true;
-            }
+                case 0:
+                    if (selectedColumn == 0) 
+                        display->setResolution({ 1280, 800 });
+                    else if (selectedColumn == 1) 
+                        display->setResolution({1440, 900});
+                    else 
+                        display->setResolution({ 1680, 1050 });
+                    break;
+                case 1:
+                    if (selectedColumn == 0) 
+                        display->setFullscreen(full);
+                    else if (selectedColumn == 1) 
+                        display->setFullscreen(borders);
+                    else 
+                        display->setFullscreen(windowed);
+                    break;
+                case 2:
+                    *sceneLabel = RESETCHOICE;
+                    return true;
+                case 3:
+                    *sceneLabel = MAINMENU;
+                    return true;
+                }
             break;
         };
+        refreshSelection();
     }
     return false;
 }
 
 bool SettingsScene::init() {
-    selectedRow = selectedColumn = 0;
-    sf::Texture* settingsMenuTexture = objectsHandler->loadTexture({ 432, 270 }, "SettingsBG");
-    if (!settingsMenuTexture) 
+    sf::Texture* backgroundTexture = objectsHandler->loadTexture({ 432, 270 }, "SettingsBG");
+    if (!backgroundTexture)
         return true;
     spriteHolderIndex = objectsHandler->addVectorToSpriteHolder();
-    objectsHandler->loadSpriteIntoHolder(*settingsMenuTexture, { 432,270 }, { 0, 0 }, spriteHolderIndex);
+    objectsHandler->loadSpriteIntoHolder(*backgroundTexture, { 432,270 }, { 0, 0 }, spriteHolderIndex);
     sf::Texture* buttonsTexture = objectsHandler->loadTexture({ 434, 76 }, "ButtonSprites");
     if (!buttonsTexture) 
         return true;
@@ -131,7 +127,7 @@ bool SettingsScene::init() {
     objectsHandler->loadTextIntoHolder("With bars", 21, { (SCENEWIDTH - objectsHandler->calculateTextWidth("With bars", 21)) / 2 - 1.0f, 122 });
     objectsHandler->loadTextIntoHolder("Windowed", 21, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Windowed", 21)) / 2 + 144.0f, 122 });
     objectsHandler->loadTextIntoHolder("Reset", 27, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Reset", 27)) / 2, 171 });
-    objectsHandler->getTextPointer(-1)->setFillColor(DARKRED);
+    objectsHandler->getTextPointer(-1)->setFillColor(RED);
     objectsHandler->loadTextIntoHolder("Exit", 27, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Exit", 27)) / 2, 224 });
     refreshSelection();
     return false;

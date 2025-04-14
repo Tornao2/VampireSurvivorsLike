@@ -3,7 +3,86 @@
 bool PlaySpace::eventLogic(std::optional<sf::Event> gameEvent) {
     if (gameEvent->is<sf::Event::Closed>()) 
         return true;
+    else if (gameEvent->is<sf::Event::KeyPressed>()) {
+        if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Escape && pauseBreak == 0) {
+            paused = !paused;
+            pauseBreak = 10;
+            if (paused) {
+                timer.stop();
+                initPauseMenu();
+            }
+            else {
+                timer.start();
+                cleanPauseMenu();
+            }
+        }
+        else if (paused) {
+            if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Down) {
+                pauseButtonIndex++;
+                if (pauseButtonIndex == 2)
+                    pauseButtonIndex = 0;
+            }
+            else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Up) {
+                pauseButtonIndex--;
+                if (pauseButtonIndex == -1)
+                    pauseButtonIndex = 1;
+            }
+            else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Enter) {
+                if (pauseButtonIndex == 0) {
+                    paused = !paused;
+                    pauseBreak = 10;
+                    timer.start();
+                    cleanPauseMenu();
+                    return false;
+                }
+                else {
+                    *sceneLabel = MAINMENU;
+                    return true;
+                }
+            }
+            pauseButtonFocus();
+        }
+    }
     return false;
+}
+
+void PlaySpace::cleanPauseMenu() {
+    objectsHandler->getSpriteHolder()->at(pauseMenuHolderIndex)->clear();
+    delete objectsHandler->getSpriteHolder()->at(pauseMenuHolderIndex);
+    objectsHandler->getSpriteHolder()->erase(objectsHandler->getSpriteHolder()->end()-1);
+    pauseMenuHolderIndex = 0;
+    objectsHandler->getTextHolder()->erase(objectsHandler->getTextHolder()->end() - 1);
+    objectsHandler->getTextHolder()->erase(objectsHandler->getTextHolder()->end() - 1);
+}
+
+void PlaySpace::initPauseMenu() {
+    pauseButtonIndex = 0;
+    sf::Texture* pauseBgTexture = objectsHandler->loadTexture({ 332, 220 }, "PauseBackground");
+    if (!pauseBgTexture)
+        return;
+    pauseMenuHolderIndex = objectsHandler->addVectorToSpriteHolder();
+    objectsHandler->loadSpriteIntoHolder(*pauseBgTexture, { 332,220 }, { 0, 0 }, pauseMenuHolderIndex);
+    objectsHandler->getSpritePointer(pauseMenuHolderIndex, -1)->setPosition({ 50 + playerData.getPos().x - 208, 35 + playerData.getPos().y - 123 });
+    sf::Texture* buttonTexture = objectsHandler->loadTexture({ 434, 76 }, "ButtonSprites");
+    if (!buttonTexture)
+        return;
+    objectsHandler->loadTextIntoHolder("Resume", 24, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Resume", 24)) / 2, 172 });
+    objectsHandler->loadTextIntoHolder("Surrender", 24, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Surrender", 24)) / 2 , 212 });
+    objectsHandler->loadSpriteIntoHolder(*buttonTexture, { 90,38 }, { 270, 38 }, pauseMenuHolderIndex);
+    objectsHandler->getSpritePointer(pauseMenuHolderIndex, -1)->setPosition({ 171 + playerData.getPos().x - 208, 170 + playerData.getPos().y - 123 });
+    objectsHandler->loadSpriteIntoHolder(*buttonTexture, { 90,38 }, { 270, 38 }, pauseMenuHolderIndex);
+    objectsHandler->getSpritePointer(pauseMenuHolderIndex, -1)->setPosition({ 171 + playerData.getPos().x - 208, 210 + playerData.getPos().y - 123 });
+    pauseButtonFocus();
+}
+
+void PlaySpace::pauseButtonFocus() {
+    (*objectsHandler->getTextHolder())[objectsHandler->getTextHolder()->size() - 2].setFillColor(sf::Color::White);
+    (*objectsHandler->getTextHolder())[objectsHandler->getTextHolder()->size() - 1].setFillColor(sf::Color::White);
+    (*objectsHandler->getTextHolder())[objectsHandler->getTextHolder()->size() - 2 + pauseButtonIndex].setFillColor(GREEN);
+}
+
+void PlaySpace::decrementPauseTime() {
+    pauseBreak = (pauseBreak == 0) ? 0 : pauseBreak - 1;
 }
 
 bool PlaySpace::realTimeLogic() {
@@ -23,10 +102,10 @@ bool PlaySpace::realTimeLogic() {
         checkEnemyHp();
         checkEnemyCollision();
         setTimer();
-        drawHud();
+        setHud();
         respawnEnemies();
+        return false;
     }
-    return false;
 }
 
 void PlaySpace::weaponLogic() {
@@ -99,9 +178,7 @@ void PlaySpace::moveEnemies() {
 }
 
 void PlaySpace::checkEnemyCollision() {
-    sf::FloatRect playerBounds(
-        { playerData.getPos().x,playerData.getPos().y + playerData.getSize().y - playerData.getSize().x },
-        playerData.getSize());
+    sf::FloatRect playerBounds({ playerData.getPos().x,playerData.getPos().y + playerData.getSize().y - playerData.getSize().x }, playerData.getSize());
     for (EnemyData* enemy : *objectsHandler->getEnemyHolder()) {
         sf::FloatRect enemyBounds(enemy->getPos(), enemy->getSize());
         if (playerBounds.findIntersection(enemyBounds).has_value()) {
@@ -135,14 +212,14 @@ sf::Vector2f PlaySpace::randomizePos() {
 
 void PlaySpace::respawnEnemies() {
     int seconds = static_cast<int>(timer.getElapsedTime().asSeconds());
-    if (seconds - lastSpawnTime >= 10) {
+    if (seconds - lastSpawnTime >= 3) {
         lastSpawnTime = seconds;
-        for (int i = 0; i < 30; i++) 
+        for (int i = 0; i < 10; i++) 
             objectsHandler->addEnemy(static_cast<int>(timer.getElapsedTime().asSeconds() / 60), randomizePos(), (seconds % 30 == 0 && i == 0) ? true : false);
     }
 }
 
-void PlaySpace::drawHud() {
+void PlaySpace::setHud() {
     objectsHandler->getSpritePointer(hudHolderIndex, 1)->setTextureRect({ {0, 8} , { (int)(((float)playerData.getXp() / playerData.getXpToNext()) * 414), 8} });
     objectsHandler->getSpritePointer(hudHolderIndex, 3)->setTextureRect({ {0, 16} , { (int)(((float)playerData.getCurrentHp() / playerData.getEffectiveHp()) * 200), 8} });
     objectsHandler->getSpritePointer(hudHolderIndex, 0)->setPosition({ 16 + playerData.getPos().x - 208, 1 + playerData.getPos().y - 123 });
@@ -226,9 +303,7 @@ void PlaySpace::movementLogic() {
 void PlaySpace::terrainCollision(sf::Vector2f moveStep) {
     int playerChunkX = (int)playerData.getPos().x / (CHUNKSIZE * TILESIZE);
     int playerChunkY = (int)playerData.getPos().y / (CHUNKSIZE * TILESIZE);
-    sf::FloatRect playerBounds(
-        { playerData.getPos().x,playerData.getPos().y + playerData.getSize().y - playerData.getSize().x },
-        { playerData.getSize().x, playerData.getSize().x });
+    sf::FloatRect playerBounds({ playerData.getPos().x,playerData.getPos().y + playerData.getSize().y - playerData.getSize().x }, playerData.getSize());
     for (int a = -1; a <= 1; a++) {
         for (int b = -1; b <= 1; b++) {
             auto tempMap = objectsHandler->getChunkMap().at({ playerChunkX + a, playerChunkY + b });
@@ -284,4 +359,8 @@ sf::Vector2f PlaySpace::determineMovement() {
 
 int PlaySpace::getCoins() {
     return static_cast<int>(timer.getElapsedTime().asSeconds());
+}
+
+bool PlaySpace::getPaused() {
+    return paused;
 }

@@ -24,12 +24,12 @@ struct PairHash {
 };
 
 class ObjectsHandler {
-	std::unordered_map<std::string, sf::Texture> textureHolder;
 	sf::Font font;
+	std::unordered_map<std::pair<int, int>, Chunk*, PairHash> chunkMap;
+	std::unordered_map<std::string, sf::Texture> textureHolder;
 	std::vector <sf::Text> textHolder;
 	std::list <EnemyData*> enemyHolder;
 	std::vector <std::vector<sf::Sprite>*> spriteHolder;
-	std::unordered_map<std::pair<int, int>, Chunk*, PairHash> chunkMap;
 	std::list <Projectiles*> projectileHolder;
 public:
 	sf::Texture* loadTexture(sf::Vector2i size, std::string fileName);

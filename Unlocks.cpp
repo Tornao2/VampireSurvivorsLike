@@ -13,16 +13,10 @@ std::vector<bool> Unlocks::loadUnlocked(std::string filename) {
 	std::ifstream myfile(filePath);
 	if (!myfile.is_open()) {
 		std::ofstream file(filePath);
-		if (filename == "CharactersUnlocked.txt") {
-			file << 1 << '\n';
-			for (int i = 1; i < NUMBEROFCHARS; i++) 
-				file << 0 << '\n';
-		}
-		else {
-			file << 1 << '\n' << 0;
-			for (int i = 1; i < NUMBEROFMAPS; i++)
-				file << 0 << '\n';
-		}
+		int limit = (filename == "CharactersUnlocked.txt") ? NUMBEROFCHARS : NUMBEROFMAPS;
+		file << 1 << '\n';
+		for (int i = 1; i < limit; i++)
+			file << 0 << '\n';
 		file.close();
 		myfile.open(filePath);
 	}

@@ -6,15 +6,13 @@ bool MainMenu::eventLogic(std::optional<sf::Event> gameEvent) {
     else if (gameEvent->is<sf::Event::KeyPressed>()){
         if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Down) {
             selectedButton++;
-            if (selectedButton == 5) 
+            if (selectedButton == 4) 
                 selectedButton = 0;
-            refreshSelection();
         }
         else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Up) {
             selectedButton--;
             if (selectedButton == -1) 
-                selectedButton = 4;
-            refreshSelection();
+                selectedButton = 3;
         }
         else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Enter) {
             switch (selectedButton) {
@@ -25,16 +23,14 @@ bool MainMenu::eventLogic(std::optional<sf::Event> gameEvent) {
                     *sceneLabel = UPGRADE;
                     break; 
                 case 2:
-                    *sceneLabel = GALLERY;
-                    break;
-                case 3:
                     *sceneLabel = SETTINGS;
                     break; 
-                case 4:
+                case 3:
                     break;
             }
             return true;
         }
+        refreshSelection();
     }
     return false;
 }
@@ -44,9 +40,8 @@ bool MainMenu::init() {
     sf::Texture* mainMenuTexture = objectsHandler->loadTexture({ 432, 270 }, "MainMenuBG");
     if (!mainMenuTexture) 
         return true;
-    objectsHandler->loadTextIntoHolder("Play", 27, { 352 - (objectsHandler->calculateTextWidth("Play", 27))/2, 34 });
-    objectsHandler->loadTextIntoHolder("Upgrade", 27, { 352 - (objectsHandler->calculateTextWidth("Upgrade", 27)) / 2, 79 });
-    objectsHandler->loadTextIntoHolder("Gallery", 27, { 352 - (objectsHandler->calculateTextWidth("Gallery", 27)) / 2, 124 });
+    objectsHandler->loadTextIntoHolder("Play", 27, { 352 - (objectsHandler->calculateTextWidth("Play", 27))/2, 79 });
+    objectsHandler->loadTextIntoHolder("Upgrade", 27, { 352 - (objectsHandler->calculateTextWidth("Upgrade", 27)) / 2, 124 });
     objectsHandler->loadTextIntoHolder("Settings", 27, { 352 - (objectsHandler->calculateTextWidth("Settings", 27)) / 2, 169 });
     objectsHandler->loadTextIntoHolder("Exit", 27, { 352 - (objectsHandler->calculateTextWidth("Exit", 27)) / 2, 215 });
     spriteHolderIndex = objectsHandler->addVectorToSpriteHolder();
@@ -54,9 +49,9 @@ bool MainMenu::init() {
     sf::Texture* buttonTexture = objectsHandler->loadTexture({ 434, 76 }, "ButtonSprites");
     if (!buttonTexture)
         return true;
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 4; i++) {
         objectsHandler->loadSpriteIntoHolder(*buttonTexture, { 90,38 }, { 270, 38 }, spriteHolderIndex);
-        objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 310, 45.0f * i+35 });
+        objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 310, 45.0f * i+80 });
     }
     refreshSelection();
     return false;

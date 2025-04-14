@@ -227,6 +227,7 @@ xcopy /Y /D "$(ProjectDir)include\sfml-audio-3.dll" "$(OutDir)"</Command>
     <Image Include="Resources\HudElements.png" />
     <Image Include="Resources\MainMenu.png" />
     <Image Include="Resources\MapThumbnails.png" />
+    <Image Include="Resources\PauseBackground.png" />
     <Image Include="Resources\PlaySelect.png" />
     <Image Include="Resources\ProjectileSprites.png" />
     <Image Include="Resources\ResetChoice.png" />

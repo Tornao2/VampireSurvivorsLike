@@ -6,7 +6,7 @@
 class FinishScreen: public Scene{
 	int spriteHolderIndex;
 	void refreshSelection();
-	int coins;
+	int coins = 0;
 	bool unlocked = false;
 public:
 	using Scene::Scene;

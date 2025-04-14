@@ -12,42 +12,41 @@ bool ResetChoice::eventLogic(std::optional<sf::Event> gameEvent) {
             selectedButton++;
             if (selectedButton == 2) 
                 selectedButton = 0;
-            refreshSelection();
         }
         else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Left) {
             selectedButton--;
             if (selectedButton == -1) 
                 selectedButton = 1;
-            refreshSelection();
         }
         else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Enter) {
             switch (selectedButton) {
-            case 0:
-                *sceneLabel = SETTINGS;
-                break;
-            case 1:
-                *sceneLabel = MAINMENU;
-                display->setResolution({ 1440, 900 });
-                display->setFullscreen(windowed);
-                std::remove("Upgrade.txt");
-                std::remove("Display.txt");
-                std::remove("CharactersUnlocked.txt");
-                std::remove("MapsUnlocked.txt");
-                break;
-            }
+                case 0:
+                    *sceneLabel = SETTINGS;
+                    break;
+                case 1:
+                    *sceneLabel = MAINMENU;
+                    display->setResolution({ 1440, 900 });
+                    display->setFullscreen(windowed);
+                    std::remove("Upgrade.txt");
+                    std::remove("Display.txt");
+                    std::remove("CharactersUnlocked.txt");
+                    std::remove("MapsUnlocked.txt");
+                    break;
+                }
             return true;
         }
+        refreshSelection();
     }
     return false;
 }
 
 bool ResetChoice::init() {
     selectedButton = 0;
-    sf::Texture* resetTexture = objectsHandler->loadTexture({ 432, 270 }, "ResetBG");
-    if (!resetTexture) 
+    sf::Texture* backgroundTexture = objectsHandler->loadTexture({ 432, 270 }, "ResetBG");
+    if (!backgroundTexture)
         return true;
     spriteHolderIndex = objectsHandler->addVectorToSpriteHolder();
-    objectsHandler->loadSpriteIntoHolder(*resetTexture, { 432,270 }, { 0, 0 }, spriteHolderIndex);
+    objectsHandler->loadSpriteIntoHolder(*backgroundTexture, { 432,270 }, { 0, 0 }, spriteHolderIndex);
     sf::Texture* buttonTexture = objectsHandler->loadTexture({ 434, 76 }, "ButtonSprites");
     if (!buttonTexture)
         return true;

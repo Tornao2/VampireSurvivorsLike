@@ -15,12 +15,10 @@ void Engine::mainLoop() {
         handleEvents();
         if (errorCode != 0)
             return;
-        if (sceneLabel == PLAYSPACE) {
-            if ((static_cast<PlaySpace*>(scene))->realTimeLogic()) {
-                scene->cleanUp();
-                tempVariable = (static_cast<PlaySpace*>(scene))->getCoins();
-                changeScene();
-            }
+        if (sceneLabel == PLAYSPACE && !(static_cast<PlaySpace*>(scene))->getPaused() && (static_cast<PlaySpace*>(scene))->realTimeLogic()) {
+            scene->cleanUp();
+            tempVariable = (static_cast<PlaySpace*>(scene))->getCoins();
+            changeScene();
         }
         draw();
     }
@@ -45,6 +43,7 @@ void Engine::drawPlayScene(sf::RenderTexture* texture) {
         texture->draw(*node->getSprite());
     for (Projectiles* node : *objectsHandler.getProjectileHolder())
         texture->draw(*node->getSprite());
+    (static_cast<PlaySpace*>(scene))->decrementPauseTime();
 }
 
 void Engine::draw() {
@@ -110,8 +109,6 @@ void Engine::changeScene() {
         case PLAYCHOICE:
             scene = new PlayChoice(&objectsHandler, &sceneLabel);
             (static_cast<PlayChoice*>(scene))->setPointers(&selectedMap, &selectedChar);
-            break;
-        case GALLERY:
             break;
         case PLAYSPACE:
             scene = new PlaySpace(&objectsHandler, &sceneLabel);

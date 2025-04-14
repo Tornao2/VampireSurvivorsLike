@@ -5,10 +5,8 @@
 class CharacterData {
 private:
 	sf::Vector2f pos, size;
-
 	float healthMod, damageMod, moveMod, expMod, aoeMod;
 	int armorMod;
-
 	float currentHp;
 	int baseHp, baseMs, effectiveHp, xp, xpToNext, level, invincibilityFrame;
 public:

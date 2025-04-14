@@ -11,64 +11,53 @@ bool UpgradeScene::eventLogic(std::optional<sf::Event> gameEvent) {
         return true;
     else if (gameEvent->is<sf::Event::KeyPressed>()) {
         switch (gameEvent->getIf<sf::Event::KeyPressed>()->code) {
-        case sf::Keyboard::Key::Down:
-            selectedRow++;
-            if (selectedRow == upgrRowsAmount + 1) 
-                selectedRow = 0;
-            if (selectedRow < upgrRowsAmount) {
-                if (selectedColumn > colAmounts[selectedRow] - 1) 
+            case sf::Keyboard::Key::Down:
+                selectedRow++;
+                if (selectedRow == upgrRowsAmount + 1) 
+                    selectedRow = 0;
+                if (selectedRow < upgrRowsAmount && selectedColumn > colAmounts[selectedRow] - 1) 
                     selectedColumn = colAmounts[selectedRow] - 1;
-            }
-            refreshSelection();
-            break;
-        case sf::Keyboard::Key::Up:
-            selectedRow--;
-            if (selectedRow == -1) 
-                selectedRow = upgrRowsAmount;
-            if (selectedRow < upgrRowsAmount) {
-                if (selectedColumn > colAmounts[selectedRow] - 1) 
+                break;
+            case sf::Keyboard::Key::Up:
+                selectedRow--;
+                if (selectedRow == -1) 
+                    selectedRow = upgrRowsAmount;
+                if (selectedRow < upgrRowsAmount && selectedColumn > colAmounts[selectedRow] - 1) 
                     selectedColumn = colAmounts[selectedRow] - 1;
-            }
-            refreshSelection();
-            break;
-        case sf::Keyboard::Key::Left:
-            if (selectedRow < upgrRowsAmount) {
+                break;
+            case sf::Keyboard::Key::Left:
                 selectedColumn--;
-                if (selectedColumn == -1)
+                if (selectedRow < upgrRowsAmount && selectedColumn == -1) 
                     selectedColumn = colAmounts[selectedRow] - 1;
-                refreshSelection();
-            }
-            break;
-        case sf::Keyboard::Key::Right:
-            if (selectedRow < upgrRowsAmount) {
+                break;
+            case sf::Keyboard::Key::Right:
                 selectedColumn++;
-                if (selectedColumn == colAmounts[selectedRow])
+                if (selectedRow < upgrRowsAmount && selectedColumn == colAmounts[selectedRow]) 
                     selectedColumn = 0;
-                refreshSelection();
-            }
-            break;
-        case sf::Keyboard::Key::Enter:
-            if (selectedRow < upgrRowsAmount) {
-                modifiers.increaseLevel(selectedRow * 5 + selectedColumn);
-                objectsHandler->getTextPointer(0)->setString(modifiers.getCoins());
-                objectsHandler->getTextPointer(4 + 3 * (selectedRow * 5 + selectedColumn))->setString(modifiers.getModLevel(selectedRow * 5 + selectedColumn));
-            }
-            else {
-                *sceneLabel = MAINMENU;
-                return true;
-            }
-            break;
-        };
+                break;
+            case sf::Keyboard::Key::Enter:
+                if (selectedRow < upgrRowsAmount) {
+                    modifiers.increaseLevel(selectedRow * 5 + selectedColumn);
+                    objectsHandler->getTextPointer(0)->setString(modifiers.getCoins());
+                    objectsHandler->getTextPointer(4 + 3 * (selectedRow * 5 + selectedColumn))->setString(modifiers.getModLevel(selectedRow * 5 + selectedColumn));
+                    break;
+                }
+                else {
+                    *sceneLabel = MAINMENU;
+                    return true;
+                }
+            };
+        refreshSelection();
     }
     return false;
 }
 
 bool UpgradeScene::init() {
-    sf::Texture* upgradesTexture = objectsHandler->loadTexture({ 432, 270 }, "UpgradesBG");
-    if (!upgradesTexture) 
+    sf::Texture* backgroundTexture = objectsHandler->loadTexture({ 432, 270 }, "UpgradesBG");
+    if (!backgroundTexture)
         return true;
     spriteHolderIndex = objectsHandler->addVectorToSpriteHolder();
-    objectsHandler->loadSpriteIntoHolder(*upgradesTexture, { 432,270 }, { 0, 0 }, spriteHolderIndex);
+    objectsHandler->loadSpriteIntoHolder(*backgroundTexture, { 432,270 }, { 0, 0 }, spriteHolderIndex);
     sf::Texture* buttonTexture = objectsHandler->loadTexture({ 434, 76 }, "ButtonSprites");
     if (!buttonTexture)
         return true;
@@ -100,13 +89,11 @@ void UpgradeScene::refreshSelection() {
         text.setFillColor(sf::Color::White);
     for (int i = 0; i < objectsHandler->getSpriteHolderSize(spriteHolderIndex); i++) 
         objectsHandler->getSpritePointer(spriteHolderIndex, i)->setColor(sf::Color::White);
-    for (int i = 0; i < modifiers.getVector()->size(); i++) {
+    for (int i = 0; i < modifiers.getVector()->size(); i++) 
         if (modifiers.getVector()->at(i).currentLevel == modifiers.getVector()->at(i).maxLevel) 
-            objectsHandler->getSpritePointer(spriteHolderIndex, 2 + i)->setColor(DARKRED);
-    }
+            objectsHandler->getSpritePointer(spriteHolderIndex, 2 + i)->setColor(RED);
     if (selectedRow < upgrRowsAmount) 
         objectsHandler->getSpritePointer(spriteHolderIndex, 2 + 5 * selectedRow + selectedColumn)->setColor(GREEN);
-    else {
+    else 
         objectsHandler->getTextPointer(1)->setFillColor(GREEN);
-    }
 }

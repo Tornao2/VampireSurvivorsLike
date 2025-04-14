@@ -2,11 +2,9 @@
 
 Display::Display() {
 	windowInstance.create(sf::VideoMode({ 0, 0 }), "", sf::Style::Titlebar | sf::Style::Close);
-	windowSize = { 1440, 900 };
-	fullscreenMode = windowed;
 	loadFromFile();
 	setResolution(windowSize);
-	windowInstance.setTitle("PGK2 projekt");
+	windowInstance.setTitle("VampireSurvivorsLike");
 	windowInstance.setFramerateLimit(60);
 	setFullscreen(fullscreenMode);
 }
@@ -55,9 +53,8 @@ DisplayMode Display::getFullscreen(){
 void Display::loadFromFile() {
 	std::ifstream inFile("Resources/Display.txt");
 	if (inFile) {
-		char delimiter;
 		std::string fullscreenStat;
-		inFile >> windowSize.x >> delimiter >> windowSize.y >> delimiter >> fullscreenStat;
+		inFile >> windowSize.x >> breakCharacter >> windowSize.y >> breakCharacter >> fullscreenStat;
 		if (std::stoi(fullscreenStat) == 0) 
 			fullscreenMode = windowed;
 		else if (std::stoi(fullscreenStat) == 1) 
@@ -70,6 +67,6 @@ void Display::loadFromFile() {
 
 void Display::saveToFile() {
 	std::ofstream outFile("Resources/Display.txt");
-	outFile << windowSize.x << ";" << windowSize.y << ";" << (int)fullscreenMode << "\n";
+	outFile << windowSize.x << breakCharacter << windowSize.y << breakCharacter << (int)fullscreenMode << "\n";
 	outFile.close();
 }

@@ -45,9 +45,8 @@ bool FinishScreen::init() {
         return true;
     objectsHandler->loadTextIntoHolder("Coins you have earned:", 27, {(SCENEWIDTH - (objectsHandler->calculateTextWidth("Coins you have earned:", 27))) / 2, 0});
     objectsHandler->loadTextIntoHolder(std::to_string(coins), 35, { (SCENEWIDTH - (objectsHandler->calculateTextWidth(std::to_string(coins), 35))) / 2, 50 });
-    if (unlocked) {
+    if (unlocked) 
         objectsHandler->loadTextIntoHolder("You have unlocked something new!", 27, { (SCENEWIDTH - (objectsHandler->calculateTextWidth("You have unlocked something new!", 27))) / 2, 100 });
-    }
     spriteHolderIndex = objectsHandler->addVectorToSpriteHolder();
     objectsHandler->loadSpriteIntoHolder(*buttonTexture, { 90,38 }, { 270, 38 }, spriteHolderIndex);
     objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 171, 200 });

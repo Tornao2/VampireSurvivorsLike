@@ -2,7 +2,7 @@
 #include "ObjectsHandler.h"
 #include "Display.h"
 
-#define DARKRED { 200, 10, 10}
+#define RED { 200, 10, 10}
 #define GREEN { 40, 210, 40 }
 #define BLUE { 50, 90, 250 }
 
@@ -12,9 +12,8 @@ enum SceneLabels {
 	RESETCHOICE,
 	UPGRADE,
 	PLAYCHOICE,
-	GALLERY,
 	PLAYSPACE,
-	FINISHSCREEN
+	FINISHSCREEN,
 };
 
 class Scene {

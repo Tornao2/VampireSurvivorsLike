@@ -149,18 +149,17 @@ sf::Vector2f ObjectsHandler::getClosestEnemyCords(sf::Vector2f readPlayerPos) {
             }
         }
     }
-    else {
+    else 
         target = { readPlayerPos.x + (rand() % 2) - 1, readPlayerPos.y + (rand() % 2) - 1 };
-    }
     return target;
 }
 
 void ObjectsHandler::addProjectile(float damageMod, int projectileId, sf::Vector2f readPos, sf::Vector2f readEndPos) {
     sf::Sprite* sprite = nullptr;
     switch (projectileId) {
-    case 0:
-        sprite = new sf::Sprite(textureHolder.at("Resources/ProjectileSprites.png"), { { 0,0 }, { 9, 9 } });
-        break;
+        case 0:
+            sprite = new sf::Sprite(textureHolder.at("Resources/ProjectileSprites.png"), { { 0,0 }, { 9, 9 } });
+            break;
     }
     sprite->setPosition(readPos);
     Projectiles* projectile = new Projectiles(sprite, damageMod, readPos, readEndPos, projectileId);
@@ -213,9 +212,8 @@ void ObjectsHandler::deleteUnusedChunks() {
 }
 
 void ObjectsHandler::falseAllChunks() {
-    for (auto& [key, value] : chunkMap) {
+    for (auto& [key, value] : chunkMap) 
         value->generate = false;
-    }
 }
 
 void ObjectsHandler::cleanChunkHolder() {
