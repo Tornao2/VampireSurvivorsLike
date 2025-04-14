@@ -52,7 +52,7 @@ void PlaySpace::cleanPauseMenu() {
     objectsHandler->getSpriteHolder()->erase(objectsHandler->getSpriteHolder()->end()-1);
     pauseMenuHolderIndex = 0;
     objectsHandler->getTextHolder()->erase(objectsHandler->getTextHolder()->end() - 1);
-    objectsHandler->getTextHolder()->erase(objectsHandler->getTextHolder()->end() - 1);
+    objectsHandler->getTextHolder()->erase(objectsHandler->getTextHolder()->end() - 1); 
 }
 
 void PlaySpace::initPauseMenu() {
