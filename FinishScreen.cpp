@@ -40,7 +40,7 @@ void FinishScreen::setCoins(int readCoins, int chosenMap, int chosenChar) {
 }
 
 bool FinishScreen::init() {
-    sf::Texture* buttonTexture = objectsHandler->loadTexture({ 434, 76 }, "ButtonSprites");
+    sf::Texture* buttonTexture = objectsHandler->loadTexture({ 434, 102 }, "ButtonSprites");
     if (!buttonTexture)
         return true;
     objectsHandler->loadTextIntoHolder("Coins you have earned:", 27, {(SCENEWIDTH - (objectsHandler->calculateTextWidth("Coins you have earned:", 27))) / 2, 0});

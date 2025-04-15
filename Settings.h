@@ -12,4 +12,5 @@ public:
 	bool eventLogic(std::optional<sf::Event> gameEvent);
 	bool init();
 	void cleanUp();
+	void saveVolume();
 };

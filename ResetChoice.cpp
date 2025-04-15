@@ -31,6 +31,7 @@ bool ResetChoice::eventLogic(std::optional<sf::Event> gameEvent) {
                     std::remove("Display.txt");
                     std::remove("CharactersUnlocked.txt");
                     std::remove("MapsUnlocked.txt");
+                    std::remove("Misc.txt");
                     break;
                 }
             return true;
@@ -47,7 +48,7 @@ bool ResetChoice::init() {
         return true;
     spriteHolderIndex = objectsHandler->addVectorToSpriteHolder();
     objectsHandler->loadSpriteIntoHolder(*backgroundTexture, { 432,270 }, { 0, 0 }, spriteHolderIndex);
-    sf::Texture* buttonTexture = objectsHandler->loadTexture({ 434, 76 }, "ButtonSprites");
+    sf::Texture* buttonTexture = objectsHandler->loadTexture({ 434, 102 }, "ButtonSprites");
     if (!buttonTexture)
         return true;
     objectsHandler->loadSpriteIntoHolder(*buttonTexture, { 135,64 }, { 0, 0 }, spriteHolderIndex);

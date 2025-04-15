@@ -63,7 +63,7 @@ void PlaySpace::initPauseMenu() {
     pauseMenuHolderIndex = objectsHandler->addVectorToSpriteHolder();
     objectsHandler->loadSpriteIntoHolder(*pauseBgTexture, { 332,220 }, { 0, 0 }, pauseMenuHolderIndex);
     objectsHandler->getSpritePointer(pauseMenuHolderIndex, -1)->setPosition({ 50 + playerData.getPos().x - 208, 35 + playerData.getPos().y - 123 });
-    sf::Texture* buttonTexture = objectsHandler->loadTexture({ 434, 76 }, "ButtonSprites");
+    sf::Texture* buttonTexture = objectsHandler->loadTexture({ 434, 102 }, "ButtonSprites");
     if (!buttonTexture)
         return;
     objectsHandler->loadTextIntoHolder("Resume", 24, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Resume", 24)) / 2, 172 });

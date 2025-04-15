@@ -12,6 +12,9 @@ class Engine {
 	Display display;
 	ObjectsHandler objectsHandler;
 	Scene* scene = nullptr;
+	sf::SoundBuffer soundBuffer;
+	int soundVolume = 100;
+	void loadVolume();
 	void draw();
 	void handleEvents();
 	void changeScene();
