@@ -2,7 +2,7 @@
 
 Projectiles::Projectiles(sf::Sprite* readSprite, float damageMod, sf::Vector2f readPos, sf::Vector2f readEndPos, int projectileId) {
 	sprite = readSprite;
-	damage = baseProjectileStats.at(projectileId).at(0) * damage + baseProjectileStats.at(projectileId).at(0);
+	damage = baseProjectileStats.at(projectileId).at(0) * damageMod;
 	pos = readPos;
 	size = { baseProjectileStats.at(projectileId).at(3), baseProjectileStats.at(projectileId).at(4)};
 	sf::Vector2f targetVec = readEndPos - readPos;

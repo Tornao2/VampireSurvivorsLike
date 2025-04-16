@@ -113,7 +113,7 @@ void PlaySpace::weaponLogic() {
         sf::Vector2f target = objectsHandler->getClosestEnemyCords(playerData.getPos());
         if (static_cast<int>(timer.getElapsedTime().asSeconds()) - lastFireTime > 1) {
             lastFireTime = static_cast<int>(timer.getElapsedTime().asSeconds());
-            objectsHandler->addProjectile(playerData.getDamageMod(), 0, playerData.getPos(), target);
+            objectsHandler->addProjectile(playerData.getEffectiveDamage(), 0, playerData.getPos(), target);
         }
     }
 }
@@ -178,7 +178,7 @@ void PlaySpace::moveEnemies() {
 }
 
 void PlaySpace::checkEnemyCollision() {
-    sf::FloatRect playerBounds({ playerData.getPos().x,playerData.getPos().y + playerData.getSize().y - playerData.getSize().x }, playerData.getSize());
+    sf::FloatRect playerBounds({ playerData.getPos().x,playerData.getPos().y + playerData.getSize().y - playerData.getSize().x }, { (float) playerData.getSize().x, (float) playerData.getSize().x});
     for (EnemyData* enemy : *objectsHandler->getEnemyHolder()) {
         sf::FloatRect enemyBounds(enemy->getPos(), enemy->getSize());
         if (playerBounds.findIntersection(enemyBounds).has_value()) {
@@ -221,7 +221,7 @@ void PlaySpace::respawnEnemies() {
 
 void PlaySpace::setHud() {
     objectsHandler->getSpritePointer(hudHolderIndex, 1)->setTextureRect({ {0, 8} , { (int)(((float)playerData.getXp() / playerData.getXpToNext()) * 414), 8} });
-    objectsHandler->getSpritePointer(hudHolderIndex, 3)->setTextureRect({ {0, 16} , { (int)(((float)playerData.getCurrentHp() / playerData.getEffectiveHp()) * 200), 8} });
+    objectsHandler->getSpritePointer(hudHolderIndex, 3)->setTextureRect({ {0, 16} , { (int)(((float)playerData.getCurrentHp() / playerData.getEffectiveMaxHp()) * 200), 8} });
     objectsHandler->getSpritePointer(hudHolderIndex, 0)->setPosition({ 16 + playerData.getPos().x - 208, 1 + playerData.getPos().y - 123 });
     objectsHandler->getSpritePointer(hudHolderIndex, 1)->setPosition({ 16 + playerData.getPos().x - 208, 1 + playerData.getPos().y - 123 });
     objectsHandler->getSpritePointer(hudHolderIndex, 2)->setPosition({ 16 + playerData.getPos().x - 208, 10 + playerData.getPos().y - 123 });
@@ -252,11 +252,15 @@ void PlaySpace::setMapAndChar(int readMap, int readChar) {
 }
 
 bool PlaySpace::init() {
-    sf::Texture* spaceTexture = objectsHandler->loadTexture({ 32, 24 }, "CharacterSprites");
-    if (!spaceTexture) 
+    sf::Texture* characterTexture = objectsHandler->loadTexture({ 32, 24 }, "CharacterSprites");
+    if (!characterTexture)
         return true;
+    playerData.setSizes({ 208, 124 }, { 16, 24 });
+    playerData.setMods();
+    playerData.setBaseStats(charNumber);
+    playerData.setHp(playerData.getEffectiveMaxHp());
     playerHolderIndex = objectsHandler->addVectorToSpriteHolder();
-    objectsHandler->loadSpriteIntoHolder(*spaceTexture, { 16,24 }, { 16 * charNumber, 0 }, playerHolderIndex);
+    objectsHandler->loadSpriteIntoHolder(*characterTexture, playerData.getSize(), playerData.getOffsets(), playerHolderIndex);
     objectsHandler->getSpritePointer(playerHolderIndex, -1)->setPosition({ 208, 124 });
     objectsHandler->loadTextIntoHolder("00:00", 24, { (SCENEWIDTH - objectsHandler->calculateTextWidth("00:00", 24)) / 2, 11 });
     objectsHandler->loadTextIntoHolder("LVL:1", 9, { SCENEWIDTH/52 - objectsHandler->calculateTextWidth("LVL:1",9)/2 , 0 });
@@ -276,9 +280,6 @@ bool PlaySpace::init() {
         return true;
     if (!projectileTexture)
         return true;
-    playerData.setSizes({ 208, 124 }, { 16, 24 });
-    playerData.setMods();
-    playerData.setHp((float) playerData.getEffectiveHp());
     return false;
 }
 
@@ -303,7 +304,7 @@ void PlaySpace::movementLogic() {
 void PlaySpace::terrainCollision(sf::Vector2f moveStep) {
     int playerChunkX = (int)playerData.getPos().x / (CHUNKSIZE * TILESIZE);
     int playerChunkY = (int)playerData.getPos().y / (CHUNKSIZE * TILESIZE);
-    sf::FloatRect playerBounds({ playerData.getPos().x,playerData.getPos().y + playerData.getSize().y - playerData.getSize().x }, playerData.getSize());
+    sf::FloatRect playerBounds({ playerData.getPos().x,playerData.getPos().y + playerData.getSize().y - playerData.getSize().x }, { (float) playerData.getSize().x, (float) playerData.getSize().x });
     for (int a = -1; a <= 1; a++) {
         for (int b = -1; b <= 1; b++) {
             auto tempMap = objectsHandler->getChunkMap().at({ playerChunkX + a, playerChunkY + b });

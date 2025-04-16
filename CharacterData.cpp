@@ -1,18 +1,15 @@
 #include "CharacterData.h"
 
-void CharacterData::setSizes(sf::Vector2f readPos, sf::Vector2f readSize) {
+void CharacterData::setSizes(sf::Vector2f readPos, sf::Vector2i readSize) {
 	pos = readPos;
 	size = readSize;
-	baseHp = 100;
-	effectiveHp = 100;
+}
+
+void CharacterData::setMods() {
 	xpToNext = 100;
 	xp = 0;
 	level = 1;
 	invincibilityFrame = 0;
-	baseMs = 2;
-}
-
-void CharacterData::setMods() {
 	Modifiers mod;
 	mod.loadModifiersFromFile();
 	ModifierNode* tempNode = mod.getNodeByName("Health%");
@@ -27,15 +24,15 @@ void CharacterData::setMods() {
 	armorMod = (int) tempNode->effectStrength * tempNode->currentLevel;
 	tempNode = mod.getNodeByName("AOE%");
 	aoeMod = tempNode->effectStrength * tempNode->currentLevel;
-	effectiveHp = (int) (baseHp * healthMod + baseHp);
+	currentHp = getEffectiveMaxHp();
+}
+
+void CharacterData::setBaseStats(int charId) {
+	baseStats = charArray[charId];
 }
 
 void CharacterData::move(sf::Vector2f ms) {
 	pos += ms;
-}
-
-float CharacterData::getMoveMod() {
-	return moveMod;
 }
 
 sf::Vector2f CharacterData::getPos() {
@@ -46,12 +43,8 @@ float CharacterData::getCurrentHp() {
 	return currentHp;
 }
 
-int CharacterData::getEffectiveHp() {
-	return effectiveHp;
-}
-
-void CharacterData::recalculateHp() {
-	effectiveHp = (int) (baseHp + healthMod * baseHp);
+float CharacterData::getEffectiveMaxHp() {
+	return baseStats.baseHp * healthMod + baseStats.baseHp;
 }
 
 int CharacterData::getXp() {
@@ -63,12 +56,12 @@ int CharacterData::getXpToNext() {
 }
 
 void CharacterData::increaseXp(int readXp) {
-	xp += readXp;
+	xp += (int)(readXp * getEffectiveXpMod());
 	while (xp >= xpToNext) {
 		level++;
 		xp -= xpToNext;
 		xpToNext *=  1.2;
-		currentHp = effectiveHp;
+		currentHp = getEffectiveMaxHp();
 	}
 }
 
@@ -83,8 +76,8 @@ void CharacterData::setHp(float readHp) {
 void CharacterData::changeHp(float readChange) {
 	if (readChange < 0) {
 		if (!invincibilityFrame) {
-			if (readChange + armorMod < 0) {
-				currentHp += readChange + armorMod;
+			if (readChange + getEffectiveArmorMod() < 0) {
+				currentHp += readChange + getEffectiveArmorMod();
 				invincibilityFrame = 5;
 				if (currentHp < 0)
 					currentHp = 0;
@@ -93,12 +86,12 @@ void CharacterData::changeHp(float readChange) {
 	}
 	else {
 		currentHp += readChange;
-		if (currentHp > effectiveHp)
-			currentHp = effectiveHp;
+		if (currentHp > getEffectiveMaxHp())
+			currentHp = getEffectiveMaxHp();
 	}
 }
 
-sf::Vector2f CharacterData::getSize() {
+sf::Vector2i CharacterData::getSize() {
 	return size;
 }
 
@@ -108,9 +101,25 @@ void CharacterData::decrementInvincibility() {
 }
 
 float CharacterData::getEffectiveMs() {
-	return moveMod * baseMs + baseMs;
+	return moveMod * baseStats.baseMs + baseStats.baseMs;
 }
 
-float CharacterData::getDamageMod() {
-	return damageMod;
+float CharacterData::getEffectiveDamage() {
+	return damageMod + baseStats.baseDamage;
+}
+
+float CharacterData::getEffectiveXpMod() {
+	return expMod + baseStats.baseExp;
+}
+
+float CharacterData::getEffectiveAoeMod() {
+	return aoeMod + baseStats.baseAoe;
+}
+
+int CharacterData::getEffectiveArmorMod() {
+	return armorMod + baseStats.baseArmor;
+}
+
+sf::Vector2i CharacterData::getOffsets() {
+	return baseStats.offset;
 }

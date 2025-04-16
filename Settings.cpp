@@ -142,7 +142,7 @@ bool SettingsScene::init() {
     objectsHandler->loadTextIntoHolder("Reset", 27, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Reset", 27)) / 2, 189 });
     objectsHandler->getTextPointer(-1)->setFillColor(RED);
     objectsHandler->loadTextIntoHolder("Exit", 27, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Exit", 27)) / 2, 231 });
-    objectsHandler->loadTextIntoHolder(std::to_string(*soundVolume), 27, {315, 145 });
+    objectsHandler->loadTextIntoHolder(std::to_string(*soundVolume), 27, {315, 145});
     refreshSelection();
     return false;
 }
