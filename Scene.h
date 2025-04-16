@@ -15,6 +15,7 @@ enum SceneLabels {
 	PLAYCHOICE,
 	PLAYSPACE,
 	FINISHSCREEN,
+	GALLERY
 };
 
 class Scene {

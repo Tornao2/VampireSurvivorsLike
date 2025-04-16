@@ -18,6 +18,8 @@ std::string ExitHandler::getMessage(int readExitCode) {
 			return "Failed in loading playspace textures";
 		case 7:
 			return "Failed in loading finishscene textures";
+		case 8:
+			return "Failed in loading gallery textures";
 		default:
 			return "Unkown error";
 	}
