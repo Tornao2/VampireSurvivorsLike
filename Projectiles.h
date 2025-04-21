@@ -1,7 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
-//Damage, ms, range, sizes
 static std::vector<std::vector<float>> baseProjectileStats = {
 	{1000, 3, 600, 8, 8}
 };
@@ -9,8 +8,10 @@ static std::vector<std::vector<float>> baseProjectileStats = {
 class Projectiles {
 	sf::Sprite* sprite = nullptr;
 	float damage;
-	sf::Vector2f pos, ms, size;
+	sf::Vector2f ms;
 	float range;
+	sf::Vector2f size;
+	sf::Vector2f pos;
 public:
 	Projectiles(sf::Sprite* readSprite, float damageMod, sf::Vector2f readPos, sf::Vector2f readEndPos, int projectileId);
 	sf::Vector2f getSize();

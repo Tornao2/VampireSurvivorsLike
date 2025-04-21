@@ -1,6 +1,6 @@
 #pragma once
 #include "Scene.h"
-#include "Unlocks.h"
+#include "CharacterData.h"
 
 class PlayChoice : public Scene {
 	int* selectedMap, *selectedPlayer;
@@ -8,6 +8,7 @@ class PlayChoice : public Scene {
 	std::vector<bool> unlockedChars;
 	std::vector<bool> unlockedMaps;
 	void refreshSelection();
+	void refreshCharacterStats();
 public:
 	using Scene::Scene;
 	bool eventLogic(std::optional<sf::Event> gameEvent);

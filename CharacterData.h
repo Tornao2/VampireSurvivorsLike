@@ -15,6 +15,8 @@ static CharacterDetails charArray[NUMBEROFCHARS] = {
 	{120, 1.8, 1, 1, 1, 1, {16, 0}}
 };
 
+CharacterDetails getCharacterStats(int index);
+
 class CharacterData {
 private:
 	sf::Vector2f pos;

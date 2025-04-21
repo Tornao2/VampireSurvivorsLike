@@ -1,5 +1,9 @@
 #include "CharacterData.h"
 
+CharacterDetails getCharacterStats(int index) {
+	return charArray[index];
+}
+
 void CharacterData::setSizes(sf::Vector2f readPos, sf::Vector2i readSize) {
 	pos = readPos;
 	size = readSize;
