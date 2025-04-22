@@ -274,7 +274,7 @@ bool PlaySpace::init() {
     objectsHandler->getSpritePointer(hudHolderIndex, -1)->setPosition({ 16, 10 });
     objectsHandler->loadSpriteIntoHolder(*hudTexture, { 200,8 }, { 0, 16 }, hudHolderIndex);
     objectsHandler->getSpritePointer(hudHolderIndex, -1)->setPosition({ 16, 10 });
-    sf::Texture* enemyTexture = objectsHandler->loadTexture({ 24, 32 }, "EnemySprites");
+    sf::Texture* enemyTexture = objectsHandler->loadTexture({ 80, 48 }, "EnemySprites");
     sf::Texture* projectileTexture = objectsHandler->loadTexture({ 12, 12 }, "ProjectileSprites");
     if (!enemyTexture)
         return true;
@@ -304,42 +304,41 @@ void PlaySpace::movementLogic() {
 void PlaySpace::terrainCollision(sf::Vector2f moveStep) {
     int playerChunkX = (int)playerData.getPos().x / (CHUNKSIZE * TILESIZE);
     int playerChunkY = (int)playerData.getPos().y / (CHUNKSIZE * TILESIZE);
-    sf::FloatRect playerBounds({ playerData.getPos().x,playerData.getPos().y + playerData.getSize().y - playerData.getSize().x }, { (float) playerData.getSize().x, (float) playerData.getSize().x });
+    sf::FloatRect playerBounds({playerData.getPos().x, playerData.getPos().y + playerData.getSize().y - playerData.getSize().x}, 
+            {(float)playerData.getSize().x-1, (float)playerData.getSize().x-1});
     for (int a = -1; a <= 1; a++) {
         for (int b = -1; b <= 1; b++) {
             auto tempMap = objectsHandler->getChunkMap().at({ playerChunkX + a, playerChunkY + b });
             for (int i = 0; i < CHUNKSIZE; i++) {
                 for (int j = 0; j < CHUNKSIZE; j++) {
                     if (tempMap->tiles[i][j].type == 0) {
-                        sf::FloatRect tileBounds({
-                            (float)(playerChunkX + a) * TILESIZE * CHUNKSIZE + i * TILESIZE, (float)(playerChunkY + b) * TILESIZE * CHUNKSIZE + j * TILESIZE },
-                            { (float)TILESIZE, (float)TILESIZE }
-                        );
-                        if (tileBounds.findIntersection(playerBounds).has_value()) {
+                        sf::FloatRect tileBounds({ (float)(playerChunkX + a) * TILESIZE * CHUNKSIZE + i * TILESIZE, (float)(playerChunkY + b) * TILESIZE * CHUNKSIZE + j * TILESIZE}, 
+                                            { (float)TILESIZE, (float)TILESIZE});
+                        playerBounds.position.x += moveStep.x;
+                        while (tileBounds.findIntersection(playerBounds).has_value() && std::fabs(moveStep.x) > 0.1f) {
                             playerBounds.position.x -= moveStep.x;
-                            if (tileBounds.findIntersection(playerBounds).has_value()) {
-                                playerBounds.position.x += moveStep.x;
-                                playerBounds.position.y -= moveStep.y;
-                                if (tileBounds.findIntersection(playerBounds).has_value()) {
-                                    playerBounds.position.y += moveStep.y;
-                                    playerData.move(-moveStep);
-                                    objectsHandler->getSpritePointer(playerHolderIndex, -1)->move(-moveStep);
-                                }
-                                else {
-                                    playerData.move({ 0, -moveStep.y });
-                                    objectsHandler->getSpritePointer(playerHolderIndex, -1)->move({ 0, -moveStep.y });
-                                }
-                            }
-                            else {
-                                playerData.move({ -moveStep.x, 0 });
-                                objectsHandler->getSpritePointer(playerHolderIndex, -1)->move({ -moveStep.x, 0 });
-                            }
+                            moveStep.x /= 2.f;
+                            if (moveStep.x < 0.1f)
+                                moveStep.x = 0;
+                            playerBounds.position.x += moveStep.x;
                         }
+                        playerBounds.position.x -= moveStep.x;
+                        playerBounds.position.y += moveStep.y;
+                        while (tileBounds.findIntersection(playerBounds).has_value() && std::fabs(moveStep.y) > 0.1f) {
+                            playerBounds.position.y -= moveStep.y;
+                            moveStep.y /= 2.f;
+                            if (moveStep.y < 0.1f)
+                                moveStep.y = 0;
+                            playerBounds.position.y += moveStep.y;
+                        }
+                        playerBounds.position.y -= moveStep.y;
                     }
                 }
             }
         }
     }
+    playerData.move(moveStep);
+    objectsHandler->getSpritePointer(playerHolderIndex, -1)->move(moveStep);
 }
 
 sf::Vector2f PlaySpace::determineMovement() {
@@ -353,8 +352,6 @@ sf::Vector2f PlaySpace::determineMovement() {
         moveStep.x = move;
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
         moveStep.x = -move;
-    playerData.move(moveStep);
-    objectsHandler->getSpritePointer(playerHolderIndex, -1)->move(moveStep);
     return moveStep;
 }
 

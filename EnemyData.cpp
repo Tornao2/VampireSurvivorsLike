@@ -3,12 +3,13 @@
 void EnemyData::giveStats(int enemyId, sf::Vector2f readPos, bool readIsBoss){
 	pos = readPos;
 	enemyStats = enemyArray[enemyId];
+	size = { 16, 24 };
 	if (readIsBoss) {
 		enemyStats.armor *= 5;
 		enemyStats.damage *= 4;
 		enemyStats.baseHp *= 20;
 		enemyStats.move *= 1.4;
-		enemyStats.size = { 32, 48 };
+		size = { 32, 48 };
 		enemyStats.xp *= 10;
 	}
 	isBoss = readIsBoss;
@@ -20,7 +21,7 @@ EnemyDataNode* EnemyData::getEnemyDataNode() {
 }
 
 sf::Vector2f EnemyData::getSize() {
-	return enemyStats.size;
+	return size;
 }
 
 sf::Vector2f EnemyData::getPos() {
@@ -79,4 +80,8 @@ bool EnemyData::getIfBoss() {
 void EnemyData::setPosition(sf::Vector2f readPosition) {
 	pos = readPosition;
 	sprite->setPosition(readPosition);
+}
+
+sf::Vector2i EnemyData::getOffset() {
+	return enemyStats.offset;
 }

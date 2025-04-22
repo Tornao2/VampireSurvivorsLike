@@ -100,7 +100,7 @@ std::unordered_map<std::pair<int, int>, Chunk*, PairHash> ObjectsHandler::getChu
 void ObjectsHandler::addEnemy(int enemyId, sf::Vector2f readPos, bool readIsBoss) {
     EnemyData* enemy = new EnemyData();
     enemy->giveStats(enemyId, readPos, readIsBoss);
-    enemy->setSprite(new sf::Sprite(textureHolder.at("Resources/EnemySprites.png"), { {0,0}, {16, 24} }));
+    enemy->setSprite(new sf::Sprite(textureHolder.at("Resources/EnemySprites.png"), { enemy->getOffset() , {16, 24} }));
     if (readIsBoss)
         enemy->getSprite()->setScale({ 2, 2 });
     enemy->getSprite()->setPosition(readPos);
