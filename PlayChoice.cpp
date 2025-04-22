@@ -102,14 +102,18 @@ bool PlayChoice::init() {
     objectsHandler->loadSpriteIntoHolder(*playChoiceTexture, { 122,77 }, { 122, 0 }, spriteHolderIndex+1);
     objectsHandler->getSpritePointer(spriteHolderIndex + 1, -1)->setPosition({ 155, 5 });
     objectsHandler->addVectorToSpriteHolder();
-    playChoiceTexture = objectsHandler->loadTexture({ 244, 154 }, "CharacterThumbnails");
+    playChoiceTexture = objectsHandler->loadTexture({ 244, 221 }, "CharacterThumbnails");
     if (!playChoiceTexture) 
         return true;
-    objectsHandler->loadSpriteIntoHolder(*playChoiceTexture, { 122,77 }, { 0, 77 }, spriteHolderIndex + 2);
+    objectsHandler->loadSpriteIntoHolder(*playChoiceTexture, { 122,77 }, { 0, 154 }, spriteHolderIndex + 2);
     objectsHandler->getSpritePointer(spriteHolderIndex + 2, -1)->setPosition({ 155, 94 });
     objectsHandler->loadSpriteIntoHolder(*playChoiceTexture, { 122,77 }, { 0, 0 }, spriteHolderIndex + 2);
     objectsHandler->getSpritePointer(spriteHolderIndex + 2, -1)->setPosition({ 155, 94 });
     objectsHandler->loadSpriteIntoHolder(*playChoiceTexture, { 122,77 }, { 122, 0 }, spriteHolderIndex + 2);
+    objectsHandler->getSpritePointer(spriteHolderIndex + 2, -1)->setPosition({ 155, 94 });
+    objectsHandler->loadSpriteIntoHolder(*playChoiceTexture, { 122,77 }, { 0, 77 }, spriteHolderIndex + 2);
+    objectsHandler->getSpritePointer(spriteHolderIndex + 2, -1)->setPosition({ 155, 94 });
+    objectsHandler->loadSpriteIntoHolder(*playChoiceTexture, { 122,77 }, { 122, 77 }, spriteHolderIndex + 2);
     objectsHandler->getSpritePointer(spriteHolderIndex + 2, -1)->setPosition({ 155, 94 });
     Unlocks unlocks;
     unlockedChars = unlocks.loadUnlocked("CharactersUnlocked");
@@ -126,9 +130,9 @@ void PlayChoice::refreshCharacterStats() {
     std::snprintf(buffer, 4, "%.1f", stats.baseMs);
     std::string str(buffer);
     objectsHandler->getTextPointer(9)->setString(str);
-    objectsHandler->getTextPointer(10)->setString(std::to_string((int)stats.baseDamage*100).append("%"));
-    objectsHandler->getTextPointer(11)->setString(std::to_string((int)stats.baseAoe * 100).append("%"));
-    objectsHandler->getTextPointer(12)->setString(std::to_string((int)stats.baseExp * 100).append("%"));
+    objectsHandler->getTextPointer(10)->setString(std::to_string((int)(stats.baseDamage*100)).append("%"));
+    objectsHandler->getTextPointer(11)->setString(std::to_string((int)(stats.baseAoe * 100)).append("%"));
+    objectsHandler->getTextPointer(12)->setString(std::to_string((int)(stats.baseExp * 100)).append("%"));
     objectsHandler->getTextPointer(13)->setString(std::to_string((int)stats.baseArmor));
 }
 

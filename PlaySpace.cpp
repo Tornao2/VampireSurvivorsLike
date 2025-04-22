@@ -252,7 +252,7 @@ void PlaySpace::setMapAndChar(int readMap, int readChar) {
 }
 
 bool PlaySpace::init() {
-    sf::Texture* characterTexture = objectsHandler->loadTexture({ 32, 24 }, "CharacterSprites");
+    sf::Texture* characterTexture = objectsHandler->loadTexture({ 64, 24 }, "CharacterSprites");
     if (!characterTexture)
         return true;
     playerData.setSizes({ 208, 124 }, { 16, 24 });

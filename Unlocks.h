@@ -5,7 +5,7 @@
 #include <iostream>
 
 #define NUMBEROFMAPS 2
-#define NUMBEROFCHARS 2
+#define NUMBEROFCHARS 4
 
 class Unlocks {
 public:
