@@ -84,6 +84,9 @@
     <ClCompile Include="FinishScreen.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
+      <Filter>Source Files\High-Level</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UpgradeScene.h">
@@ -136,6 +139,9 @@
     </ClInclude>
     <ClInclude Include="FinishScreen.h">
       <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundManager.h">
+      <Filter>Header Files\High-Level</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

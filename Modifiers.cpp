@@ -92,11 +92,14 @@ unsigned char Modifiers::getRowAmount() {
 		return (unsigned char) modVector.size() / 5 + 1;
 }
 
-void Modifiers::increaseLevel(int index) {
+bool Modifiers::increaseLevel(int index) {
 	if (modVector.at(index).maxLevel > modVector.at(index).currentLevel && coins > 100 + std::stoi(getModLevel(index)) * 100) {
 		coins -= std::stoi(getModLevel(index)) * 100 + 100;
 		modVector.at(index).currentLevel++;
+		return true;
 	}
+	else 
+		return false;
 }
 
 void Modifiers::changeCoins(int readCoinChange) {

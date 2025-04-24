@@ -12,7 +12,7 @@ class Engine {
 	Display display;
 	ObjectsHandler objectsHandler;
 	Scene* scene = nullptr;
-	sf::SoundBuffer soundBuffer;
+	SoundManager soundManager;
 	int soundVolume = 100;
 	void loadVolume();
 	void draw();

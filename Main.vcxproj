@@ -198,6 +198,7 @@ xcopy /Y /D "$(ProjectDir)include\sfml-audio-3.dll" "$(OutDir)"</Command>
     <ClCompile Include="Projectiles.cpp" />
     <ClCompile Include="ResetChoice.cpp" />
     <ClCompile Include="Settings.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Unlocks.cpp" />
     <ClCompile Include="UpgradeScene.cpp" />
   </ItemGroup>
@@ -217,6 +218,7 @@ xcopy /Y /D "$(ProjectDir)include\sfml-audio-3.dll" "$(OutDir)"</Command>
     <ClInclude Include="ResetChoice.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Settings.h" />
+    <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Unlocks.h" />
     <ClInclude Include="UpgradeScene.h" />
   </ItemGroup>

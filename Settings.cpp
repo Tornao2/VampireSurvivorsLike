@@ -41,22 +41,26 @@ bool SettingsScene::eventLogic(std::optional<sf::Event> gameEvent) {
         switch (gameEvent->getIf<sf::Event::KeyPressed>()->code) {
         case sf::Keyboard::Key::Down:
             selectedRow++;
+            soundManager->playSound("menuChange");
             if (selectedRow == 5)
                 selectedRow = 0;
             break;
         case sf::Keyboard::Key::Up:
             selectedRow--;
+            soundManager->playSound("menuChange");
             if (selectedRow == -1)
                 selectedRow = 4;
             break;
         case sf::Keyboard::Key::Left:
             if (selectedRow == 0 || selectedRow == 1) {
                 selectedColumn--;
+                soundManager->playSound("menuChange");
                 if (selectedColumn == -1)
                     selectedColumn = columnNumbers[selectedRow] - 1;
             }
             else if (selectedRow == 2 && *soundVolume != 0) {
                 (*soundVolume)--;
+                soundManager->setSoundVolume(*soundVolume);
                 objectsHandler->getTextPointer(11)->setString(std::to_string(*soundVolume));
                 objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 132.0f + (int) 169.0f * (*soundVolume) / 100, 154 });
             }
@@ -64,16 +68,19 @@ bool SettingsScene::eventLogic(std::optional<sf::Event> gameEvent) {
         case sf::Keyboard::Key::Right:
             if (selectedRow == 0 || selectedRow == 1) {
                 selectedColumn++;
+                soundManager->playSound("menuChange");
                 if (selectedColumn == columnNumbers[selectedRow])
                     selectedColumn = 0;
             }
             else if (selectedRow == 2 && *soundVolume != 100) {
                 (*soundVolume)++;
+                soundManager->setSoundVolume(*soundVolume);
                 objectsHandler->getTextPointer(11)->setString(std::to_string(*soundVolume));
                 objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 132.0f + (int) 169.0f * (*soundVolume) / 100, 154 });
             }
             break;
         case sf::Keyboard::Key::Enter:
+            soundManager->playSound("menuSelect");
             switch (selectedRow) {
                 case 0:
                     if (selectedColumn == 0) 

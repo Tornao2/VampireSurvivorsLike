@@ -4,6 +4,8 @@ std::string ExitHandler::getMessage(int readExitCode) {
 	switch (readExitCode) {
 		case -1:
 			return "Failed in loading font";
+		case -2:
+			return "Failed in loading sounds";
 		case 1:
 			return "Failed in loading mainmenu textures";
 		case 2:

@@ -1,7 +1,7 @@
 #pragma once
 #include "ObjectsHandler.h"
 #include "Display.h"
-#include <SFML/Audio.hpp>
+#include "SoundManager.h"
 
 #define RED { 200, 10, 10}
 #define GREEN { 40, 210, 40 }
@@ -22,10 +22,10 @@ class Scene {
 protected:
 	ObjectsHandler* objectsHandler;
 	SceneLabels* sceneLabel;
-	sf::SoundBuffer* soundBuffer;
+	SoundManager* soundManager;
 	int* soundVolume;
 public:
-	Scene(ObjectsHandler* readObjectsHandler, SceneLabels* readLabel, sf::SoundBuffer* buffer, int* volume) :objectsHandler(readObjectsHandler), sceneLabel(readLabel), soundBuffer(buffer), soundVolume(volume) {};
+	Scene(ObjectsHandler* readObjectsHandler, SceneLabels* readLabel, SoundManager* readManager, int* volume) :objectsHandler(readObjectsHandler), sceneLabel(readLabel), soundManager(readManager), soundVolume(volume) {};
 	virtual bool eventLogic(std::optional<sf::Event> gameEvent) = 0;
 	virtual bool init() = 0;
 	virtual void cleanUp() = 0;

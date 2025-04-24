@@ -5,11 +5,13 @@ Engine::Engine() {
 }
 
 void Engine::loadVolume() {
+    soundManager.loadSounds();
     std::ifstream inFile("Resources/Misc.txt");
     if (inFile) {
         std::string fullscreenStat;
         inFile >> soundVolume;
         inFile.close();
+        soundManager.setSoundVolume(soundVolume);
     }
     else 
         soundVolume = 100;
@@ -102,33 +104,32 @@ void Engine::handleEvents() {
 
 void Engine::changeScene() {
     delete scene;
-    soundBuffer = sf::SoundBuffer();
     switch (sceneLabel) {
         case MAINMENU:
-            scene = new MainMenu(&objectsHandler, &sceneLabel, &soundBuffer, &soundVolume);
+            scene = new MainMenu(&objectsHandler, &sceneLabel, &soundManager, &soundVolume);
             break;
         case SETTINGS:
-            scene = new SettingsScene(&objectsHandler, &sceneLabel, &soundBuffer, &soundVolume);
+            scene = new SettingsScene(&objectsHandler, &sceneLabel, &soundManager, &soundVolume);
             (static_cast<SettingsScene*>(scene))->setDisplay(&display);
             break;
         case RESETCHOICE:
-            scene = new ResetChoice(&objectsHandler, &sceneLabel, &soundBuffer, &soundVolume);
+            scene = new ResetChoice(&objectsHandler, &sceneLabel, &soundManager, &soundVolume);
             (static_cast<ResetChoice*>(scene))->setDisplay(&display);
             break;
         case UPGRADE:
-            scene = new UpgradeScene(&objectsHandler, &sceneLabel, &soundBuffer, &soundVolume);
+            scene = new UpgradeScene(&objectsHandler, &sceneLabel, &soundManager, &soundVolume);
             (static_cast<UpgradeScene*>(scene))->loadModifiers();
             break;
         case PLAYCHOICE:
-            scene = new PlayChoice(&objectsHandler, &sceneLabel, &soundBuffer, &soundVolume);
+            scene = new PlayChoice(&objectsHandler, &sceneLabel, &soundManager, &soundVolume);
             (static_cast<PlayChoice*>(scene))->setPointers(&selectedMap, &selectedChar);
             break;
         case PLAYSPACE:
-            scene = new PlaySpace(&objectsHandler, &sceneLabel, &soundBuffer, &soundVolume);
+            scene = new PlaySpace(&objectsHandler, &sceneLabel, &soundManager, &soundVolume);
             (static_cast<PlaySpace*>(scene))->setMapAndChar(selectedMap, selectedChar);
             break;
         case FINISHSCREEN:
-            scene = new FinishScreen(&objectsHandler, &sceneLabel, &soundBuffer, &soundVolume);
+            scene = new FinishScreen(&objectsHandler, &sceneLabel, &soundManager, &soundVolume);
             (static_cast<FinishScreen*>(scene))->setCoins(tempVariable, selectedMap, selectedChar);
             tempVariable = 0;
             break;

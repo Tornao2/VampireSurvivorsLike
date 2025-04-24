@@ -9,16 +9,19 @@ bool ResetChoice::eventLogic(std::optional<sf::Event> gameEvent) {
         return true;
     else if (gameEvent->is<sf::Event::KeyPressed>()) {
         if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Right) {
+            soundManager->playSound("menuChange");
             selectedButton++;
             if (selectedButton == 2) 
                 selectedButton = 0;
         }
         else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Left) {
+            soundManager->playSound("menuChange");
             selectedButton--;
             if (selectedButton == -1) 
                 selectedButton = 1;
         }
         else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Enter) {
+            soundManager->playSound("menuSelect");
             switch (selectedButton) {
                 case 0:
                     *sceneLabel = SETTINGS;

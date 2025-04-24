@@ -18,16 +18,19 @@ bool PlaySpace::eventLogic(std::optional<sf::Event> gameEvent) {
         }
         else if (paused) {
             if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Down) {
+                soundManager->playSound("menuChange");
                 pauseButtonIndex++;
                 if (pauseButtonIndex == 2)
                     pauseButtonIndex = 0;
             }
             else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Up) {
+                soundManager->playSound("menuChange");
                 pauseButtonIndex--;
                 if (pauseButtonIndex == -1)
                     pauseButtonIndex = 1;
             }
             else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Enter) {
+                soundManager->playSound("menuSelect");
                 if (pauseButtonIndex == 0) {
                     paused = !paused;
                     pauseBreak = 10;

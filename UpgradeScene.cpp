@@ -12,6 +12,7 @@ bool UpgradeScene::eventLogic(std::optional<sf::Event> gameEvent) {
     else if (gameEvent->is<sf::Event::KeyPressed>()) {
         switch (gameEvent->getIf<sf::Event::KeyPressed>()->code) {
             case sf::Keyboard::Key::Down:
+                soundManager->playSound("menuChange");
                 selectedRow++;
                 if (selectedRow == upgrRowsAmount + 1) 
                     selectedRow = 0;
@@ -19,6 +20,7 @@ bool UpgradeScene::eventLogic(std::optional<sf::Event> gameEvent) {
                     selectedColumn = colAmounts[selectedRow] - 1;
                 break;
             case sf::Keyboard::Key::Up:
+                soundManager->playSound("menuChange");
                 selectedRow--;
                 if (selectedRow == -1) 
                     selectedRow = upgrRowsAmount;
@@ -26,23 +28,29 @@ bool UpgradeScene::eventLogic(std::optional<sf::Event> gameEvent) {
                     selectedColumn = colAmounts[selectedRow] - 1;
                 break;
             case sf::Keyboard::Key::Left:
+                soundManager->playSound("menuChange");
                 selectedColumn--;
                 if (selectedRow < upgrRowsAmount && selectedColumn == -1) 
                     selectedColumn = colAmounts[selectedRow] - 1;
                 break;
             case sf::Keyboard::Key::Right:
+                soundManager->playSound("menuChange");
                 selectedColumn++;
                 if (selectedRow < upgrRowsAmount && selectedColumn == colAmounts[selectedRow]) 
                     selectedColumn = 0;
                 break;
             case sf::Keyboard::Key::Enter:
                 if (selectedRow < upgrRowsAmount) {
-                    modifiers.increaseLevel(selectedRow * 5 + selectedColumn);
+                    if(modifiers.increaseLevel(selectedRow * 5 + selectedColumn))
+                        soundManager->playSound("menuSelect");
+                    else 
+                        soundManager->playSound("menuBlock");
                     objectsHandler->getTextPointer(0)->setString(modifiers.getCoins());
                     objectsHandler->getTextPointer(4 + 3 * (selectedRow * 5 + selectedColumn))->setString(modifiers.getModLevel(selectedRow * 5 + selectedColumn));
                     break;
                 }
                 else {
+                    soundManager->playSound("menuSelect");
                     *sceneLabel = MAINMENU;
                     return true;
                 }

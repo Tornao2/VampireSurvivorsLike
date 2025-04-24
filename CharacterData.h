@@ -11,10 +11,10 @@ struct CharacterDetails {
 };
 
 static CharacterDetails charArray[NUMBEROFCHARS] = {
-	{100, 2, 1, 1, 1, 0, {0, 0}},
-	{120, 1.8, 1, 1, 1, 1, {16, 0}},
-	{80, 2.5, 1.1, 1.1, 1.1, 1, {32, 0}},
-	{200, 1.5, 0.95, 0.95, 0.95, 2, {48, 0}}
+	{100.0f, 2.0f, 1.0f, 1.0f, 1.0f, 0, {0, 0}},
+	{120.0f, 1.8f, 1.0f, 1.0f, 1.0f, 1, {16, 0}},
+	{80.0f, 2.5f, 1.1f, 1.1f, 1.1f, 1, {32, 0}},
+	{200.0f, 1.5f, 0.95f, 0.95f, 0.95f, 2, {48, 0}}
 };
 
 CharacterDetails getCharacterStats(int index);

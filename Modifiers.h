@@ -23,6 +23,6 @@ public:
 	std::string getCoins();
 	unsigned char* getColumnAmounts();
 	unsigned char getRowAmount();
-	void increaseLevel(int index);
+	bool increaseLevel(int index);
 	void changeCoins(int readCoinChange);
 };

@@ -5,6 +5,7 @@ bool FinishScreen::eventLogic(std::optional<sf::Event> gameEvent) {
         return true;
     else if (gameEvent->is<sf::Event::KeyPressed>()) {
         if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Enter) {
+            soundManager->playSound("menuSelect");
             *sceneLabel = MAINMENU;
             return true;
         }
