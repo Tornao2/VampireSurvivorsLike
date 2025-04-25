@@ -15,6 +15,7 @@ sf::Texture* ObjectsHandler::loadTexture(sf::Vector2i size, std::string fileName
     if (textureHolder.find(fullFileName) != textureHolder.end()) 
         return &textureHolder[fullFileName];
     sf::Texture texture;
+    texture.setSmooth(false);
     if (!texture.loadFromFile(fullFileName, false, sf::IntRect({0, 0}, size)))
         return nullptr;
     textureHolder[fullFileName] = std::move(texture);
@@ -69,32 +70,6 @@ void ObjectsHandler::loadTextIntoHolder(std::string readText, unsigned char size
 
 float ObjectsHandler::calculateTextWidth(std::string readText, unsigned char size) {
     return sf::Text(font, readText, size).getGlobalBounds().size.x;
-}
-
-void ObjectsHandler::generateChunk(int chunkX, int chunkY) {
-    std::pair pair{ chunkX, chunkY };
-    if (chunkMap.find(pair) != chunkMap.end()) {
-        chunkMap.find(pair)->second->generate = true;
-        return;
-    }
-    Chunk* chunk = new Chunk;
-    chunk->generate = true;
-    chunkMap[pair] = chunk;
-    FastNoiseLite noise(FastNoiseLite::NoiseType_Perlin);
-    sf::Texture* texture = loadTexture({ 32, 16 }, "TexturesMap1");
-    for (int i = 0; i < CHUNKSIZE; i++) {
-        for (int j = 0; j < CHUNKSIZE; j++) {
-            float value = noise.GetNoise((float)chunkX * TILESIZE * CHUNKSIZE + i * TILESIZE, (float)chunkY * TILESIZE * CHUNKSIZE + j * TILESIZE);
-            int terrain = (value < 0.55f) ? 1 : 0;
-            chunk->tiles[i][j].type = terrain;
-            chunk->tiles[i][j].sprite = new sf::Sprite(*texture, sf::IntRect({16 * chunk->tiles[i][j].type, 0}, {16, 16}));
-            chunk->tiles[i][j].sprite->setPosition({ (float) chunkX * TILESIZE *CHUNKSIZE + i * TILESIZE, (float) chunkY * TILESIZE * CHUNKSIZE + j * TILESIZE });
-        }
-    }
-}
-
-std::unordered_map<std::pair<int, int>, Chunk*, PairHash> ObjectsHandler::getChunkMap() {
-    return chunkMap;
 }
 
 void ObjectsHandler::addEnemy(int enemyId, sf::Vector2f readPos, bool readIsBoss) {
@@ -195,35 +170,15 @@ void ObjectsHandler::destroyProjectiles(std::list<Projectiles*> projectilesToDes
     }
 }
 
-void ObjectsHandler::deleteUnusedChunks() {
-    for (auto it = chunkMap.begin(); it != chunkMap.end(); ) {
-        auto& value = it->second;
-        if (!value->generate) {
-            for (Tile* tile : value->tiles) {
-                delete tile->sprite;
-                tile->sprite = nullptr;
-            }
-            delete value;
-            it = chunkMap.erase(it);
-        }
-        else 
-            ++it;
-    }
+MapGenerator* ObjectsHandler::getMapGenerator() {
+    return &generator;
 }
 
-void ObjectsHandler::falseAllChunks() {
-    for (auto& [key, value] : chunkMap) 
-        value->generate = false;
-}
-
-void ObjectsHandler::cleanChunkHolder() {
-    for (auto it = chunkMap.begin(); it != chunkMap.end(); ) {
-        auto& value = it->second;
-        for (Tile* tile : value->tiles) {
-            delete tile->sprite;
-            tile->sprite = nullptr;
-        }
-        delete value;
-        it = chunkMap.erase(it);
-    }
+void ObjectsHandler::setMap(int readMapId) {
+    sf::Vector2i size = { 32, 32 };
+    if (readMapId == 2)
+        size = { 32, 16 };
+    sf::Texture* texture = loadTexture(size, std::string("TexturesMap").append(std::to_string(readMapId+1)));
+    generator.setMapId(readMapId);
+    generator.setTextures(texture);
 }

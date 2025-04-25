@@ -111,11 +111,13 @@ bool PlayChoice::init() {
     playChoiceTexture = objectsHandler->loadTexture({ 244, 154 }, "MapThumbnails");
     if (!playChoiceTexture) 
         return true;
-    objectsHandler->loadSpriteIntoHolder(*playChoiceTexture, { 122,77 }, { 0, 77 }, spriteHolderIndex+1);
+    objectsHandler->loadSpriteIntoHolder(*playChoiceTexture, { 122,77 }, { 122, 77 }, spriteHolderIndex + 1);
     objectsHandler->getSpritePointer(spriteHolderIndex + 1, -1)->setPosition({ 155, 5 });
     objectsHandler->loadSpriteIntoHolder(*playChoiceTexture, { 122,77 }, { 0, 0 }, spriteHolderIndex+1);
     objectsHandler->getSpritePointer(spriteHolderIndex + 1, -1)->setPosition({ 155, 5 });
     objectsHandler->loadSpriteIntoHolder(*playChoiceTexture, { 122,77 }, { 122, 0 }, spriteHolderIndex+1);
+    objectsHandler->getSpritePointer(spriteHolderIndex + 1, -1)->setPosition({ 155, 5 });
+    objectsHandler->loadSpriteIntoHolder(*playChoiceTexture, { 122,77 }, { 0, 77 }, spriteHolderIndex + 1);
     objectsHandler->getSpritePointer(spriteHolderIndex + 1, -1)->setPosition({ 155, 5 });
     objectsHandler->addVectorToSpriteHolder();
     playChoiceTexture = objectsHandler->loadTexture({ 244, 221 }, "CharacterThumbnails");

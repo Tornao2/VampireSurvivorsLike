@@ -242,16 +242,17 @@ void PlaySpace::setTimer() {
 }
 
 void PlaySpace::chunkLogic() {
-    objectsHandler->falseAllChunks();
+    objectsHandler->getMapGenerator()->falseAllChunks();
     for (int dx = -3; dx < 4; dx++)
         for (int dy = -3; dy < 4; dy++)
-            objectsHandler->generateChunk((int)playerData.getPos().x / (CHUNKSIZE * TILESIZE) + dx, (int)playerData.getPos().y / (CHUNKSIZE * TILESIZE) + dy);
-    objectsHandler->deleteUnusedChunks();
+            objectsHandler->getMapGenerator()->generateChunk((int)playerData.getPos().x / (CHUNKSIZE * TILESIZE) + dx, (int)playerData.getPos().y / (CHUNKSIZE * TILESIZE) + dy);
+    objectsHandler->getMapGenerator()->deleteUnusedChunks();
 }
 
 void PlaySpace::setMapAndChar(int readMap, int readChar) {
     mapNumber = readMap;
     charNumber = readChar;
+    objectsHandler->setMap(readMap);
 }
 
 bool PlaySpace::init() {
@@ -291,7 +292,7 @@ void PlaySpace::cleanUp() {
     objectsHandler->clearTextHolder();
     objectsHandler->clearEnemyHolder();
     objectsHandler->clearProjectileHolder();
-    objectsHandler->cleanChunkHolder();
+    objectsHandler->getMapGenerator()->cleanChunkHolder();
     timer.stop();
 }
 
@@ -311,10 +312,10 @@ void PlaySpace::terrainCollision(sf::Vector2f moveStep) {
             {(float)playerData.getSize().x-1, (float)playerData.getSize().x-1});
     for (int a = -1; a <= 1; a++) {
         for (int b = -1; b <= 1; b++) {
-            auto tempMap = objectsHandler->getChunkMap().at({ playerChunkX + a, playerChunkY + b });
+            auto tempMap = objectsHandler->getMapGenerator()->getChunkMap().at({ playerChunkX + a, playerChunkY + b });
             for (int i = 0; i < CHUNKSIZE; i++) {
                 for (int j = 0; j < CHUNKSIZE; j++) {
-                    if (tempMap->tiles[i][j].type == 0) {
+                    if (tempMap->tiles[i][j].type == solid) {
                         sf::FloatRect tileBounds({ (float)(playerChunkX + a) * TILESIZE * CHUNKSIZE + i * TILESIZE, (float)(playerChunkY + b) * TILESIZE * CHUNKSIZE + j * TILESIZE}, 
                                             { (float)TILESIZE, (float)TILESIZE});
                         playerBounds.position.x += moveStep.x;

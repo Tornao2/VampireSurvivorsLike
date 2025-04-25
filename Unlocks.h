@@ -4,7 +4,7 @@
 #include <fstream>
 #include <iostream>
 
-#define NUMBEROFMAPS 2
+#define NUMBEROFMAPS 3
 #define NUMBEROFCHARS 4
 
 class Unlocks {

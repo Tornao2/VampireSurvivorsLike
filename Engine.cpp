@@ -39,10 +39,10 @@ void Engine::mainLoop() {
 }
 
 void Engine::drawPlayScene(sf::RenderTexture* texture) {
-    sf::View camera({ (static_cast<PlaySpace*>(scene))->getPlayerData().getPos().x + 8, (static_cast<PlaySpace*>(scene))->getPlayerData().getPos().y + 12 }, { 432, 270 });
+    sf::View camera({ std::round((static_cast<PlaySpace*>(scene))->getPlayerData().getPos().x) + 8, std::round((static_cast<PlaySpace*>(scene))->getPlayerData().getPos().y) + 12 }, { 432, 270 });
     texture->setView(camera);
     sf::FloatRect viewBounds(camera.getCenter() - camera.getSize() / 2.f, camera.getSize());
-    for (auto [key, chunk] : objectsHandler.getChunkMap()) {
+    for (auto [key, chunk] : objectsHandler.getMapGenerator()->getChunkMap()) {
         sf::Vector2f chunkPos((float)key.first * CHUNKSIZE * TILESIZE, (float)key.second * CHUNKSIZE * TILESIZE);
         if (!viewBounds.findIntersection(sf::FloatRect(chunkPos, sf::Vector2f(CHUNKSIZE * TILESIZE, CHUNKSIZE * TILESIZE))).has_value())
             continue;

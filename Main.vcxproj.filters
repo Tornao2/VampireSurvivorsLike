@@ -87,6 +87,9 @@
     <ClCompile Include="SoundManager.cpp">
       <Filter>Source Files\High-Level</Filter>
     </ClCompile>
+    <ClCompile Include="MapGenerator.cpp">
+      <Filter>Source Files\Scenes\Helpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UpgradeScene.h">
@@ -142,6 +145,9 @@
     </ClInclude>
     <ClInclude Include="SoundManager.h">
       <Filter>Header Files\High-Level</Filter>
+    </ClInclude>
+    <ClInclude Include="MapGenerator.h">
+      <Filter>Header Files\Scenes\Helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
