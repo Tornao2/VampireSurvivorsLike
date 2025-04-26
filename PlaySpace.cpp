@@ -65,16 +65,16 @@ void PlaySpace::initPauseMenu() {
         return;
     pauseMenuHolderIndex = objectsHandler->addVectorToSpriteHolder();
     objectsHandler->loadSpriteIntoHolder(*pauseBgTexture, { 332,220 }, { 0, 0 }, pauseMenuHolderIndex);
-    objectsHandler->getSpritePointer(pauseMenuHolderIndex, -1)->setPosition({ 50 + playerData.getPos().x - 208, 35 + playerData.getPos().y - 123 });
+    objectsHandler->getSpritePointer(pauseMenuHolderIndex, -1)->setPosition({ (float)(50 + (int)playerData.getPos().x - 208), (float)(35 + (int)playerData.getPos().y - 123) });
     sf::Texture* buttonTexture = objectsHandler->loadTexture({ 434, 102 }, "ButtonSprites");
     if (!buttonTexture)
         return;
     objectsHandler->loadTextIntoHolder("Resume", 24, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Resume", 24)) / 2, 172 });
     objectsHandler->loadTextIntoHolder("Surrender", 24, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Surrender", 24)) / 2 , 212 });
     objectsHandler->loadSpriteIntoHolder(*buttonTexture, { 90,38 }, { 270, 38 }, pauseMenuHolderIndex);
-    objectsHandler->getSpritePointer(pauseMenuHolderIndex, -1)->setPosition({ 171 + playerData.getPos().x - 208, 170 + playerData.getPos().y - 123 });
+    objectsHandler->getSpritePointer(pauseMenuHolderIndex, -1)->setPosition({ (float)(171 + (int)playerData.getPos().x - 208), (float)(170 + (int)playerData.getPos().y - 123) });
     objectsHandler->loadSpriteIntoHolder(*buttonTexture, { 90,38 }, { 270, 38 }, pauseMenuHolderIndex);
-    objectsHandler->getSpritePointer(pauseMenuHolderIndex, -1)->setPosition({ 171 + playerData.getPos().x - 208, 210 + playerData.getPos().y - 123 });
+    objectsHandler->getSpritePointer(pauseMenuHolderIndex, -1)->setPosition({ (float)(171 + (int)playerData.getPos().x - 208), (float)(210 + (int)playerData.getPos().y - 123) });
     pauseButtonFocus();
 }
 
@@ -217,7 +217,7 @@ void PlaySpace::respawnEnemies() {
     int seconds = static_cast<int>(timer.getElapsedTime().asSeconds());
     if (seconds - lastSpawnTime >= 3) {
         lastSpawnTime = seconds;
-        for (int i = 0; i < 10; i++) 
+        for (int i = 0; i < 25; i++) 
             objectsHandler->addEnemy(static_cast<int>(timer.getElapsedTime().asSeconds() / 60), randomizePos(), (seconds % 30 == 0 && i == 0) ? true : false);
     }
 }
@@ -225,10 +225,10 @@ void PlaySpace::respawnEnemies() {
 void PlaySpace::setHud() {
     objectsHandler->getSpritePointer(hudHolderIndex, 1)->setTextureRect({ {0, 8} , { (int)(((float)playerData.getXp() / playerData.getXpToNext()) * 414), 8} });
     objectsHandler->getSpritePointer(hudHolderIndex, 3)->setTextureRect({ {0, 16} , { (int)(((float)playerData.getCurrentHp() / playerData.getEffectiveMaxHp()) * 200), 8} });
-    objectsHandler->getSpritePointer(hudHolderIndex, 0)->setPosition({ 16 + playerData.getPos().x - 208, 1 + playerData.getPos().y - 123 });
-    objectsHandler->getSpritePointer(hudHolderIndex, 1)->setPosition({ 16 + playerData.getPos().x - 208, 1 + playerData.getPos().y - 123 });
-    objectsHandler->getSpritePointer(hudHolderIndex, 2)->setPosition({ 16 + playerData.getPos().x - 208, 10 + playerData.getPos().y - 123 });
-    objectsHandler->getSpritePointer(hudHolderIndex, 3)->setPosition({ 16 + playerData.getPos().x - 208, 10 + playerData.getPos().y - 123 });
+    objectsHandler->getSpritePointer(hudHolderIndex, 0)->setPosition({ 16.0f + std::round(playerData.getPos().x) - 208, 1 + std::round(playerData.getPos().y) - 123 });
+    objectsHandler->getSpritePointer(hudHolderIndex, 1)->setPosition({ 16.0f + std::round(playerData.getPos().x) - 208, 1 + std::round(playerData.getPos().y) - 123 });
+    objectsHandler->getSpritePointer(hudHolderIndex, 2)->setPosition({ 16.0f + std::round(playerData.getPos().x) - 208, 10 + std::round(playerData.getPos().y) - 123 });
+    objectsHandler->getSpritePointer(hudHolderIndex, 3)->setPosition({ 16.0f + std::round(playerData.getPos().x) - 208, 10 + std::round(playerData.getPos().y) - 123 });
 }
 
 void PlaySpace::setTimer() {
@@ -301,8 +301,23 @@ CharacterData PlaySpace::getPlayerData() {
 }
 
 void PlaySpace::movementLogic() {
-    sf::Vector2 movement = determineMovement();
+    sf::Vector2f movement = determineMovement();
+    calculateSlippage(movement);
     terrainCollision(movement);
+}
+
+void PlaySpace::calculateSlippage(sf::Vector2f readMovement) {
+    sf::Vector2f prevSlippage = playerData.getSlippage();
+    prevSlippage /= 1.2f;
+    if (prevSlippage.x > 2.0)
+        prevSlippage.x = 2;
+    else if (prevSlippage.x < -2.0)
+        prevSlippage.x = -2;
+    if (prevSlippage.y > 2.0)
+        prevSlippage.y = 2;
+    else if (prevSlippage.y < -2.0)
+        prevSlippage.y = -2;
+    playerData.setSlippage(prevSlippage);
 }
 
 void PlaySpace::terrainCollision(sf::Vector2f moveStep) {
@@ -310,39 +325,76 @@ void PlaySpace::terrainCollision(sf::Vector2f moveStep) {
     int playerChunkY = (int)playerData.getPos().y / (CHUNKSIZE * TILESIZE);
     sf::FloatRect playerBounds({playerData.getPos().x, playerData.getPos().y + playerData.getSize().y - playerData.getSize().x}, 
             {(float)playerData.getSize().x-1, (float)playerData.getSize().x-1});
+    bool ifSlip = false;
+    moveStep += playerData.getSlippage();
     for (int a = -1; a <= 1; a++) {
         for (int b = -1; b <= 1; b++) {
             auto tempMap = objectsHandler->getMapGenerator()->getChunkMap().at({ playerChunkX + a, playerChunkY + b });
             for (int i = 0; i < CHUNKSIZE; i++) {
                 for (int j = 0; j < CHUNKSIZE; j++) {
+                    sf::FloatRect tileBounds({ (float)(playerChunkX + a) * TILESIZE * CHUNKSIZE + i * TILESIZE, (float)(playerChunkY + b) * TILESIZE * CHUNKSIZE + j * TILESIZE },
+                        { (float)TILESIZE, (float)TILESIZE });
                     if (tempMap->tiles[i][j].type == solid) {
-                        sf::FloatRect tileBounds({ (float)(playerChunkX + a) * TILESIZE * CHUNKSIZE + i * TILESIZE, (float)(playerChunkY + b) * TILESIZE * CHUNKSIZE + j * TILESIZE}, 
-                                            { (float)TILESIZE, (float)TILESIZE});
                         playerBounds.position.x += moveStep.x;
-                        while (tileBounds.findIntersection(playerBounds).has_value() && std::fabs(moveStep.x) > 0.1f) {
+                        while (tileBounds.findIntersection(playerBounds).has_value() && std::fabs(moveStep.x) >= 0.1f) {
                             playerBounds.position.x -= moveStep.x;
-                            moveStep.x /= 2.f;
-                            if (moveStep.x < 0.1f)
+                            moveStep.x /= 1.5f;
+                            if (fabs(moveStep.x) < 0.1f)
                                 moveStep.x = 0;
                             playerBounds.position.x += moveStep.x;
                         }
                         playerBounds.position.x -= moveStep.x;
                         playerBounds.position.y += moveStep.y;
-                        while (tileBounds.findIntersection(playerBounds).has_value() && std::fabs(moveStep.y) > 0.1f) {
+                        while (tileBounds.findIntersection(playerBounds).has_value() && std::fabs(moveStep.y) >= 0.1f) {
                             playerBounds.position.y -= moveStep.y;
-                            moveStep.y /= 2.f;
-                            if (moveStep.y < 0.1f)
+                            moveStep.y /= 1.5f;
+                            if (fabs(moveStep.y) < 0.1f)
                                 moveStep.y = 0;
                             playerBounds.position.y += moveStep.y;
                         }
                         playerBounds.position.y -= moveStep.y;
+                        float wiggle = 1;
+                        while (tileBounds.findIntersection(playerBounds).has_value()) {
+                            playerBounds.position.y += wiggle;
+                            if (!tileBounds.findIntersection(playerBounds).has_value()) {
+                                playerData.move({ 0, wiggle });
+                                break;;
+                            }
+                            playerBounds.position.y -= 2*wiggle;
+                            if (!tileBounds.findIntersection(playerBounds).has_value()) {
+                                playerData.move({ 0, -wiggle });
+                                break;
+                            }
+                            playerBounds.position.y += wiggle;
+                            playerBounds.position.x += wiggle;
+                            if (!tileBounds.findIntersection(playerBounds).has_value()) {
+                                playerData.move({ wiggle,0 });
+                                break;
+                            }
+                            playerBounds.position.x -= 2* wiggle;
+                            if (!tileBounds.findIntersection(playerBounds).has_value()) {
+                                playerData.move({ -wiggle,0 });
+                                break;
+                            }
+                            playerBounds.position.x += 2;
+                            wiggle++;
+
+                        }
                     }
+                    else if (tempMap->tiles[i][j].type == slippery && tileBounds.findIntersection(playerBounds).has_value())
+                        ifSlip = true;
+                    else if (tempMap->tiles[i][j].type == damaging && tileBounds.findIntersection(playerBounds).has_value())
+                        playerData.changeHp(-10);
                 }
             }
         }
     }
+    if (ifSlip) 
+        playerData.setSlippage(playerData.getSlippage() + moveStep * 0.1f);
+    else
+        playerData.setSlippage({ 0.f, 0.f });
     playerData.move(moveStep);
-    objectsHandler->getSpritePointer(playerHolderIndex, -1)->move(moveStep);
+    objectsHandler->getSpritePointer(playerHolderIndex, -1)->setPosition({ std::round(playerData.getPos().x), std::round(playerData.getPos().y) });
 }
 
 sf::Vector2f PlaySpace::determineMovement() {

@@ -25,6 +25,7 @@ class PlaySpace : public Scene {
 	void initPauseMenu();
 	void cleanPauseMenu();
 	void pauseButtonFocus();
+	void calculateSlippage(sf::Vector2f readMovement);
 public:
 	using Scene::Scene;
 	void setMapAndChar(int readMap, int readChar);

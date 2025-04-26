@@ -7,7 +7,9 @@
 
 enum TerrainType {
 	walkable = 1,
-	solid
+	solid,
+	slippery,
+	damaging
 };
 
 struct Tile {

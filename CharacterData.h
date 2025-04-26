@@ -28,6 +28,7 @@ private:
 	CharacterDetails baseStats;
 	float currentHp;
 	int xp, xpToNext, level, invincibilityFrame;
+	sf::Vector2f slippage;
 public:
 	void setSizes(sf::Vector2f readPos, sf::Vector2i readSize);
 	void setMods();
@@ -50,4 +51,6 @@ public:
 	float getEffectiveAoeMod();
 	int getEffectiveArmorMod();
 	sf::Vector2i getOffsets();
+	void setSlippage(sf::Vector2f readSlipping);
+	sf::Vector2f getSlippage();
 };

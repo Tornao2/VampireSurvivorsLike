@@ -35,18 +35,71 @@ void MapGenerator::fillTilesMap1(Chunk* chunk, int chunkX, int chunkY) {
                 chunk->tiles[i][j].sprite = new sf::Sprite(*textures, sf::IntRect({ 16 * (terrain % 2), terrain > 1 ? 16 : 0 }, { 16, 16 }));
                 break;
             }
-            
             chunk->tiles[i][j].sprite->setPosition({ (float)chunkX * TILESIZE * CHUNKSIZE + i * TILESIZE, (float)chunkY * TILESIZE * CHUNKSIZE + j * TILESIZE });
         }
     }
 }
 
 void MapGenerator::fillTilesMap2(Chunk* chunk, int chunkX, int chunkY) {
-    fillTilesMap1(chunk, chunkX, chunkY);
+    FastNoiseLite noise(FastNoiseLite::DomainWarpType_OpenSimplex2);
+    noise.SetFrequency(0.010);
+    for (int i = 0; i < CHUNKSIZE; i++) {
+        for (int j = 0; j < CHUNKSIZE; j++) {
+            float value = noise.GetNoise((float)chunkX * TILESIZE * CHUNKSIZE + i * TILESIZE, (float)chunkY * TILESIZE * CHUNKSIZE + j * TILESIZE);
+            int terrain;
+            if (value < -0.15)
+                terrain = 0;
+            else if (value < 0.35 || (0.45 <= value && value < 0.9))
+                terrain = 1;
+            else if (0.35 <= value && value < 0.45)
+                terrain = 2;
+            else
+                terrain = 3;
+            switch (terrain) {
+            case 0:
+                chunk->tiles[i][j].type = walkable;
+                chunk->tiles[i][j].sprite = new sf::Sprite(*textures, sf::IntRect({ 0, 0 }, { 16, 16 }));
+                break;
+            case 1:
+                chunk->tiles[i][j].type = slippery;
+                chunk->tiles[i][j].sprite = new sf::Sprite(*textures, sf::IntRect({ 16, 0 }, { 16, 16 }));
+                break;
+            case 2:
+            case 3:
+                chunk->tiles[i][j].type = solid;
+                chunk->tiles[i][j].sprite = new sf::Sprite(*textures, sf::IntRect({ 16 * (terrain % 2), 16 }, { 16, 16 }));
+                break;
+            }
+            chunk->tiles[i][j].sprite->setPosition({ (float)chunkX * TILESIZE * CHUNKSIZE + i * TILESIZE, (float)chunkY * TILESIZE * CHUNKSIZE + j * TILESIZE });
+        }
+    }
 }
 
 void MapGenerator::fillTilesMap3(Chunk* chunk, int chunkX, int chunkY) {
-    fillTilesMap1(chunk, chunkX, chunkY);
+    FastNoiseLite noise(FastNoiseLite::CellularReturnType_Distance2Add);
+    noise.SetFrequency(0.003);
+    noise.SetSeed(1232);
+    for (int i = 0; i < CHUNKSIZE; i++) {
+        for (int j = 0; j < CHUNKSIZE; j++) {
+            float value = noise.GetNoise((float)chunkX * TILESIZE * CHUNKSIZE + i * TILESIZE, (float)chunkY * TILESIZE * CHUNKSIZE + j * TILESIZE);
+            int terrain;
+            if (value < 0)
+                terrain = 0;
+            else 
+                terrain = 1;
+            switch (terrain) {
+            case 0:
+                chunk->tiles[i][j].type = walkable;
+                chunk->tiles[i][j].sprite = new sf::Sprite(*textures, sf::IntRect({ 16, 0 }, { 16, 16 }));
+                break;
+            case 1:
+                chunk->tiles[i][j].type = damaging;
+                chunk->tiles[i][j].sprite = new sf::Sprite(*textures, sf::IntRect({ 0, 0 }, { 16, 16 }));
+                break;
+            }
+            chunk->tiles[i][j].sprite->setPosition({ (float)chunkX * TILESIZE * CHUNKSIZE + i * TILESIZE, (float)chunkY * TILESIZE * CHUNKSIZE + j * TILESIZE });
+        }
+    }
 }
 
 std::unordered_map<std::pair<int, int>, Chunk*, PairHash> MapGenerator::getChunkMap() {

@@ -127,3 +127,11 @@ int CharacterData::getEffectiveArmorMod() {
 sf::Vector2i CharacterData::getOffsets() {
 	return baseStats.offset;
 }
+
+void CharacterData::setSlippage(sf::Vector2f readSlipping) {
+	slippage = readSlipping;
+}
+
+sf::Vector2f CharacterData::getSlippage() {
+	return slippage;
+}

@@ -34,7 +34,7 @@ float EnemyData::getDamage() {
 
 void EnemyData::move(sf::Vector2f ms) {
 	pos += ms * enemyStats.move;
-	sprite->move(ms * enemyStats.move);
+	sprite->setPosition({ std::round(pos.x), std::round(pos.y) });
 }
 
 void EnemyData::changeHealthBy(float readChange) {

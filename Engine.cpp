@@ -39,7 +39,7 @@ void Engine::mainLoop() {
 }
 
 void Engine::drawPlayScene(sf::RenderTexture* texture) {
-    sf::View camera({ std::round((static_cast<PlaySpace*>(scene))->getPlayerData().getPos().x) + 8, std::round((static_cast<PlaySpace*>(scene))->getPlayerData().getPos().y) + 12 }, { 432, 270 });
+    sf::View camera({ std::round((static_cast<PlaySpace*>(scene))->getPlayerData().getPos().x + 8), std::round((static_cast<PlaySpace*>(scene))->getPlayerData().getPos().y + 12) }, { 432, 270 });
     texture->setView(camera);
     sf::FloatRect viewBounds(camera.getCenter() - camera.getSize() / 2.f, camera.getSize());
     for (auto [key, chunk] : objectsHandler.getMapGenerator()->getChunkMap()) {
