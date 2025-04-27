@@ -17,13 +17,27 @@ void Engine::loadVolume() {
         soundVolume = 100;
 }
 
+void Engine::loadMusic(std::string filename) {
+    if (scene == nullptr)
+        playedMusic.stop();
+    std::string realFilename = "Resources/Sounds/";
+    realFilename = realFilename.append(filename).append(".wav");
+    playedMusic.openFromFile(realFilename);
+    playedMusic.setVolume(soundVolume);
+    playedMusic.setLooping(true);
+    playedMusic.play();
+}
+
 void Engine::mainLoop() {
     if (objectsHandler.loadFont()) {
         errorCode = -1;
         return;
     }
     loadVolume();
-    changeScene();
+    loadMusic("MenuMusic");
+    scene = new MainMenu(&objectsHandler, &sceneLabel, &soundManager, &soundVolume);
+    if (scene->init())
+        errorCode = (int)sceneLabel;
     while (display.getWindow()->isOpen())
     {
         handleEvents();
@@ -106,11 +120,13 @@ void Engine::changeScene() {
     delete scene;
     switch (sceneLabel) {
         case MAINMENU:
+            loadMusic("MenuMusic");
             scene = new MainMenu(&objectsHandler, &sceneLabel, &soundManager, &soundVolume);
             break;
         case SETTINGS:
             scene = new SettingsScene(&objectsHandler, &sceneLabel, &soundManager, &soundVolume);
             (static_cast<SettingsScene*>(scene))->setDisplay(&display);
+            (static_cast<SettingsScene*>(scene))->setMusicPointer(&playedMusic);
             break;
         case RESETCHOICE:
             scene = new ResetChoice(&objectsHandler, &sceneLabel, &soundManager, &soundVolume);
@@ -127,6 +143,7 @@ void Engine::changeScene() {
         case PLAYSPACE:
             scene = new PlaySpace(&objectsHandler, &sceneLabel, &soundManager, &soundVolume);
             (static_cast<PlaySpace*>(scene))->setMapAndChar(selectedMap, selectedChar);
+            loadMusic(std::string("MusicMap").append(std::to_string(selectedMap + 1)));
             break;
         case FINISHSCREEN:
             scene = new FinishScreen(&objectsHandler, &sceneLabel, &soundManager, &soundVolume);

@@ -6,7 +6,7 @@ void EnemyData::giveStats(int enemyId, sf::Vector2f readPos, bool readIsBoss){
 	size = { 16, 24 };
 	if (readIsBoss) {
 		enemyStats.armor *= 5;
-		enemyStats.damage *= 4;
+		enemyStats.damage *= 3;
 		enemyStats.baseHp *= 20;
 		enemyStats.move *= 1.4;
 		size = { 32, 48 };

@@ -1,5 +1,9 @@
 #include "Settings.h"
 
+void SettingsScene::setMusicPointer(sf::Music* readMusic) {
+    playedMusic = readMusic;
+}
+
 void SettingsScene::refreshSelection() {
     for (sf::Text& text : *objectsHandler->getTextHolder()) 
         text.setFillColor(sf::Color::White);
@@ -61,6 +65,7 @@ bool SettingsScene::eventLogic(std::optional<sf::Event> gameEvent) {
             else if (selectedRow == 2 && *soundVolume != 0) {
                 (*soundVolume)--;
                 soundManager->setSoundVolume(*soundVolume);
+                playedMusic->setVolume(*soundVolume);
                 objectsHandler->getTextPointer(11)->setString(std::to_string(*soundVolume));
                 objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 132.0f + (int) 169.0f * (*soundVolume) / 100, 154 });
             }
@@ -75,6 +80,7 @@ bool SettingsScene::eventLogic(std::optional<sf::Event> gameEvent) {
             else if (selectedRow == 2 && *soundVolume != 100) {
                 (*soundVolume)++;
                 soundManager->setSoundVolume(*soundVolume);
+                playedMusic->setVolume(*soundVolume);
                 objectsHandler->getTextPointer(11)->setString(std::to_string(*soundVolume));
                 objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 132.0f + (int) 169.0f * (*soundVolume) / 100, 154 });
             }

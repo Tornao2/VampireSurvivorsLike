@@ -42,12 +42,13 @@ void MapGenerator::fillTilesMap1(Chunk* chunk, int chunkX, int chunkY) {
 
 void MapGenerator::fillTilesMap2(Chunk* chunk, int chunkX, int chunkY) {
     FastNoiseLite noise(FastNoiseLite::DomainWarpType_OpenSimplex2);
-    noise.SetFrequency(0.010);
+    noise.SetFrequency(0.007);
+    noise.SetSeed(1111);
     for (int i = 0; i < CHUNKSIZE; i++) {
         for (int j = 0; j < CHUNKSIZE; j++) {
             float value = noise.GetNoise((float)chunkX * TILESIZE * CHUNKSIZE + i * TILESIZE, (float)chunkY * TILESIZE * CHUNKSIZE + j * TILESIZE);
             int terrain;
-            if (value < -0.15)
+            if (value < -0.05)
                 terrain = 0;
             else if (value < 0.35 || (0.45 <= value && value < 0.9))
                 terrain = 1;

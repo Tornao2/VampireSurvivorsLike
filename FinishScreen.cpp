@@ -41,6 +41,11 @@ void FinishScreen::setCoins(int readCoins, int chosenMap, int chosenChar) {
 }
 
 bool FinishScreen::init() {
+    spriteHolderIndex = objectsHandler->addVectorToSpriteHolder();
+    sf::Texture* backgroundTexture = objectsHandler->loadTexture({ 432, 270 }, "ResetBG");
+    if (!backgroundTexture)
+        return true;
+    objectsHandler->loadSpriteIntoHolder(*backgroundTexture, { 432,270 }, { 0, 0 }, spriteHolderIndex);
     sf::Texture* buttonTexture = objectsHandler->loadTexture({ 434, 102 }, "ButtonSprites");
     if (!buttonTexture)
         return true;
@@ -48,7 +53,6 @@ bool FinishScreen::init() {
     objectsHandler->loadTextIntoHolder(std::to_string(coins), 35, { (SCENEWIDTH - (objectsHandler->calculateTextWidth(std::to_string(coins), 35))) / 2, 50 });
     if (unlocked) 
         objectsHandler->loadTextIntoHolder("You have unlocked something new!", 27, { (SCENEWIDTH - (objectsHandler->calculateTextWidth("You have unlocked something new!", 27))) / 2, 100 });
-    spriteHolderIndex = objectsHandler->addVectorToSpriteHolder();
     objectsHandler->loadSpriteIntoHolder(*buttonTexture, { 90,38 }, { 270, 38 }, spriteHolderIndex);
     objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 171, 200 });
     objectsHandler->loadTextIntoHolder("Menu", 27, { (SCENEWIDTH - (objectsHandler->calculateTextWidth("Menu", 27))) / 2, 200 });

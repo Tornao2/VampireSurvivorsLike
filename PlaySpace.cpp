@@ -324,7 +324,7 @@ void PlaySpace::terrainCollision(sf::Vector2f moveStep) {
     int playerChunkX = (int)playerData.getPos().x / (CHUNKSIZE * TILESIZE);
     int playerChunkY = (int)playerData.getPos().y / (CHUNKSIZE * TILESIZE);
     sf::FloatRect playerBounds({playerData.getPos().x, playerData.getPos().y + playerData.getSize().y - playerData.getSize().x}, 
-            {(float)playerData.getSize().x-1, (float)playerData.getSize().x-1});
+            {(float)playerData.getSize().x, (float)playerData.getSize().x});
     bool ifSlip = false;
     moveStep += playerData.getSlippage();
     for (int a = -1; a <= 1; a++) {
@@ -336,50 +336,23 @@ void PlaySpace::terrainCollision(sf::Vector2f moveStep) {
                         { (float)TILESIZE, (float)TILESIZE });
                     if (tempMap->tiles[i][j].type == solid) {
                         playerBounds.position.x += moveStep.x;
-                        while (tileBounds.findIntersection(playerBounds).has_value() && std::fabs(moveStep.x) >= 0.1f) {
+                        while (tileBounds.findIntersection(playerBounds).has_value() && std::fabs(moveStep.x) >= 0.05f) {
                             playerBounds.position.x -= moveStep.x;
-                            moveStep.x /= 1.5f;
-                            if (fabs(moveStep.x) < 0.1f)
+                            moveStep.x /= 1.4f;
+                            if (fabs(moveStep.x) < 0.05f)
                                 moveStep.x = 0;
                             playerBounds.position.x += moveStep.x;
                         }
                         playerBounds.position.x -= moveStep.x;
                         playerBounds.position.y += moveStep.y;
-                        while (tileBounds.findIntersection(playerBounds).has_value() && std::fabs(moveStep.y) >= 0.1f) {
+                        while (tileBounds.findIntersection(playerBounds).has_value() && std::fabs(moveStep.y) >= 0.05f) {
                             playerBounds.position.y -= moveStep.y;
-                            moveStep.y /= 1.5f;
-                            if (fabs(moveStep.y) < 0.1f)
+                            moveStep.y /= 1.4f;
+                            if (fabs(moveStep.y) < 0.05f)
                                 moveStep.y = 0;
                             playerBounds.position.y += moveStep.y;
                         }
                         playerBounds.position.y -= moveStep.y;
-                        float wiggle = 1;
-                        while (tileBounds.findIntersection(playerBounds).has_value()) {
-                            playerBounds.position.y += wiggle;
-                            if (!tileBounds.findIntersection(playerBounds).has_value()) {
-                                playerData.move({ 0, wiggle });
-                                break;;
-                            }
-                            playerBounds.position.y -= 2*wiggle;
-                            if (!tileBounds.findIntersection(playerBounds).has_value()) {
-                                playerData.move({ 0, -wiggle });
-                                break;
-                            }
-                            playerBounds.position.y += wiggle;
-                            playerBounds.position.x += wiggle;
-                            if (!tileBounds.findIntersection(playerBounds).has_value()) {
-                                playerData.move({ wiggle,0 });
-                                break;
-                            }
-                            playerBounds.position.x -= 2* wiggle;
-                            if (!tileBounds.findIntersection(playerBounds).has_value()) {
-                                playerData.move({ -wiggle,0 });
-                                break;
-                            }
-                            playerBounds.position.x += 2;
-                            wiggle++;
-
-                        }
                     }
                     else if (tempMap->tiles[i][j].type == slippery && tileBounds.findIntersection(playerBounds).has_value())
                         ifSlip = true;
