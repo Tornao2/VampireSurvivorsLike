@@ -6,6 +6,6 @@ class SoundManager {
 	std::unordered_map<std::string, sf::Sound*> soundHolders;
 public:
 	void loadSounds();
-	void playSound(std::string text);
+	void playSound(std::string text, bool checkBreak);
 	void setSoundVolume(int volume);
 };

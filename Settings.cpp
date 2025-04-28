@@ -45,20 +45,20 @@ bool SettingsScene::eventLogic(std::optional<sf::Event> gameEvent) {
         switch (gameEvent->getIf<sf::Event::KeyPressed>()->code) {
         case sf::Keyboard::Key::Down:
             selectedRow++;
-            soundManager->playSound("menuChange");
+            soundManager->playSound("menuChange", true);
             if (selectedRow == 5)
                 selectedRow = 0;
             break;
         case sf::Keyboard::Key::Up:
             selectedRow--;
-            soundManager->playSound("menuChange");
+            soundManager->playSound("menuChange", true);
             if (selectedRow == -1)
                 selectedRow = 4;
             break;
         case sf::Keyboard::Key::Left:
             if (selectedRow == 0 || selectedRow == 1) {
                 selectedColumn--;
-                soundManager->playSound("menuChange");
+                soundManager->playSound("menuChange", true);
                 if (selectedColumn == -1)
                     selectedColumn = columnNumbers[selectedRow] - 1;
             }
@@ -73,7 +73,7 @@ bool SettingsScene::eventLogic(std::optional<sf::Event> gameEvent) {
         case sf::Keyboard::Key::Right:
             if (selectedRow == 0 || selectedRow == 1) {
                 selectedColumn++;
-                soundManager->playSound("menuChange");
+                soundManager->playSound("menuChange", true);
                 if (selectedColumn == columnNumbers[selectedRow])
                     selectedColumn = 0;
             }
@@ -86,7 +86,7 @@ bool SettingsScene::eventLogic(std::optional<sf::Event> gameEvent) {
             }
             break;
         case sf::Keyboard::Key::Enter:
-            soundManager->playSound("menuSelect");
+            soundManager->playSound("menuSelect", true);
             switch (selectedRow) {
                 case 0:
                     if (selectedColumn == 0) 

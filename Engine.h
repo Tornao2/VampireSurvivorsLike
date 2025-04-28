@@ -8,7 +8,7 @@
 #include "FinishScreen.h"
 
 class Engine {
-	SceneLabels sceneLabel;
+	SceneLabels sceneLabel = MAINMENU;
 	Display display;
 	ObjectsHandler objectsHandler;
 	Scene* scene = nullptr;
@@ -24,7 +24,6 @@ class Engine {
 	int errorCode = 0;
 	int selectedMap = 0, selectedChar = 0, tempVariable = 0;
 public:
-	Engine();
 	void mainLoop();
 	int getErrorCode();
 };

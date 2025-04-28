@@ -1,9 +1,5 @@
 #include "Engine.h"
 
-Engine::Engine() {
-	sceneLabel = MAINMENU;
-}
-
 void Engine::loadVolume() {
     soundManager.loadSounds();
     std::ifstream inFile("Resources/Misc.txt");
@@ -34,10 +30,7 @@ void Engine::mainLoop() {
         return;
     }
     loadVolume();
-    loadMusic("MenuMusic");
-    scene = new MainMenu(&objectsHandler, &sceneLabel, &soundManager, &soundVolume);
-    if (scene->init())
-        errorCode = (int)sceneLabel;
+    changeScene();
     while (display.getWindow()->isOpen())
     {
         handleEvents();
@@ -149,6 +142,7 @@ void Engine::changeScene() {
             scene = new FinishScreen(&objectsHandler, &sceneLabel, &soundManager, &soundVolume);
             (static_cast<FinishScreen*>(scene))->setCoins(tempVariable, selectedMap, selectedChar);
             tempVariable = 0;
+            loadMusic("MenuMusic");
             break;
     }
     if (scene->init()) 

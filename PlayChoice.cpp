@@ -5,47 +5,47 @@ bool PlayChoice::eventLogic(std::optional<sf::Event> gameEvent) {
         return true;
     else if (gameEvent->is<sf::Event::KeyPressed>()) {
         if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Down) {
-            soundManager->playSound("menuChange");
+            soundManager->playSound("menuChange", true);
             selectedRow++;
             if (selectedRow == 4) 
                 selectedRow = 0;
         }
         else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Up) {
-            soundManager->playSound("menuChange");
+            soundManager->playSound("menuChange", true);
             selectedRow--;
             if (selectedRow == -1) 
                 selectedRow = 3;
         } else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Right) {
             if (selectedRow == 0 && *selectedMap != NUMBEROFMAPS - 1) {
                 (*selectedMap)++;
-                soundManager->playSound("menuChange");
+                soundManager->playSound("menuChange", true);
             }
             else if (selectedRow == 0 && *selectedMap == NUMBEROFMAPS - 1)
-                soundManager->playSound("menuBlock");
+                soundManager->playSound("menuBlock", true);
             else if (selectedRow == 1 && *selectedPlayer != NUMBEROFCHARS - 1) {
                 (*selectedPlayer)++;
-                soundManager->playSound("menuChange");
+                soundManager->playSound("menuChange", true);
                 refreshCharacterStats();
             }
             else if (selectedRow == 1 &&  *selectedPlayer == NUMBEROFCHARS - 1)
-                soundManager->playSound("menuBlock");
+                soundManager->playSound("menuBlock", true);
         }
         else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Left) {
-            soundManager->playSound("menuChange");
+            soundManager->playSound("menuChange", true);
             if (selectedRow == 0 && *selectedMap != 0) {
                 (*selectedMap)--;
-                soundManager->playSound("menuChange");
+                soundManager->playSound("menuChange", true);
             } else if (selectedRow == 0 && *selectedMap == 0)
-                soundManager->playSound("menuBlock");
+                soundManager->playSound("menuBlock", true);
             else if (selectedRow == 1 && *selectedPlayer != 0) {
                 (*selectedPlayer)--;
                 refreshCharacterStats();
-                soundManager->playSound("menuChange");
+                soundManager->playSound("menuChange", true);
             } else if (selectedRow == 1 &&  *selectedPlayer == 0)
-                soundManager->playSound("menuBlock");
+                soundManager->playSound("menuBlock", true);
         }
         else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Enter) {
-            soundManager->playSound("menuSelect");
+            soundManager->playSound("menuSelect", true);
             if (selectedRow == 2 && unlockedMaps.at(*selectedMap) && unlockedChars.at(*selectedPlayer)){
                 *sceneLabel = PLAYSPACE;
                 return true;

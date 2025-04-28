@@ -18,19 +18,19 @@ bool PlaySpace::eventLogic(std::optional<sf::Event> gameEvent) {
         }
         else if (paused) {
             if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Down) {
-                soundManager->playSound("menuChange");
+                soundManager->playSound("menuChange", true);
                 pauseButtonIndex++;
                 if (pauseButtonIndex == 2)
                     pauseButtonIndex = 0;
             }
             else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Up) {
-                soundManager->playSound("menuChange");
+                soundManager->playSound("menuChange", true);
                 pauseButtonIndex--;
                 if (pauseButtonIndex == -1)
                     pauseButtonIndex = 1;
             }
             else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Enter) {
-                soundManager->playSound("menuSelect");
+                soundManager->playSound("menuSelect", true);
                 if (pauseButtonIndex == 0) {
                     paused = !paused;
                     pauseBreak = 10;
@@ -91,6 +91,8 @@ void PlaySpace::decrementPauseTime() {
 bool PlaySpace::realTimeLogic() {
     int seconds = static_cast<int>(timer.getElapsedTime().asSeconds());
     if (playerData.getCurrentHp() == 0 || seconds >= 600) {
+        if (playerData.getCurrentHp() == 0)
+            soundManager->playSound("death", false);
         *sceneLabel = FINISHSCREEN;
         return true;
     }
@@ -154,6 +156,7 @@ void PlaySpace::checkEnemyHp() {
             enemiesToKill.push_back(enemy);
             playerData.increaseXp(enemy->getXpForKill());
             objectsHandler->getTextPointer(1)->setString(std::string("LVL:").append(std::to_string(playerData.getLevel())));
+            soundManager->playSound("death", false);
         }
     }
     objectsHandler->killEnemy(enemiesToKill);
@@ -284,7 +287,7 @@ bool PlaySpace::init() {
         return true;
     if (!projectileTexture)
         return true;
-    return false;
+    return false; 
 }
 
 void PlaySpace::cleanUp() {

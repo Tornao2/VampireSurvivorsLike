@@ -6,18 +6,18 @@ bool MainMenu::eventLogic(std::optional<sf::Event> gameEvent) {
     else if (gameEvent->is<sf::Event::KeyPressed>()){
         if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Down) {
             selectedButton++;
-            soundManager->playSound("menuChange");
+            soundManager->playSound("menuChange", true);
             if (selectedButton == 5) 
                 selectedButton = 0;
         }
         else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Up) {
             selectedButton--;
-            soundManager->playSound("menuChange");
+            soundManager->playSound("menuChange", true);
             if (selectedButton == -1) 
                 selectedButton = 4;
         }
         else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Enter) {
-            soundManager->playSound("menuSelect");
+            soundManager->playSound("menuSelect", true);
             switch (selectedButton) {
                 case 0:
                     *sceneLabel = PLAYCHOICE;
