@@ -26,6 +26,7 @@ class PlaySpace : public Scene {
 	void cleanPauseMenu();
 	void pauseButtonFocus();
 	void calculateSlippage(sf::Vector2f readMovement);
+	bool enemyWiggleHelper[16][15];
 public:
 	using Scene::Scene;
 	void setMapAndChar(int readMap, int readChar);

@@ -164,12 +164,40 @@ void PlaySpace::checkEnemyHp() {
 
 void PlaySpace::moveEnemies() {
     std::list <EnemyData*> enemiesToKill;
+    float randMove = 0.8;
+    int wiggleX, wiggleY;
     for (EnemyData* enemy : *objectsHandler->getEnemyHolder()) {
-        sf::Vector2f dirVec = playerData.getPos() - enemy->getPos();
-        float length = std::sqrt(dirVec.x * dirVec.x + dirVec.y * dirVec.y);
+        sf::Vector2f preDirVec = enemy->getPos() - playerData.getPos();
+        float length = std::sqrt(preDirVec.x * preDirVec.x + preDirVec.y * preDirVec.y);
+        preDirVec += sf::Vector2f({ (rand() % 12) * preDirVec.x / 12, (rand() % 12) * preDirVec.y / 12 });
+        length = std::sqrt(preDirVec.x * preDirVec.x + preDirVec.y * preDirVec.y);
         if (fabs(length) >= 0.5) {
-            dirVec /= length;
-            enemy->move(dirVec);
+            preDirVec /= length;
+            enemy->move(-1.f *preDirVec);
+        }
+        sf::Vector2f postDirVec = enemy->getPos() - playerData.getPos();
+        wiggleX = (postDirVec.x + 216)/27;
+        wiggleY = (postDirVec.y + 135)/ 18;
+        if (wiggleX >= 0 && wiggleX < 16 && wiggleY >= 0 && wiggleY < 15) {
+            if (enemyWiggleHelper[wiggleX][wiggleY]) {
+                if (fabs(preDirVec.x) > fabs(preDirVec.y)) {
+                    enemy->move({ (float) (rand() / RAND_MAX - 0.5)*0.5f, (float)(rand() / RAND_MAX - 0.5) * 0.2f });
+                    if (postDirVec.y > 0 && wiggleY + 1 < 15)
+                        enemy->move({ 0, randMove });
+                    else if (wiggleY - 1 >= 0)
+                        enemy->move({ 0, -randMove });
+                } else {
+                    enemy->move({ (float)(rand() / RAND_MAX - 0.5) * 0.2f, (float)(rand() / RAND_MAX - 0.5)*0.5f });
+                    if (postDirVec.x > 0 && wiggleX + 1 < 16)
+                        enemy->move({ randMove, 0 });
+                    else if (wiggleX - 1 >= 0)
+                        enemy->move({ -randMove, 0 });   
+                }
+                if (rand() % 2 == 0)
+                    enemyWiggleHelper[wiggleX][wiggleY] = false;
+            }
+            else
+                enemyWiggleHelper[wiggleX][wiggleY] = true;
         }
         if ((enemy->getPos() - playerData.getPos()).length() >= 400) {
             if (enemy->getIfBoss()) {
@@ -181,6 +209,7 @@ void PlaySpace::moveEnemies() {
         }
     }
     objectsHandler->killEnemy(enemiesToKill);
+    memset(enemyWiggleHelper, false, 16 * 15 * sizeof(bool));
 }
 
 void PlaySpace::checkEnemyCollision() {
