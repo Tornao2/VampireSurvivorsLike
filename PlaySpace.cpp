@@ -100,6 +100,7 @@ bool PlaySpace::realTimeLogic() {
         playerData.decrementInvincibility();
         chunkLogic();
         movementLogic();
+        powerUpLogic();
         moveEnemies();
         weaponLogic();
         moveProjectiles();
@@ -110,6 +111,45 @@ bool PlaySpace::realTimeLogic() {
         setHud();
         respawnEnemies();
         return false;
+    }
+}
+
+void PlaySpace::powerUpLogic() {
+    sf::FloatRect playerBounds({ playerData.getPos().x,playerData.getPos().y + playerData.getSize().y - playerData.getSize().x }, { (float)playerData.getSize().x, (float)playerData.getSize().x });
+    for (PowerUp* powerUp : *objectsHandler->getPowerUpHolder()) {
+        sf::FloatRect powerUpBounds(powerUp->getPos(), { (float) powerUp->getSize().x,(float) powerUp->getSize().y });
+        if (powerUp->decrementTimeLeft()) {
+            objectsHandler->destroyPowerUp(powerUp);
+            return;
+        }
+        else if (playerBounds.findIntersection(powerUpBounds).has_value()) {
+            usePowerUp(powerUp->getId());
+            objectsHandler->destroyPowerUp(powerUp);
+            return;
+        }
+    }
+}
+
+void PlaySpace::usePowerUp(int readId) {
+    std::list <EnemyData*> enemiesToKill = *objectsHandler->getEnemyHolder();
+    switch (readId) {
+        case 0:
+            additionalCoins += 50;
+            soundManager->playSound("powerCoin", false);
+            break;
+        case 1:      
+            objectsHandler->killEnemy(enemiesToKill);
+            soundManager->playSound("powerBomb", false);
+            break;
+        case 2:
+            playerData.setHp(playerData.getEffectiveMaxHp());
+            soundManager->playSound("powerHp", false);
+            break;
+        case 3:
+            playerData.increaseXp(1000);
+            soundManager->playSound("powerXp", false);
+            objectsHandler->getTextPointer(1)->setString(std::string("LVL:").append(std::to_string(playerData.getLevel())));
+            break;
     }
 }
 
@@ -157,6 +197,8 @@ void PlaySpace::checkEnemyHp() {
             playerData.increaseXp(enemy->getXpForKill());
             objectsHandler->getTextPointer(1)->setString(std::string("LVL:").append(std::to_string(playerData.getLevel())));
             soundManager->playSound("death", false);
+            if (enemy->getIfBoss())
+                objectsHandler->addPowerUp(rand()%4, enemy->getPos());
         }
     }
     objectsHandler->killEnemy(enemiesToKill);
@@ -249,18 +291,18 @@ void PlaySpace::respawnEnemies() {
     int seconds = static_cast<int>(timer.getElapsedTime().asSeconds());
     if (seconds - lastSpawnTime >= 3) {
         lastSpawnTime = seconds;
-        for (int i = 0; i < 25; i++) 
+        for (int i = 0; i < 20; i++) 
             objectsHandler->addEnemy(static_cast<int>(timer.getElapsedTime().asSeconds() / 60), randomizePos(), (seconds % 30 == 0 && i == 0) ? true : false);
     }
 }
 
 void PlaySpace::setHud() {
-    objectsHandler->getSpritePointer(hudHolderIndex, 1)->setTextureRect({ {0, 8} , { (int)(((float)playerData.getXp() / playerData.getXpToNext()) * 414), 8} });
+    objectsHandler->getSpritePointer(hudHolderIndex, 1)->setTextureRect({ {0, 8} , { (int)(((float)playerData.getXp() / playerData.getXpToNext()) * 394), 8} });
     objectsHandler->getSpritePointer(hudHolderIndex, 3)->setTextureRect({ {0, 16} , { (int)(((float)playerData.getCurrentHp() / playerData.getEffectiveMaxHp()) * 200), 8} });
-    objectsHandler->getSpritePointer(hudHolderIndex, 0)->setPosition({ 16.0f + std::round(playerData.getPos().x) - 208, 1 + std::round(playerData.getPos().y) - 123 });
-    objectsHandler->getSpritePointer(hudHolderIndex, 1)->setPosition({ 16.0f + std::round(playerData.getPos().x) - 208, 1 + std::round(playerData.getPos().y) - 123 });
-    objectsHandler->getSpritePointer(hudHolderIndex, 2)->setPosition({ 16.0f + std::round(playerData.getPos().x) - 208, 10 + std::round(playerData.getPos().y) - 123 });
-    objectsHandler->getSpritePointer(hudHolderIndex, 3)->setPosition({ 16.0f + std::round(playerData.getPos().x) - 208, 10 + std::round(playerData.getPos().y) - 123 });
+    objectsHandler->getSpritePointer(hudHolderIndex, 0)->setPosition({ 36 + std::round(playerData.getPos().x) - 208, 1 + std::round(playerData.getPos().y) - 123 });
+    objectsHandler->getSpritePointer(hudHolderIndex, 1)->setPosition({ 36 + std::round(playerData.getPos().x) - 208, 1 + std::round(playerData.getPos().y) - 123 });
+    objectsHandler->getSpritePointer(hudHolderIndex, 2)->setPosition({ 36 + std::round(playerData.getPos().x) - 208, 10 + std::round(playerData.getPos().y) - 123 });
+    objectsHandler->getSpritePointer(hudHolderIndex, 3)->setPosition({ 36 + std::round(playerData.getPos().x) - 208, 10 + std::round(playerData.getPos().y) - 123 });
 }
 
 void PlaySpace::setTimer() {
@@ -299,22 +341,25 @@ bool PlaySpace::init() {
     objectsHandler->loadSpriteIntoHolder(*characterTexture, playerData.getSize(), playerData.getOffsets(), playerHolderIndex);
     objectsHandler->getSpritePointer(playerHolderIndex, -1)->setPosition({ 208, 124 });
     objectsHandler->loadTextIntoHolder("00:00", 24, { (SCENEWIDTH - objectsHandler->calculateTextWidth("00:00", 24)) / 2, 11 });
-    objectsHandler->loadTextIntoHolder("LVL:1", 9, { SCENEWIDTH/52 - objectsHandler->calculateTextWidth("LVL:1",9)/2 , 0 });
-    sf::Texture* hudTexture = objectsHandler->loadTexture({ 414, 24 }, "HudElements");
+    objectsHandler->loadTextIntoHolder("LVL:1", 14, { SCENEWIDTH/32 - objectsHandler->calculateTextWidth("LVL:1",14)/2 , 0 });
+    sf::Texture* hudTexture = objectsHandler->loadTexture({ 394, 24 }, "HudElements");
     hudHolderIndex = objectsHandler->addVectorToSpriteHolder();
-    objectsHandler->loadSpriteIntoHolder(*hudTexture, { 414,8 }, { 0, 0 }, hudHolderIndex);
-    objectsHandler->getSpritePointer(hudHolderIndex, -1)->setPosition({ 16, 1 });
-    objectsHandler->loadSpriteIntoHolder(*hudTexture, { 414,8 }, { 0, 8 }, hudHolderIndex);
-    objectsHandler->getSpritePointer(hudHolderIndex, -1)->setPosition({ 16, 1 });
+    objectsHandler->loadSpriteIntoHolder(*hudTexture, { 394,8 }, { 0, 0 }, hudHolderIndex);
+    objectsHandler->getSpritePointer(hudHolderIndex, -1)->setPosition({ 36, 1 });
+    objectsHandler->loadSpriteIntoHolder(*hudTexture, { 394,8 }, { 0, 8 }, hudHolderIndex);
+    objectsHandler->getSpritePointer(hudHolderIndex, -1)->setPosition({ 36, 1 });
     objectsHandler->loadSpriteIntoHolder(*hudTexture, { 200,8 }, { 0, 0 }, hudHolderIndex);
-    objectsHandler->getSpritePointer(hudHolderIndex, -1)->setPosition({ 16, 10 });
+    objectsHandler->getSpritePointer(hudHolderIndex, -1)->setPosition({ 36, 10 });
     objectsHandler->loadSpriteIntoHolder(*hudTexture, { 200,8 }, { 0, 16 }, hudHolderIndex);
-    objectsHandler->getSpritePointer(hudHolderIndex, -1)->setPosition({ 16, 10 });
+    objectsHandler->getSpritePointer(hudHolderIndex, -1)->setPosition({ 36, 10 });
     sf::Texture* enemyTexture = objectsHandler->loadTexture({ 80, 48 }, "EnemySprites");
     sf::Texture* projectileTexture = objectsHandler->loadTexture({ 12, 12 }, "ProjectileSprites");
+    sf::Texture* powerUpTexture = objectsHandler->loadTexture({ 40, 10 }, "PowerUps");
     if (!enemyTexture)
         return true;
     if (!projectileTexture)
+        return true;
+    if (!powerUpTexture)
         return true;
     return false; 
 }
@@ -417,7 +462,7 @@ sf::Vector2f PlaySpace::determineMovement() {
 }
 
 int PlaySpace::getCoins() {
-    return static_cast<int>(timer.getElapsedTime().asSeconds());
+    return static_cast<int>(timer.getElapsedTime().asSeconds())/5 + additionalCoins;
 }
 
 bool PlaySpace::getPaused() {

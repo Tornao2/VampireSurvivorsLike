@@ -6,6 +6,7 @@ class PlaySpace : public Scene {
 	int playerHolderIndex, hudHolderIndex, pauseMenuHolderIndex, mapNumber, charNumber;
 	int lastSpawnTime = -10, lastFireTime = 0, pauseBreak = 3, pauseButtonIndex = 0;
 	bool paused = false;
+	short int additionalCoins = 0;
 	CharacterData playerData;
 	sf::Clock timer;
 	sf::Vector2f determineMovement();
@@ -23,6 +24,8 @@ class PlaySpace : public Scene {
 	void weaponLogic();
 	void checkProjectileCollision();
 	void initPauseMenu();
+	void powerUpLogic();
+	void usePowerUp(int readId);
 	void cleanPauseMenu();
 	void pauseButtonFocus();
 	void calculateSlippage(sf::Vector2f readMovement);

@@ -2,6 +2,7 @@
 #include "MapGenerator.h"
 #include "EnemyData.h"
 #include "Projectiles.h"
+#include "PowerUp.h"
 
 class ObjectsHandler {
 	sf::Font font;
@@ -9,6 +10,7 @@ class ObjectsHandler {
 	std::list <EnemyData*> enemyHolder;
 	std::vector <std::vector<sf::Sprite>*> spriteHolder;
 	std::list <Projectiles*> projectileHolder;
+	std::list <PowerUp*> powerUpHolder;
 	std::unordered_map<std::string, sf::Texture> textureHolder;
 	MapGenerator generator;
 public:
@@ -34,6 +36,10 @@ public:
 	void clearProjectileHolder();
 	std::list <Projectiles*>* getProjectileHolder();
 	void destroyProjectiles(std::list<Projectiles*> projectilesToDestroy);
+	void addPowerUp(int powerUpId, sf::Vector2f readPos);
+	void clearPowerUpHolder();
+	std::list <PowerUp*>* getPowerUpHolder();
+	void destroyPowerUp(PowerUp* powerUpToDestroy);
 	MapGenerator* getMapGenerator();
 	void setMap(int readMapId);
 };

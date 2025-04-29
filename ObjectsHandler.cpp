@@ -73,13 +73,15 @@ float ObjectsHandler::calculateTextWidth(std::string readText, unsigned char siz
 }
 
 void ObjectsHandler::addEnemy(int enemyId, sf::Vector2f readPos, bool readIsBoss) {
-    EnemyData* enemy = new EnemyData();
-    enemy->giveStats(enemyId, readPos, readIsBoss);
-    enemy->setSprite(new sf::Sprite(textureHolder.at("Resources/EnemySprites.png"), { enemy->getOffset() , {16, 24} }));
-    if (readIsBoss)
-        enemy->getSprite()->setScale({ 2, 2 });
-    enemy->getSprite()->setPosition(readPos);
-    enemyHolder.push_back(enemy);
+    if (readIsBoss || enemyHolder.size() < 500) {
+        EnemyData* enemy = new EnemyData();
+        enemy->giveStats(enemyId, readPos, readIsBoss);
+        enemy->setSprite(new sf::Sprite(textureHolder.at("Resources/EnemySprites.png"), { enemy->getOffset() , {16, 24} }));
+        if (readIsBoss)
+            enemy->getSprite()->setScale({ 2, 2 });
+        enemy->getSprite()->setPosition(readPos);
+        enemyHolder.push_back(enemy);
+    }
 }
 
 void ObjectsHandler::clearEnemyHolder() {
@@ -167,6 +169,33 @@ void ObjectsHandler::destroyProjectiles(std::list<Projectiles*> projectilesToDes
         }
         if (!erased)
             it++;
+    }
+}
+
+void ObjectsHandler::addPowerUp(int powerUpId, sf::Vector2f readPos) {
+    sf::Sprite* sprite = new sf::Sprite(textureHolder.at("Resources/PowerUps.png"), { { 10 * powerUpId,0 }, { 10, 10 } });
+    sprite->setPosition(readPos);
+    PowerUp* powerUp = new PowerUp(powerUpId, readPos, sprite);
+    powerUpHolder.push_back(powerUp);
+}
+
+void ObjectsHandler::clearPowerUpHolder() {
+    for (PowerUp* powerUp : powerUpHolder) {
+        powerUp->deleteSprite();
+        delete powerUp;
+    }
+    powerUpHolder.clear();
+}
+
+std::list <PowerUp*>* ObjectsHandler::getPowerUpHolder() {
+    return &powerUpHolder;
+}
+
+void ObjectsHandler::destroyPowerUp(PowerUp* powerUpToDestroy) {
+    auto it = std::find(powerUpHolder.begin(), powerUpHolder.end(), powerUpToDestroy);
+    if (it != powerUpHolder.end()) {
+        powerUpToDestroy->deleteSprite();
+        powerUpHolder.erase(it);
     }
 }
 

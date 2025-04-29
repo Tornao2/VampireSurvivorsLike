@@ -1,10 +1,18 @@
 #include "SoundManager.h"
 
 void SoundManager::loadSounds(){
+	soundBuffers.push_back(sf::SoundBuffer("Resources/Sounds/powerUpBomb.wav"));
+	soundBuffers.push_back(sf::SoundBuffer("Resources/Sounds/powerUpCoin.wav"));
+	soundBuffers.push_back(sf::SoundBuffer("Resources/Sounds/powerUpXp.wav"));
+	soundBuffers.push_back(sf::SoundBuffer("Resources/Sounds/powerUpHp.wav"));
 	soundBuffers.push_back(sf::SoundBuffer("Resources/Sounds/Death.wav"));
 	soundBuffers.push_back(sf::SoundBuffer("Resources/Sounds/Menublock.wav"));
 	soundBuffers.push_back(sf::SoundBuffer("Resources/Sounds/Menuchange.wav"));
 	soundBuffers.push_back(sf::SoundBuffer("Resources/Sounds/Menuselect.wav"));
+	soundHolders["powerBomb"] = new sf::Sound(soundBuffers[soundBuffers.size() - 8]);
+	soundHolders["powerCoin"] = new sf::Sound(soundBuffers[soundBuffers.size() - 7]);
+	soundHolders["powerXp"] = new sf::Sound(soundBuffers[soundBuffers.size() - 6]);
+	soundHolders["powerHp"] = new sf::Sound(soundBuffers[soundBuffers.size() - 5]);
 	soundHolders["death"] = new sf::Sound(soundBuffers[soundBuffers.size() - 4]);
 	soundHolders["menuBlock"] = new sf::Sound(soundBuffers[soundBuffers.size() - 3]);
 	soundHolders["menuChange"] = new sf::Sound(soundBuffers[soundBuffers.size() - 2]);

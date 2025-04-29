@@ -196,6 +196,7 @@ xcopy /Y /D "$(ProjectDir)include\sfml-audio-3.dll" "$(OutDir)"</Command>
     <ClCompile Include="ObjectsHandler.cpp" />
     <ClCompile Include="PlayChoice.cpp" />
     <ClCompile Include="PlaySpace.cpp" />
+    <ClCompile Include="PowerUp.cpp" />
     <ClCompile Include="Projectiles.cpp" />
     <ClCompile Include="ResetChoice.cpp" />
     <ClCompile Include="Settings.cpp" />
@@ -216,6 +217,7 @@ xcopy /Y /D "$(ProjectDir)include\sfml-audio-3.dll" "$(OutDir)"</Command>
     <ClInclude Include="ObjectsHandler.h" />
     <ClInclude Include="PlayChoice.h" />
     <ClInclude Include="PlaySpace.h" />
+    <ClInclude Include="PowerUp.h" />
     <ClInclude Include="Projectiles.h" />
     <ClInclude Include="ResetChoice.h" />
     <ClInclude Include="Scene.h" />
@@ -225,22 +227,40 @@ xcopy /Y /D "$(ProjectDir)include\sfml-audio-3.dll" "$(OutDir)"</Command>
     <ClInclude Include="UpgradeScene.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Resources\ButtonSprites.png" />
     <Image Include="Resources\CharacterSprites.png" />
     <Image Include="Resources\CharacterThumbnails.png" />
     <Image Include="Resources\EnemySprites.png" />
     <Image Include="Resources\HudElements.png" />
-    <Image Include="Resources\MainMenu.png" />
+    <Image Include="Resources\MainMenuBG.png" />
     <Image Include="Resources\MapThumbnails.png" />
     <Image Include="Resources\PauseBackground.png" />
-    <Image Include="Resources\PlaySelect.png" />
+    <Image Include="Resources\PlayChoiceTextures.png" />
+    <Image Include="Resources\PowerUps.png" />
     <Image Include="Resources\ProjectileSprites.png" />
-    <Image Include="Resources\ResetChoice.png" />
-    <Image Include="Resources\Settings.png" />
+    <Image Include="Resources\ResetBG.png" />
+    <Image Include="Resources\SettingsBG.png" />
     <Image Include="Resources\TexturesMap1.png" />
-    <Image Include="Resources\Upgrades.png" />
+    <Image Include="Resources\TexturesMap2.png" />
+    <Image Include="Resources\TexturesMap3.png" />
+    <Image Include="Resources\UpgradesBG.png" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Resources\Font.otf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Resources\Sounds\Death.wav" />
+    <Media Include="Resources\Sounds\Menublock.wav" />
+    <Media Include="Resources\Sounds\Menuchange.wav" />
+    <Media Include="Resources\Sounds\MenuMusic.wav" />
+    <Media Include="Resources\Sounds\Menuselect.wav" />
+    <Media Include="Resources\Sounds\MusicMap1.wav" />
+    <Media Include="Resources\Sounds\MusicMap2.wav" />
+    <Media Include="Resources\Sounds\MusicMap3.wav" />
+    <Media Include="Resources\Sounds\powerUpBomb.wav" />
+    <Media Include="Resources\Sounds\powerUpCoin.wav" />
+    <Media Include="Resources\Sounds\powerUpHp.wav" />
+    <Media Include="Resources\Sounds\powerUpXp.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

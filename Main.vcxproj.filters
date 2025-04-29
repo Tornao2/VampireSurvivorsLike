@@ -31,31 +31,34 @@
     <Filter Include="Source Files\High-Level">
       <UniqueIdentifier>{2348061a-6ecf-4802-af57-43c24337050a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Scenes\PlaySpaceObjects">
+      <UniqueIdentifier>{4e972ab3-b73c-4263-9072-cd610a387780}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scenes\PlaySpaceObjects">
+      <UniqueIdentifier>{8272ad27-4e54-4169-b02a-7ed9320fb368}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Sounds">
+      <UniqueIdentifier>{80ce8a61-937b-44c0-aefb-bca7bb503332}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Backgrounds">
+      <UniqueIdentifier>{192e490e-0200-4a15-b0b6-3e46acb67ec8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\PlaySpaceSprites">
+      <UniqueIdentifier>{7a315131-b440-49a5-913a-69f1976de94a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\SceneAdditions">
+      <UniqueIdentifier>{a051aea7-9fc6-4b0e-88ed-e54d49fdee27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scenes\Scenes">
+      <UniqueIdentifier>{409ae113-61e7-4dc5-b18b-14ab3f60293e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scenes\Scenes">
+      <UniqueIdentifier>{29267f81-79f7-4568-a536-9eca86c135d0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MainMenu.cpp">
-      <Filter>Source Files\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayChoice.cpp">
-      <Filter>Source Files\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="PlaySpace.cpp">
-      <Filter>Source Files\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="ResetChoice.cpp">
-      <Filter>Source Files\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="Settings.cpp">
-      <Filter>Source Files\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="UpgradeScene.cpp">
-      <Filter>Source Files\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="CharacterData.cpp">
-      <Filter>Source Files\Scenes\Helpers</Filter>
     </ClCompile>
     <ClCompile Include="Modifiers.cpp">
       <Filter>Source Files\Scenes\Helpers</Filter>
@@ -75,51 +78,51 @@
     <ClCompile Include="ObjectsHandler.cpp">
       <Filter>Source Files\High-Level</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyData.cpp">
-      <Filter>Source Files\Scenes\Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="Projectiles.cpp">
-      <Filter>Source Files\Scenes\Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="FinishScreen.cpp">
-      <Filter>Source Files\Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="SoundManager.cpp">
       <Filter>Source Files\High-Level</Filter>
     </ClCompile>
     <ClCompile Include="MapGenerator.cpp">
       <Filter>Source Files\Scenes\Helpers</Filter>
     </ClCompile>
+    <ClCompile Include="Projectiles.cpp">
+      <Filter>Source Files\Scenes\PlaySpaceObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyData.cpp">
+      <Filter>Source Files\Scenes\PlaySpaceObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterData.cpp">
+      <Filter>Source Files\Scenes\PlaySpaceObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="PowerUp.cpp">
+      <Filter>Source Files\Scenes\PlaySpaceObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="UpgradeScene.cpp">
+      <Filter>Source Files\Scenes\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="FinishScreen.cpp">
+      <Filter>Source Files\Scenes\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>Source Files\Scenes\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayChoice.cpp">
+      <Filter>Source Files\Scenes\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="PlaySpace.cpp">
+      <Filter>Source Files\Scenes\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="ResetChoice.cpp">
+      <Filter>Source Files\Scenes\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings.cpp">
+      <Filter>Source Files\Scenes\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="UpgradeScene.h">
-      <Filter>Header Files\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="Settings.h">
-      <Filter>Header Files\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Header Files\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="ResetChoice.h">
-      <Filter>Header Files\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="PlaySpace.h">
-      <Filter>Header Files\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayChoice.h">
-      <Filter>Header Files\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="MainMenu.h">
-      <Filter>Header Files\Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="Unlocks.h">
       <Filter>Header Files\Scenes\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="Modifiers.h">
-      <Filter>Header Files\Scenes\Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="CharacterData.h">
       <Filter>Header Files\Scenes\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="Display.h">
@@ -134,66 +137,143 @@
     <ClInclude Include="ObjectsHandler.h">
       <Filter>Header Files\High-Level</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyData.h">
-      <Filter>Header Files\Scenes\Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="Projectiles.h">
-      <Filter>Header Files\Scenes\Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="FinishScreen.h">
-      <Filter>Header Files\Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="SoundManager.h">
       <Filter>Header Files\High-Level</Filter>
     </ClInclude>
     <ClInclude Include="MapGenerator.h">
       <Filter>Header Files\Scenes\Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="Projectiles.h">
+      <Filter>Header Files\Scenes\PlaySpaceObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="PowerUp.h">
+      <Filter>Header Files\Scenes\PlaySpaceObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyData.h">
+      <Filter>Header Files\Scenes\PlaySpaceObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterData.h">
+      <Filter>Header Files\Scenes\PlaySpaceObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="FinishScreen.h">
+      <Filter>Header Files\Scenes\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="UpgradeScene.h">
+      <Filter>Header Files\Scenes\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>Header Files\Scenes\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayChoice.h">
+      <Filter>Header Files\Scenes\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="PlaySpace.h">
+      <Filter>Header Files\Scenes\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="ResetChoice.h">
+      <Filter>Header Files\Scenes\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files\Scenes\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.h">
+      <Filter>Header Files\Scenes\Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Resources\PauseBackground.png">
+      <Filter>Resource Files\Backgrounds</Filter>
+    </Image>
+    <Image Include="Resources\MainMenuBG.png">
+      <Filter>Resource Files\Backgrounds</Filter>
+    </Image>
+    <Image Include="Resources\ResetBG.png">
+      <Filter>Resource Files\Backgrounds</Filter>
+    </Image>
+    <Image Include="Resources\SettingsBG.png">
+      <Filter>Resource Files\Backgrounds</Filter>
+    </Image>
+    <Image Include="Resources\UpgradesBG.png">
+      <Filter>Resource Files\Backgrounds</Filter>
+    </Image>
     <Image Include="Resources\CharacterSprites.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Resources\CharacterThumbnails.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Resources\HudElements.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Resources\MainMenu.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Resources\MapThumbnails.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Resources\PlaySelect.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Resources\ResetChoice.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Resources\Settings.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Resources\TexturesMap1.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Resources\Upgrades.png">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\PlaySpaceSprites</Filter>
     </Image>
     <Image Include="Resources\EnemySprites.png">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\PlaySpaceSprites</Filter>
+    </Image>
+    <Image Include="Resources\PowerUps.png">
+      <Filter>Resource Files\PlaySpaceSprites</Filter>
     </Image>
     <Image Include="Resources\ProjectileSprites.png">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\PlaySpaceSprites</Filter>
     </Image>
-    <Image Include="Resources\PauseBackground.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="Resources\ButtonSprites.png">
+      <Filter>Resource Files\SceneAdditions</Filter>
+    </Image>
+    <Image Include="Resources\CharacterThumbnails.png">
+      <Filter>Resource Files\SceneAdditions</Filter>
+    </Image>
+    <Image Include="Resources\HudElements.png">
+      <Filter>Resource Files\SceneAdditions</Filter>
+    </Image>
+    <Image Include="Resources\MapThumbnails.png">
+      <Filter>Resource Files\SceneAdditions</Filter>
+    </Image>
+    <Image Include="Resources\PlayChoiceTextures.png">
+      <Filter>Resource Files\SceneAdditions</Filter>
+    </Image>
+    <Image Include="Resources\TexturesMap3.png">
+      <Filter>Resource Files\SceneAdditions</Filter>
+    </Image>
+    <Image Include="Resources\TexturesMap1.png">
+      <Filter>Resource Files\SceneAdditions</Filter>
+    </Image>
+    <Image Include="Resources\TexturesMap2.png">
+      <Filter>Resource Files\SceneAdditions</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Resources\Font.otf">
       <Filter>Resource Files</Filter>
     </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Resources\Sounds\Death.wav">
+      <Filter>Resource Files\Sounds</Filter>
+    </Media>
+    <Media Include="Resources\Sounds\Menublock.wav">
+      <Filter>Resource Files\Sounds</Filter>
+    </Media>
+    <Media Include="Resources\Sounds\Menuchange.wav">
+      <Filter>Resource Files\Sounds</Filter>
+    </Media>
+    <Media Include="Resources\Sounds\MenuMusic.wav">
+      <Filter>Resource Files\Sounds</Filter>
+    </Media>
+    <Media Include="Resources\Sounds\Menuselect.wav">
+      <Filter>Resource Files\Sounds</Filter>
+    </Media>
+    <Media Include="Resources\Sounds\MusicMap1.wav">
+      <Filter>Resource Files\Sounds</Filter>
+    </Media>
+    <Media Include="Resources\Sounds\MusicMap2.wav">
+      <Filter>Resource Files\Sounds</Filter>
+    </Media>
+    <Media Include="Resources\Sounds\MusicMap3.wav">
+      <Filter>Resource Files\Sounds</Filter>
+    </Media>
+    <Media Include="Resources\Sounds\powerUpXp.wav">
+      <Filter>Resource Files\Sounds</Filter>
+    </Media>
+    <Media Include="Resources\Sounds\powerUpCoin.wav">
+      <Filter>Resource Files\Sounds</Filter>
+    </Media>
+    <Media Include="Resources\Sounds\powerUpBomb.wav">
+      <Filter>Resource Files\Sounds</Filter>
+    </Media>
+    <Media Include="Resources\Sounds\powerUpHp.wav">
+      <Filter>Resource Files\Sounds</Filter>
+    </Media>
   </ItemGroup>
 </Project>
