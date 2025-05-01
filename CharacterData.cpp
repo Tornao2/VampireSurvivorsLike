@@ -26,8 +26,6 @@ void CharacterData::setMods() {
 	expMod = tempNode->effectStrength * tempNode->currentLevel;
 	tempNode = mod.getNodeByName("Armor");
 	armorMod = (int) tempNode->effectStrength * tempNode->currentLevel;
-	tempNode = mod.getNodeByName("AOE%");
-	aoeMod = tempNode->effectStrength * tempNode->currentLevel;
 	currentHp = getEffectiveMaxHp();
 }
 
@@ -114,10 +112,6 @@ float CharacterData::getEffectiveDamage() {
 
 float CharacterData::getEffectiveXpMod() {
 	return expMod + baseStats.baseExp;
-}
-
-float CharacterData::getEffectiveAoeMod() {
-	return aoeMod + baseStats.baseAoe;
 }
 
 int CharacterData::getEffectiveArmorMod() {

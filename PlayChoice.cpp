@@ -98,15 +98,13 @@ bool PlayChoice::init() {
     objectsHandler->loadTextIntoHolder("Hp:", 12, { 303, 161 });
     objectsHandler->loadTextIntoHolder("Ms:", 12, { 303, 174 });
     objectsHandler->loadTextIntoHolder("Damage:", 12, { 303, 187 });
-    objectsHandler->loadTextIntoHolder("AoE:", 12, { 303, 200 });
-    objectsHandler->loadTextIntoHolder("Exp:", 12, { 303, 213 });
-    objectsHandler->loadTextIntoHolder("Armor:", 12, { 303, 226 });
+    objectsHandler->loadTextIntoHolder("Exp:", 12, { 303, 200 });
+    objectsHandler->loadTextIntoHolder("Armor:", 12, { 303, 213 });
     objectsHandler->loadTextIntoHolder("100", 12, { 373, 161 });
     objectsHandler->loadTextIntoHolder("2", 12, { 373, 174 });
     objectsHandler->loadTextIntoHolder("100", 12, { 373, 187 });
     objectsHandler->loadTextIntoHolder("100", 12, { 373, 200 });
-    objectsHandler->loadTextIntoHolder("100", 12, { 373, 213 });
-    objectsHandler->loadTextIntoHolder("0", 12, { 373, 226 });
+    objectsHandler->loadTextIntoHolder("0", 12, { 373, 213 });
     objectsHandler->addVectorToSpriteHolder();
     playChoiceTexture = objectsHandler->loadTexture({ 244, 154 }, "MapThumbnails");
     if (!playChoiceTexture) 
@@ -143,15 +141,14 @@ bool PlayChoice::init() {
 
 void PlayChoice::refreshCharacterStats() {
     CharacterDetails stats = getCharacterStats(*selectedPlayer);
-    objectsHandler->getTextPointer(8)->setString(std::to_string((int) stats.baseHp));
+    objectsHandler->getTextPointer(7)->setString(std::to_string((int) stats.baseHp));
     char buffer[4];
     std::snprintf(buffer, 4, "%.1f", stats.baseMs);
     std::string str(buffer);
-    objectsHandler->getTextPointer(9)->setString(str);
-    objectsHandler->getTextPointer(10)->setString(std::to_string((int)(stats.baseDamage*100)).append("%"));
-    objectsHandler->getTextPointer(11)->setString(std::to_string((int)(stats.baseAoe * 100)).append("%"));
-    objectsHandler->getTextPointer(12)->setString(std::to_string((int)(stats.baseExp * 100)).append("%"));
-    objectsHandler->getTextPointer(13)->setString(std::to_string((int)stats.baseArmor));
+    objectsHandler->getTextPointer(8)->setString(str);
+    objectsHandler->getTextPointer(9)->setString(std::to_string((int)(stats.baseDamage*100)).append("%"));
+    objectsHandler->getTextPointer(10)->setString(std::to_string((int)(stats.baseExp * 100)).append("%"));
+    objectsHandler->getTextPointer(11)->setString(std::to_string((int)stats.baseArmor));
 }
 
 void PlayChoice::cleanUp() {

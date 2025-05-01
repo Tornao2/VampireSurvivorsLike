@@ -60,13 +60,11 @@ bool PlaySpace::eventLogic(std::optional<sf::Event> gameEvent) {
             }
             else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Enter) {
                 soundManager->playSound("menuSelect", true);
-                if (buttonIndex == 0) {
-                    levelingUp = false;
-                    levelDifference--;
-                    timer.start();
-                    cleanLevelMenu();
-                    return false;
-                }
+                levelingUp = false;
+                levelDifference--;
+                timer.start();
+                cleanLevelMenu();
+                return false;
             }
             levelButtonFocus();
         }
@@ -100,6 +98,23 @@ void PlaySpace::initPauseMenu() {
     objectsHandler->getSpritePointer(additionalMenuIndex, -1)->setPosition({ (float)(171 + (int)playerData.getPos().x - 208), (float)(170 + (int)playerData.getPos().y - 123) });
     objectsHandler->loadSpriteIntoHolder(*buttonTexture, { 90,38 }, { 270, 38 }, additionalMenuIndex);
     objectsHandler->getSpritePointer(additionalMenuIndex, -1)->setPosition({ (float)(171 + (int)playerData.getPos().x - 208), (float)(210 + (int)playerData.getPos().y - 123) });
+    objectsHandler->loadSpriteIntoHolder(*buttonTexture, { 90,38 }, { 270, 38 }, additionalMenuIndex);
+    objectsHandler->getSpritePointer(additionalMenuIndex, -1)->setPosition({ (float)(171 + (int)playerData.getPos().x - 208), (float)(210 + (int)playerData.getPos().y - 123) });
+    sf::Texture* levelUpTexture = objectsHandler->loadTexture({ 290, 128 }, "LevelUpBackground");
+    if (!levelUpTexture)
+        return;
+    objectsHandler->loadSpriteIntoHolder(*levelUpTexture, { 32,47 }, { 258, 0 }, additionalMenuIndex);
+    objectsHandler->getSpritePointer(additionalMenuIndex, -1)->setPosition({ (float)(95 + (int)playerData.getPos().x - 208), (float)(88 + (int)playerData.getPos().y - 123) });
+    objectsHandler->loadSpriteIntoHolder(*levelUpTexture, { 32,47 }, { 258, 0 }, additionalMenuIndex);
+    objectsHandler->getSpritePointer(additionalMenuIndex, -1)->setPosition({ (float)(137 + (int)playerData.getPos().x - 208), (float)(88 + (int)playerData.getPos().y - 123) });
+    objectsHandler->loadSpriteIntoHolder(*levelUpTexture, { 32,47 }, { 258, 0 }, additionalMenuIndex);
+    objectsHandler->getSpritePointer(additionalMenuIndex, -1)->setPosition({ (float)(179 + (int)playerData.getPos().x - 208), (float)(88 + (int)playerData.getPos().y - 123) });
+    objectsHandler->loadSpriteIntoHolder(*levelUpTexture, { 32,47 }, { 258, 0 }, additionalMenuIndex);
+    objectsHandler->getSpritePointer(additionalMenuIndex, -1)->setPosition({ (float)(221 + (int)playerData.getPos().x - 208), (float)(88 + (int)playerData.getPos().y - 123) });
+    objectsHandler->loadSpriteIntoHolder(*levelUpTexture, { 32,47 }, { 258, 0 }, additionalMenuIndex);
+    objectsHandler->getSpritePointer(additionalMenuIndex, -1)->setPosition({ (float)(263 + (int)playerData.getPos().x - 208), (float)(88 + (int)playerData.getPos().y - 123) });
+    objectsHandler->loadSpriteIntoHolder(*levelUpTexture, { 32,47 }, { 258, 0 }, additionalMenuIndex);
+    objectsHandler->getSpritePointer(additionalMenuIndex, -1)->setPosition({ (float)(305 + (int)playerData.getPos().x - 208), (float)(88 + (int)playerData.getPos().y - 123) });
     pauseButtonFocus();
 }
 

@@ -5,16 +5,16 @@
 #include "Unlocks.h"
 
 struct CharacterDetails {
-	float baseHp, baseMs, baseDamage, baseAoe, baseExp;
+	float baseHp, baseMs, baseDamage, baseExp;
 	int baseArmor;
 	sf::Vector2i offset;
 };
 
 static CharacterDetails charArray[NUMBEROFCHARS] = {
-	{100.0f, 2.0f, 1.0f, 1.0f, 1.0f, 0, {0, 0}},
-	{120.0f, 1.8f, 1.0f, 1.0f, 1.0f, 1, {16, 0}},
-	{80.0f, 2.5f, 1.1f, 1.1f, 1.1f, 1, {32, 0}},
-	{200.0f, 1.5f, 0.95f, 0.95f, 0.95f, 2, {48, 0}}
+	{100.0f, 2.0f, 1.0f, 1.0f, 0, {0, 0}},
+	{120.0f, 1.8f, 1.0f, 1.0f, 1, {16, 0}},
+	{80.0f, 2.5f, 1.1f, 1.1f, 1, {32, 0}},
+	{200.0f, 1.5f, 0.95f, 0.95f, 2, {48, 0}}
 };
 
 CharacterDetails getCharacterStats(int index);
@@ -23,7 +23,7 @@ class CharacterData {
 private:
 	sf::Vector2f pos;
 	sf::Vector2i size;
-	float healthMod, damageMod, moveMod, expMod, aoeMod;
+	float healthMod, damageMod, moveMod, expMod;
 	int armorMod;
 	CharacterDetails baseStats;
 	float currentHp;
@@ -50,7 +50,6 @@ public:
 	float getEffectiveMs();
 	float getEffectiveDamage();
 	float getEffectiveXpMod();
-	float getEffectiveAoeMod();
 	int getEffectiveArmorMod();
 	sf::Vector2i getOffsets();
 	void setSlippage(sf::Vector2f readSlipping);
