@@ -19,14 +19,8 @@
     <Filter Include="Header Files\Scenes">
       <UniqueIdentifier>{460de5f0-6bb0-498f-a2c8-429caace01f9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Scenes\Helpers">
-      <UniqueIdentifier>{bf0a71ff-8521-43e5-81fb-558d324557d1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\High-Level">
       <UniqueIdentifier>{12769e5f-5ac9-4f53-94ee-6fdf631fc7d7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Scenes\Helpers">
-      <UniqueIdentifier>{e7f725bb-a8da-4d38-8279-e8014a439f1a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\High-Level">
       <UniqueIdentifier>{2348061a-6ecf-4802-af57-43c24337050a}</UniqueIdentifier>
@@ -55,16 +49,22 @@
     <Filter Include="Source Files\Scenes\Scenes">
       <UniqueIdentifier>{29267f81-79f7-4568-a536-9eca86c135d0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Scenes\PlaySpaceHelpers">
+      <UniqueIdentifier>{bf0a71ff-8521-43e5-81fb-558d324557d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scenes\PlaySpaceHelpers">
+      <UniqueIdentifier>{e7f725bb-a8da-4d38-8279-e8014a439f1a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Modifiers.cpp">
-      <Filter>Source Files\Scenes\Helpers</Filter>
+      <Filter>Source Files\Scenes\PlaySpaceHelpers</Filter>
     </ClCompile>
     <ClCompile Include="Unlocks.cpp">
-      <Filter>Source Files\Scenes\Helpers</Filter>
+      <Filter>Source Files\Scenes\PlaySpaceHelpers</Filter>
     </ClCompile>
     <ClCompile Include="Display.cpp">
       <Filter>Source Files\High-Level</Filter>
@@ -82,7 +82,7 @@
       <Filter>Source Files\High-Level</Filter>
     </ClCompile>
     <ClCompile Include="MapGenerator.cpp">
-      <Filter>Source Files\Scenes\Helpers</Filter>
+      <Filter>Source Files\Scenes\PlaySpaceHelpers</Filter>
     </ClCompile>
     <ClCompile Include="Projectiles.cpp">
       <Filter>Source Files\Scenes\PlaySpaceObjects</Filter>
@@ -120,10 +120,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Unlocks.h">
-      <Filter>Header Files\Scenes\Helpers</Filter>
+      <Filter>Header Files\Scenes\PlaySpaceHelpers</Filter>
     </ClInclude>
     <ClInclude Include="Modifiers.h">
-      <Filter>Header Files\Scenes\Helpers</Filter>
+      <Filter>Header Files\Scenes\PlaySpaceHelpers</Filter>
     </ClInclude>
     <ClInclude Include="Display.h">
       <Filter>Header Files\High-Level</Filter>
@@ -141,7 +141,7 @@
       <Filter>Header Files\High-Level</Filter>
     </ClInclude>
     <ClInclude Include="MapGenerator.h">
-      <Filter>Header Files\Scenes\Helpers</Filter>
+      <Filter>Header Files\Scenes\PlaySpaceHelpers</Filter>
     </ClInclude>
     <ClInclude Include="Projectiles.h">
       <Filter>Header Files\Scenes\PlaySpaceObjects</Filter>

@@ -4,7 +4,7 @@ bool PlaySpace::eventLogic(std::optional<sf::Event> gameEvent) {
     if (gameEvent->is<sf::Event::Closed>()) 
         return true;
     else if (gameEvent->is<sf::Event::KeyPressed>()) {
-        if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Escape && pauseBreak == 0) {
+        if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Escape && levelingUp == 0 && pauseBreak == 0) {
             paused = !paused;
             pauseBreak = 10;
             if (paused) {
@@ -19,19 +19,19 @@ bool PlaySpace::eventLogic(std::optional<sf::Event> gameEvent) {
         else if (paused) {
             if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Down) {
                 soundManager->playSound("menuChange", true);
-                pauseButtonIndex++;
-                if (pauseButtonIndex == 2)
-                    pauseButtonIndex = 0;
+                buttonIndex++;
+                if (buttonIndex == 2)
+                    buttonIndex = 0;
             }
             else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Up) {
                 soundManager->playSound("menuChange", true);
-                pauseButtonIndex--;
-                if (pauseButtonIndex == -1)
-                    pauseButtonIndex = 1;
+                buttonIndex--;
+                if (buttonIndex == -1)
+                    buttonIndex = 1;
             }
             else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Enter) {
                 soundManager->playSound("menuSelect", true);
-                if (pauseButtonIndex == 0) {
+                if (buttonIndex == 0) {
                     paused = !paused;
                     pauseBreak = 10;
                     timer.start();
@@ -45,43 +45,149 @@ bool PlaySpace::eventLogic(std::optional<sf::Event> gameEvent) {
             }
             pauseButtonFocus();
         }
+        else if (levelingUp) {
+            if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Left) {
+                soundManager->playSound("menuChange", true);
+                buttonIndex++;
+                if (buttonIndex >= availableChoices)
+                    buttonIndex = 0;
+            }
+            else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Right) {
+                soundManager->playSound("menuChange", true);
+                buttonIndex--;
+                if (buttonIndex < 0)
+                    buttonIndex = availableChoices - 1;
+            }
+            else if (gameEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Enter) {
+                soundManager->playSound("menuSelect", true);
+                if (buttonIndex == 0) {
+                    levelingUp = false;
+                    levelDifference--;
+                    timer.start();
+                    cleanLevelMenu();
+                    return false;
+                }
+            }
+            levelButtonFocus();
+        }
     }
     return false;
 }
 
 void PlaySpace::cleanPauseMenu() {
-    objectsHandler->getSpriteHolder()->at(pauseMenuHolderIndex)->clear();
-    delete objectsHandler->getSpriteHolder()->at(pauseMenuHolderIndex);
+    objectsHandler->getSpriteHolder()->at(additionalMenuIndex)->clear();
+    delete objectsHandler->getSpriteHolder()->at(additionalMenuIndex);
     objectsHandler->getSpriteHolder()->erase(objectsHandler->getSpriteHolder()->end()-1);
-    pauseMenuHolderIndex = 0;
+    additionalMenuIndex = 0;
     objectsHandler->getTextHolder()->erase(objectsHandler->getTextHolder()->end() - 1);
     objectsHandler->getTextHolder()->erase(objectsHandler->getTextHolder()->end() - 1); 
 }
 
 void PlaySpace::initPauseMenu() {
-    pauseButtonIndex = 0;
+    buttonIndex = 0;
     sf::Texture* pauseBgTexture = objectsHandler->loadTexture({ 332, 220 }, "PauseBackground");
     if (!pauseBgTexture)
         return;
-    pauseMenuHolderIndex = objectsHandler->addVectorToSpriteHolder();
-    objectsHandler->loadSpriteIntoHolder(*pauseBgTexture, { 332,220 }, { 0, 0 }, pauseMenuHolderIndex);
-    objectsHandler->getSpritePointer(pauseMenuHolderIndex, -1)->setPosition({ (float)(50 + (int)playerData.getPos().x - 208), (float)(35 + (int)playerData.getPos().y - 123) });
+    additionalMenuIndex = objectsHandler->addVectorToSpriteHolder();
+    objectsHandler->loadSpriteIntoHolder(*pauseBgTexture, { 332,220 }, { 0, 0 }, additionalMenuIndex);
+    objectsHandler->getSpritePointer(additionalMenuIndex, -1)->setPosition({ (float)(50 + (int)playerData.getPos().x - 208), (float)(35 + (int)playerData.getPos().y - 123) });
     sf::Texture* buttonTexture = objectsHandler->loadTexture({ 434, 102 }, "ButtonSprites");
     if (!buttonTexture)
         return;
     objectsHandler->loadTextIntoHolder("Resume", 24, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Resume", 24)) / 2, 172 });
     objectsHandler->loadTextIntoHolder("Surrender", 24, { (SCENEWIDTH - objectsHandler->calculateTextWidth("Surrender", 24)) / 2 , 212 });
-    objectsHandler->loadSpriteIntoHolder(*buttonTexture, { 90,38 }, { 270, 38 }, pauseMenuHolderIndex);
-    objectsHandler->getSpritePointer(pauseMenuHolderIndex, -1)->setPosition({ (float)(171 + (int)playerData.getPos().x - 208), (float)(170 + (int)playerData.getPos().y - 123) });
-    objectsHandler->loadSpriteIntoHolder(*buttonTexture, { 90,38 }, { 270, 38 }, pauseMenuHolderIndex);
-    objectsHandler->getSpritePointer(pauseMenuHolderIndex, -1)->setPosition({ (float)(171 + (int)playerData.getPos().x - 208), (float)(210 + (int)playerData.getPos().y - 123) });
+    objectsHandler->loadSpriteIntoHolder(*buttonTexture, { 90,38 }, { 270, 38 }, additionalMenuIndex);
+    objectsHandler->getSpritePointer(additionalMenuIndex, -1)->setPosition({ (float)(171 + (int)playerData.getPos().x - 208), (float)(170 + (int)playerData.getPos().y - 123) });
+    objectsHandler->loadSpriteIntoHolder(*buttonTexture, { 90,38 }, { 270, 38 }, additionalMenuIndex);
+    objectsHandler->getSpritePointer(additionalMenuIndex, -1)->setPosition({ (float)(171 + (int)playerData.getPos().x - 208), (float)(210 + (int)playerData.getPos().y - 123) });
     pauseButtonFocus();
+}
+
+bool PlaySpace::initLevelUp() {
+    int usedWSlots = playerData.getUsedWeaponSlots();
+    int usedISlots = playerData.getUsedItemSlots();
+    std::vector<bool> canEvolve = playerData.getIfEvolve();
+    int available = 0;
+    bool getWeapons;
+    if (rand() % 2) {
+        available = 3 - usedWSlots;
+        for (bool b : canEvolve) {
+            if (b)
+                available++;
+        }
+        if (available != 0)
+            getWeapons = true;
+        else {
+            available = 3 - usedISlots; 
+            if (available != 0)
+                getWeapons = false;
+            else
+                return false;
+        }
+    }
+    else {
+        available = 3 - usedISlots;
+        if (available != 0)
+            getWeapons = false;
+        else {
+            available = 3 - usedWSlots;
+            for (bool b : canEvolve) {
+                if (b)
+                    available++;
+            }
+            if (available != 0)
+                getWeapons = true;
+            else
+                return false;
+        }
+    }
+    if (available > 2) 
+        available = 2;
+    availableChoices = available;
+    buttonIndex = 0;
+    sf::Texture* levelUpTexture = objectsHandler->loadTexture({ 290, 128 }, "LevelUpBackground");
+    if (!levelUpTexture)
+        return false;
+    additionalMenuIndex = objectsHandler->addVectorToSpriteHolder();
+    objectsHandler->loadSpriteIntoHolder(*levelUpTexture, { 193,128 }, { 0, 0 }, additionalMenuIndex);
+    objectsHandler->getSpritePointer(additionalMenuIndex, -1)->setPosition({ (float)(119 + (int)playerData.getPos().x - 208), (float)(71 + (int)playerData.getPos().y - 123) });
+    if (availableChoices == 2) {
+        objectsHandler->loadSpriteIntoHolder(*levelUpTexture, { 65,110 }, { 193, 0 }, additionalMenuIndex);
+        objectsHandler->getSpritePointer(additionalMenuIndex, -1)->setPosition({ (float)(148 + (int)playerData.getPos().x - 208), (float)(80 + (int)playerData.getPos().y - 123) });
+        objectsHandler->loadSpriteIntoHolder(*levelUpTexture, { 65,110 }, { 193, 0 }, additionalMenuIndex);
+        objectsHandler->getSpritePointer(additionalMenuIndex, -1)->setPosition({ (float)(220 + (int)playerData.getPos().x - 208), (float)(80 + (int)playerData.getPos().y - 123) });
+        objectsHandler->loadSpriteIntoHolder(*levelUpTexture, { 32,47 }, { 258, 0 }, additionalMenuIndex);
+        objectsHandler->getSpritePointer(additionalMenuIndex, -1)->setPosition({ (float)(164 + (int)playerData.getPos().x - 208), (float)(88 + (int)playerData.getPos().y - 123) });
+        objectsHandler->loadSpriteIntoHolder(*levelUpTexture, { 32,47 }, { 258, 0 }, additionalMenuIndex);
+        objectsHandler->getSpritePointer(additionalMenuIndex, -1)->setPosition({ (float)(236 + (int)playerData.getPos().x - 208), (float)(88 + (int)playerData.getPos().y - 123) });
+    }
+    else {
+        objectsHandler->loadSpriteIntoHolder(*levelUpTexture, { 65,110 }, { 193, 0 }, additionalMenuIndex);
+        objectsHandler->getSpritePointer(additionalMenuIndex, -1)->setPosition({ (float)(183 + (int)playerData.getPos().x - 208), (float)(80 + (int)playerData.getPos().y - 123) });
+        objectsHandler->loadSpriteIntoHolder(*levelUpTexture, { 32,47 }, { 258, 0 }, additionalMenuIndex);
+        objectsHandler->getSpritePointer(additionalMenuIndex, -1)->setPosition({ (float)(199 + (int)playerData.getPos().x - 208), (float)(88 + (int)playerData.getPos().y - 123) });
+    }
+    levelButtonFocus();
+    return true;
+}
+
+void PlaySpace::cleanLevelMenu() {
+    objectsHandler->getSpriteHolder()->at(additionalMenuIndex)->clear();
+    delete objectsHandler->getSpriteHolder()->at(additionalMenuIndex);
+    objectsHandler->getSpriteHolder()->erase(objectsHandler->getSpriteHolder()->end() - 1);
+    additionalMenuIndex = 0;
 }
 
 void PlaySpace::pauseButtonFocus() {
     (*objectsHandler->getTextHolder())[objectsHandler->getTextHolder()->size() - 2].setFillColor(sf::Color::White);
     (*objectsHandler->getTextHolder())[objectsHandler->getTextHolder()->size() - 1].setFillColor(sf::Color::White);
-    (*objectsHandler->getTextHolder())[objectsHandler->getTextHolder()->size() - 2 + pauseButtonIndex].setFillColor(GREEN);
+    (*objectsHandler->getTextHolder())[objectsHandler->getTextHolder()->size() - 2 + buttonIndex].setFillColor(GREEN);
+}
+
+void PlaySpace::levelButtonFocus() {
+    for (sf::Sprite& sprite : *(*objectsHandler->getSpriteHolder()).at(additionalMenuIndex)) 
+        sprite.setColor(sf::Color::White);
+    (*objectsHandler->getSpriteHolder()).at(additionalMenuIndex)->at(1 + buttonIndex).setColor(GREEN);
 }
 
 void PlaySpace::decrementPauseTime() {
@@ -97,6 +203,16 @@ bool PlaySpace::realTimeLogic() {
         return true;
     }
     else {
+        if (levelDifference) {
+            levelingUp = true;
+            timer.stop();
+            if (!initLevelUp()) {
+                levelingUp = false;
+                timer.start();
+            } else 
+                return false;
+        }
+        int prevLevel = playerData.getLevel();
         playerData.decrementInvincibility();
         chunkLogic();
         movementLogic();
@@ -109,7 +225,9 @@ bool PlaySpace::realTimeLogic() {
         checkEnemyCollision();
         setTimer();
         setHud();
-        respawnEnemies();
+        respawnEnemies();  
+        if (prevLevel != playerData.getLevel())           
+            levelDifference = playerData.getLevel() - prevLevel;
         return false;
     }
 }
@@ -167,7 +285,7 @@ void PlaySpace::moveProjectiles() {
     std::list <Projectiles*> proj;
     for (Projectiles* node : *objectsHandler->getProjectileHolder()) {
         node->move();
-        if ((node->getPos() - playerData.getPos()).length() >= 400)
+        if ((node->getPos() - playerData.getPos()).length() >= 500)
             proj.push_back(node);
     }
     objectsHandler->destroyProjectiles(proj);
@@ -369,6 +487,7 @@ void PlaySpace::cleanUp() {
     objectsHandler->clearTextHolder();
     objectsHandler->clearEnemyHolder();
     objectsHandler->clearProjectileHolder();
+    objectsHandler->clearPowerUpHolder();
     objectsHandler->getMapGenerator()->cleanChunkHolder();
     timer.stop();
 }
@@ -465,6 +584,6 @@ int PlaySpace::getCoins() {
     return static_cast<int>(timer.getElapsedTime().asSeconds())/5 + additionalCoins;
 }
 
-bool PlaySpace::getPaused() {
-    return paused;
+bool PlaySpace::getShouldRun() {
+    return paused || levelingUp;
 }

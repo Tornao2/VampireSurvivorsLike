@@ -132,9 +132,12 @@ void MapGenerator::generateChunk(int chunkX, int chunkY) {
 void MapGenerator::cleanChunkHolder() {
     for (auto it = chunkMap.begin(); it != chunkMap.end(); ) {
         auto& value = it->second;
-        for (Tile* tile : value->tiles) {
-            delete tile->sprite;
-            tile->sprite = nullptr;
+        for (int y = 0; y < CHUNKSIZE; ++y) {
+            for (int x = 0; x < CHUNKSIZE; ++x) {
+                Tile& tile = value->tiles[y][x];
+                delete tile.sprite;
+                tile.sprite = nullptr;
+            }
         }
         delete value;
         it = chunkMap.erase(it);
@@ -150,9 +153,12 @@ void MapGenerator::deleteUnusedChunks() {
     for (auto it = chunkMap.begin(); it != chunkMap.end(); ) {
         auto& value = it->second;
         if (!value->generate) {
-            for (Tile* tile : value->tiles) {
-                delete tile->sprite;
-                tile->sprite = nullptr;
+            for (int y = 0; y < CHUNKSIZE; ++y) {
+                for (int x = 0; x < CHUNKSIZE; ++x) {
+                    Tile& tile = value->tiles[y][x];
+                    delete tile.sprite;
+                    tile.sprite = nullptr;
+                }
             }
             delete value;
             it = chunkMap.erase(it);

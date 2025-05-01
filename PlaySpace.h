@@ -3,10 +3,10 @@
 #include "CharacterData.h"
 
 class PlaySpace : public Scene {
-	int playerHolderIndex, hudHolderIndex, pauseMenuHolderIndex, mapNumber, charNumber;
-	int lastSpawnTime = -10, lastFireTime = 0, pauseBreak = 3, pauseButtonIndex = 0;
-	bool paused = false;
-	short int additionalCoins = 0;
+	bool enemyWiggleHelper[16][15];
+	int playerHolderIndex, hudHolderIndex, additionalMenuIndex, mapNumber, charNumber;
+	int lastSpawnTime = -10, lastFireTime = 0, pauseBreak = 3, buttonIndex = 0, availableChoices = 0, additionalCoins = 0, levelDifference = 0;
+	bool paused = false, levelingUp = false;
 	CharacterData playerData;
 	sf::Clock timer;
 	sf::Vector2f determineMovement();
@@ -28,8 +28,10 @@ class PlaySpace : public Scene {
 	void usePowerUp(int readId);
 	void cleanPauseMenu();
 	void pauseButtonFocus();
+	void levelButtonFocus();
 	void calculateSlippage(sf::Vector2f readMovement);
-	bool enemyWiggleHelper[16][15];
+	bool initLevelUp();
+	void cleanLevelMenu();
 public:
 	using Scene::Scene;
 	void setMapAndChar(int readMap, int readChar);
@@ -39,6 +41,6 @@ public:
 	bool realTimeLogic();
 	CharacterData getPlayerData();
 	int getCoins();
-	bool getPaused();
+	bool getShouldRun();
 	void decrementPauseTime();
 };

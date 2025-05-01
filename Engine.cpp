@@ -31,12 +31,13 @@ void Engine::mainLoop() {
     }
     loadVolume();
     changeScene();
+    loadMusic("MenuMusic");
     while (display.getWindow()->isOpen())
     {
         handleEvents();
         if (errorCode != 0)
             return;
-        if (sceneLabel == PLAYSPACE && !(static_cast<PlaySpace*>(scene))->getPaused() && (static_cast<PlaySpace*>(scene))->realTimeLogic()) {
+        if (sceneLabel == PLAYSPACE && !(static_cast<PlaySpace*>(scene))->getShouldRun() && (static_cast<PlaySpace*>(scene))->realTimeLogic()) {
             scene->cleanUp();
             tempVariable = (static_cast<PlaySpace*>(scene))->getCoins();
             changeScene();
@@ -115,7 +116,6 @@ void Engine::changeScene() {
     delete scene;
     switch (sceneLabel) {
         case MAINMENU:
-            loadMusic("MenuMusic");
             scene = new MainMenu(&objectsHandler, &sceneLabel, &soundManager, &soundVolume);
             break;
         case SETTINGS:

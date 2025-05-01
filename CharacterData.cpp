@@ -135,3 +135,23 @@ void CharacterData::setSlippage(sf::Vector2f readSlipping) {
 sf::Vector2f CharacterData::getSlippage() {
 	return slippage;
 }
+
+int CharacterData::getUsedWeaponSlots() {
+	return usedWeaponSlots;
+}
+
+int CharacterData::getUsedItemSlots() {
+	return usedItemSlots;
+}
+
+std::vector<int> CharacterData::getWeaponIds() {
+	return weaponIds;
+}
+
+std::vector<int> CharacterData::getItemIds() {
+	return itemIds;
+}
+
+std::vector<bool> CharacterData::getIfEvolve() {
+	return weaponCanEvolve;
+}
