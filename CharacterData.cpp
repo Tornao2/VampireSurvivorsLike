@@ -1,5 +1,14 @@
 #include "CharacterData.h"
 
+CharacterData::CharacterData() {
+	std::vector<int> weaponIds = { 1, 0 ,0 };
+	itemInfos = {
+		{0, 0, 0, nullptr},
+		{0, 0, 0, nullptr},
+		{0, 0, 0, nullptr}
+	};
+}
+
 CharacterDetails getCharacterStats(int index) {
 	return charArray[index];
 }
@@ -135,15 +144,19 @@ int CharacterData::getUsedWeaponSlots() {
 }
 
 int CharacterData::getUsedItemSlots() {
-	return usedItemSlots;
+	int count = 0;
+	for (itemInfo item : itemInfos)
+		if (item.currentLevel != 0)
+			count++;
+	return count;
 }
 
 std::vector<int> CharacterData::getWeaponIds() {
 	return weaponIds;
 }
 
-std::vector<int> CharacterData::getItemIds() {
-	return itemIds;
+std::vector<itemInfo>& CharacterData::getItemIds() {
+	return itemInfos;
 }
 
 std::vector<bool> CharacterData::getIfEvolve() {

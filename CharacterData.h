@@ -1,8 +1,8 @@
 #pragma once
 #include "Modifiers.h"
 #include <SFML/System/Vector2.hpp>
-#include <SFML/Graphics/Sprite.hpp>
 #include "Unlocks.h"
+#include "Items.h"
 
 struct CharacterDetails {
 	float baseHp, baseMs, baseDamage, baseExp;
@@ -27,11 +27,13 @@ private:
 	int armorMod;
 	CharacterDetails baseStats;
 	float currentHp;
-	int xp, xpToNext, level, invincibilityFrame, usedWeaponSlots = 3, usedItemSlots = 0;
-	std::vector<int> weaponIds = { 1, 0 ,0 }, itemIds = { 0, 0, 0 };
+	int xp, xpToNext, level, invincibilityFrame, usedWeaponSlots = 3;
+	std::vector<int> weaponIds;
+	std::vector<itemInfo> itemInfos;
 	std::vector<bool> weaponCanEvolve = { false, false, false };
 	sf::Vector2f slippage;
 public:
+	CharacterData();
 	void setSizes(sf::Vector2f readPos, sf::Vector2i readSize);
 	void setMods();
 	void setBaseStats(int charId);
@@ -57,6 +59,6 @@ public:
 	int getUsedWeaponSlots();
 	int getUsedItemSlots();
 	std::vector<int> getWeaponIds();
-	std::vector<int> getItemIds();
+	std::vector<itemInfo>& getItemIds();
 	std::vector<bool> getIfEvolve();
 };
