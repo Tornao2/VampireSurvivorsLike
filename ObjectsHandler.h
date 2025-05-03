@@ -14,6 +14,7 @@ class ObjectsHandler {
 	std::unordered_map<std::string, sf::Texture> textureHolder;
 	MapGenerator generator;
 public:
+	std::unordered_map<std::string, sf::Texture>* getTextureHolder;
 	sf::Texture* loadTexture(sf::Vector2i size, std::string fileName);
 	void loadSpriteIntoHolder(sf::Texture& texture, sf::Vector2i size, sf::Vector2i position, int index);
 	int addVectorToSpriteHolder();

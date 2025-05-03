@@ -160,7 +160,6 @@ bool SettingsScene::init() {
     return false;
 }
 
-
 void SettingsScene::cleanUp() {
     objectsHandler->clearSpriteHolder();
     objectsHandler->clearTextHolder();

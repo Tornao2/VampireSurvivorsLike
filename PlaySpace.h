@@ -5,8 +5,8 @@
 class PlaySpace : public Scene {
 	bool enemyWiggleHelper[16][15];
 	int playerHolderIndex, hudHolderIndex, additionalMenuIndex, mapNumber, charNumber;
-	int lastSpawnTime = -10, lastFireTime = 0, pauseBreak = 3, buttonIndex = 0, availableChoices = 0, additionalCoins = 0, levelDifference = 0;
-	bool paused = false, levelingUp = false;
+	int lastSpawnTime = -10, lastFireTime = 0, pauseBreak = 3, buttonIndex = 0, availableChoices = 0, additionalCoins = 0, levelDifference = 0, choiceAId =0, choiceBId = 0;
+	bool paused = false, levelingUp = false, weaponTaking;
 	CharacterData playerData;
 	sf::Clock timer;
 	sf::Vector2f determineMovement();

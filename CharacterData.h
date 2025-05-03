@@ -61,4 +61,7 @@ public:
 	std::vector<int> getWeaponIds();
 	std::vector<itemInfo>& getItemIds();
 	std::vector<bool> getIfEvolve();
+	void addItem(int readId, int readLevel, sf::Sprite* readSprite);
+	void changeStats(int readId, int readLevel);
+	int getHowManyItem();
 };

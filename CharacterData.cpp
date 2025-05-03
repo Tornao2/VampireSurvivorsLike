@@ -1,5 +1,9 @@
 #include "CharacterData.h"
 
+CharacterDetails getCharacterStats(int index) {
+	return charArray[index];
+}
+
 CharacterData::CharacterData() {
 	std::vector<int> weaponIds = { 1, 0 ,0 };
 	itemInfos = {
@@ -9,8 +13,127 @@ CharacterData::CharacterData() {
 	};
 }
 
-CharacterDetails getCharacterStats(int index) {
-	return charArray[index];
+void CharacterData::addItem(int readId, int readLevel, sf::Sprite* readSprite) {
+	if (readLevel == 1) {
+		for (itemInfo& item : itemInfos) {
+			if (item.currentLevel == 0) {
+				item.currentLevel = 1;
+				item.maxLevel = 5;
+				item.itemId = readId;
+				item.sprite = readSprite;			
+				break;
+			}
+		}
+	}
+	else {
+		for (itemInfo& item : itemInfos) {
+			if (item.itemId == readId) {
+				item.currentLevel++;
+				break;
+			}
+		}
+	}
+	changeStats(readId, readLevel);
+}
+
+void CharacterData::changeStats(int readId, int readLevel) {
+	switch (readId) {
+	case 1:
+		switch (readLevel) {
+			case 1:
+				healthMod += 0.2;
+				break;
+			case 2:
+				healthMod += 0.2;
+				break;
+			case 3:
+				healthMod += 0.15;
+				break;
+			case 4:
+				baseStats.baseHp += 20;
+				break;
+			case 5:
+				healthMod += 0.3;
+				break;
+			}
+		break;
+	case 2:
+		switch (readLevel) {
+			case 1:
+				damageMod += 0.1;
+				break;
+			case 2:
+				damageMod += 0.1;
+				break;
+			case 3:
+				damageMod += 0.15;
+				break;
+			case 4:
+				damageMod += 0.15;
+				break;
+			case 5:
+				damageMod += 0.15;
+				break;
+		}
+		break;
+	case 3:
+		switch (readLevel) {
+			case 1:
+				moveMod += 0.05;
+				break;
+			case 2:
+				moveMod += 0.10;
+				break;
+			case 3:
+				moveMod += 0.15;
+				break;
+			case 4:
+				baseStats.baseMs += 0.1;
+				break;
+			case 5:
+				moveMod += 0.10;
+				break;
+			}
+		break;
+	case 4:
+		switch (readLevel) {
+			case 1:
+				armorMod += 1;
+				break;
+			case 2:
+				armorMod += 1;
+				break;
+			case 3:
+				armorMod += 1;
+				break;
+			case 4:
+				armorMod += 1;
+				break;
+			case 5:
+				armorMod += 2;
+				break;
+			}
+		break;
+	case 5:
+		switch (readLevel) {
+			case 1:
+				expMod += 0.05;
+				break;
+			case 2:
+				expMod += 0.05;
+				break;
+			case 3:
+				expMod += 0.10;
+				break;
+			case 4:
+				expMod += 0.05;
+				break;
+			case 5:
+				expMod += 0.10;
+				break;
+			}
+		break;
+	}
 }
 
 void CharacterData::setSizes(sf::Vector2f readPos, sf::Vector2i readSize) {
@@ -145,8 +268,8 @@ int CharacterData::getUsedWeaponSlots() {
 
 int CharacterData::getUsedItemSlots() {
 	int count = 0;
-	for (itemInfo item : itemInfos)
-		if (item.currentLevel != 0)
+	for (const itemInfo& item : itemInfos)
+		if (item.currentLevel == 5)
 			count++;
 	return count;
 }
@@ -161,4 +284,12 @@ std::vector<itemInfo>& CharacterData::getItemIds() {
 
 std::vector<bool> CharacterData::getIfEvolve() {
 	return weaponCanEvolve;
+}
+
+int CharacterData::getHowManyItem() {
+	int count = 0;
+	for (const itemInfo& item : itemInfos)
+		if (item.currentLevel != 0)
+			count++;
+	return count;
 }
