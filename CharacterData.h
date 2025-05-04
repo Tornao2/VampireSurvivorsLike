@@ -28,7 +28,7 @@ private:
 	CharacterDetails baseStats;
 	float currentHp;
 	int xp, xpToNext, level, invincibilityFrame, usedWeaponSlots = 3;
-	std::vector<int> weaponIds;
+	std::vector<itemInfo> weaponIds;
 	std::vector<itemInfo> itemInfos;
 	std::vector<bool> weaponCanEvolve = { false, false, false };
 	sf::Vector2f slippage;
@@ -58,7 +58,7 @@ public:
 	sf::Vector2f getSlippage();
 	int getUsedWeaponSlots();
 	int getUsedItemSlots();
-	std::vector<int> getWeaponIds();
+	std::vector<itemInfo>& getWeaponIds();
 	std::vector<itemInfo>& getItemIds();
 	std::vector<bool> getIfEvolve();
 	void addItem(int readId, int readLevel, sf::Sprite* readSprite);

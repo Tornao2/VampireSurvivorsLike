@@ -5,11 +5,15 @@ CharacterDetails getCharacterStats(int index) {
 }
 
 CharacterData::CharacterData() {
-	std::vector<int> weaponIds = { 1, 0 ,0 };
 	itemInfos = {
-		{0, 0, 0, nullptr},
-		{0, 0, 0, nullptr},
-		{0, 0, 0, nullptr}
+		{0, 0, -1, nullptr},
+		{0, 0, -1, nullptr},
+		{0, 0, -1, nullptr}
+	};
+	weaponIds = {
+		{0, 0, -1, nullptr},
+		{0, 0, -1, nullptr},
+		{0, 0, -1, nullptr}
 	};
 }
 
@@ -263,18 +267,22 @@ sf::Vector2f CharacterData::getSlippage() {
 }
 
 int CharacterData::getUsedWeaponSlots() {
-	return usedWeaponSlots;
+	int count = 0;
+	for (const itemInfo& item : weaponIds)
+		if (item.currentLevel == item.maxLevel)
+			count++;
+	return count;
 }
 
 int CharacterData::getUsedItemSlots() {
 	int count = 0;
 	for (const itemInfo& item : itemInfos)
-		if (item.currentLevel == 5)
+		if (item.currentLevel == item.maxLevel)
 			count++;
 	return count;
 }
 
-std::vector<int> CharacterData::getWeaponIds() {
+std::vector<itemInfo>& CharacterData::getWeaponIds() {
 	return weaponIds;
 }
 

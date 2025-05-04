@@ -5,7 +5,7 @@
 class PlaySpace : public Scene {
 	bool enemyWiggleHelper[16][15];
 	int playerHolderIndex, hudHolderIndex, additionalMenuIndex, mapNumber, charNumber;
-	int lastSpawnTime = -10, lastFireTime = 0, pauseBreak = 3, buttonIndex = 0, availableChoices = 0, additionalCoins = 0, levelDifference = 0, choiceAId =0, choiceBId = 0;
+	int lastSpawnTime = -10, lastFireTime = 0, pauseBreak = 3, buttonIndex, availableChoices, additionalCoins = 0, levelDifference = 0, choiceAId, choiceBId;
 	bool paused = false, levelingUp = false, weaponTaking;
 	CharacterData playerData;
 	sf::Clock timer;
@@ -32,6 +32,7 @@ class PlaySpace : public Scene {
 	void calculateSlippage(sf::Vector2f readMovement);
 	bool initLevelUp();
 	void cleanLevelMenu();
+	bool getItemOrWeapon();
 public:
 	using Scene::Scene;
 	void setMapAndChar(int readMap, int readChar);
