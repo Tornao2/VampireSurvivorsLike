@@ -14,6 +14,7 @@ class Engine {
 	Scene* scene = nullptr;
 	SoundManager soundManager;
 	sf::Music playedMusic;
+	std::string currentMusic;
 	int soundVolume = 100;
 	void loadVolume();
 	void draw();

@@ -1,8 +1,7 @@
 #pragma once
 #include "Modifiers.h"
-#include <SFML/System/Vector2.hpp>
 #include "Unlocks.h"
-#include "Items.h"
+#include "Weapons.h"
 
 struct CharacterDetails {
 	float baseHp, baseMs, baseDamage, baseExp;
@@ -28,10 +27,11 @@ private:
 	CharacterDetails baseStats;
 	float currentHp;
 	int xp, xpToNext, level, invincibilityFrame, usedWeaponSlots = 3;
-	std::vector<itemInfo> weaponIds;
-	std::vector<itemInfo> itemInfos;
+	std::vector<Weapon> weaponInfo;
+	std::vector<ItemInfo> itemInfos;
 	std::vector<bool> weaponCanEvolve = { false, false, false };
 	sf::Vector2f slippage;
+	sf::IntRect calcProjectileSpriteData(int readId);
 public:
 	CharacterData();
 	void setSizes(sf::Vector2f readPos, sf::Vector2i readSize);
@@ -58,10 +58,14 @@ public:
 	sf::Vector2f getSlippage();
 	int getUsedWeaponSlots();
 	int getUsedItemSlots();
-	std::vector<itemInfo>& getWeaponIds();
-	std::vector<itemInfo>& getItemIds();
+	std::vector<Weapon>* getWeaponInfo();
+	std::vector<ItemInfo>* getItemIds();
 	std::vector<bool> getIfEvolve();
-	void addItem(int readId, int readLevel, sf::Sprite* readSprite);
+	void addWeapon(int readId, int readLevel, sf::Texture* readProjectileSprite);
+	void addItem(int readId, int readLevel);
 	void changeStats(int readId, int readLevel);
+	void changeWeaponStats(int readId, int readLevel, Weapon& readWeapon);
 	int getHowManyItem();
+	int getHowManyWeapons();
+	void cleanUp();
 };

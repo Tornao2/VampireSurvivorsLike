@@ -14,6 +14,7 @@ class Projectiles {
 	sf::Vector2f pos;
 public:
 	Projectiles(sf::Sprite* readSprite, float damageMod, sf::Vector2f readPos, sf::Vector2f readEndPos, int projectileId);
+	void setProjectile(sf::Sprite* readSprite, float damageMod, sf::Vector2f readPos, sf::Vector2f readEndPos, int projectileId);
 	sf::Vector2f getSize();
 	sf::Vector2f getPos();
 	float getDamage();

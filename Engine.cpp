@@ -14,14 +14,16 @@ void Engine::loadVolume() {
 }
 
 void Engine::loadMusic(std::string filename) {
-    if (scene == nullptr)
-        playedMusic.stop();
     std::string realFilename = "Resources/Sounds/";
     realFilename = realFilename.append(filename).append(".wav");
-    playedMusic.openFromFile(realFilename);
-    playedMusic.setVolume(soundVolume);
-    playedMusic.setLooping(true);
-    playedMusic.play();
+    if (realFilename != currentMusic) {
+        playedMusic.stop();
+        currentMusic = realFilename;
+        playedMusic.openFromFile(realFilename);
+        playedMusic.setVolume(soundVolume);
+        playedMusic.setLooping(true);
+        playedMusic.play();
+    }
 }
 
 void Engine::mainLoop() {
@@ -116,6 +118,7 @@ void Engine::changeScene() {
     delete scene;
     switch (sceneLabel) {
         case MAINMENU:
+            loadMusic("MenuMusic");
             scene = new MainMenu(&objectsHandler, &sceneLabel, &soundManager, &soundVolume);
             break;
         case SETTINGS:
@@ -144,7 +147,6 @@ void Engine::changeScene() {
             scene = new FinishScreen(&objectsHandler, &sceneLabel, &soundManager, &soundVolume);
             (static_cast<FinishScreen*>(scene))->setCoins(tempVariable, selectedMap, selectedChar);
             tempVariable = 0;
-            loadMusic("MenuMusic");
             break;
     }
     if (scene->init()) 

@@ -3,10 +3,9 @@
 #include <string>
 #include <SFML/Graphics/Sprite.hpp>
 
-typedef struct itemInfo {
+typedef struct ItemInfo {
 	int itemId, currentLevel, maxLevel;
-	sf::Sprite* sprite;
-}itemInfo;
+}ItemInfo;
 
 static std::unordered_map<int, std::vector<std::string>> itemMessages = {
 	{0, { "Increase HP\nby 20%", "Increase HP\nby further 20%", "Increase HP\nby further 15%", "Increase base\nHP by 20", "Increase HP\nfurther by 30%"}},

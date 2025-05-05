@@ -6,31 +6,27 @@ CharacterDetails getCharacterStats(int index) {
 
 CharacterData::CharacterData() {
 	itemInfos = {
-		{0, 0, -1, nullptr},
-		{0, 0, -1, nullptr},
-		{0, 0, -1, nullptr}
+		{0, 0, -1},
+		{0, 0, -1},
+		{0, 0, -1}
 	};
-	weaponIds = {
-		{0, 0, -1, nullptr},
-		{0, 0, -1, nullptr},
-		{0, 0, -1, nullptr}
-	};
+	for (int i = 0; i < 3; i++) 
+		weaponInfo.push_back(Weapon());
 }
 
-void CharacterData::addItem(int readId, int readLevel, sf::Sprite* readSprite) {
+void CharacterData::addItem(int readId, int readLevel) {
 	if (readLevel == 1) {
-		for (itemInfo& item : itemInfos) {
+		for (ItemInfo& item : itemInfos) {
 			if (item.currentLevel == 0) {
 				item.currentLevel = 1;
 				item.maxLevel = 5;
 				item.itemId = readId;
-				item.sprite = readSprite;			
 				break;
 			}
 		}
 	}
 	else {
-		for (itemInfo& item : itemInfos) {
+		for (ItemInfo& item : itemInfos) {
 			if (item.itemId == readId) {
 				item.currentLevel++;
 				break;
@@ -38,6 +34,58 @@ void CharacterData::addItem(int readId, int readLevel, sf::Sprite* readSprite) {
 		}
 	}
 	changeStats(readId, readLevel);
+}
+
+void CharacterData::addWeapon(int readId, int readLevel, sf::Texture* readProjectileSprite) {
+	Weapon weapon;
+	if (readLevel == 1) {
+		for (Weapon& item : weaponInfo) {
+			if (item.getBasicInfo()->currentLevel == 0) {
+				weapon = item;
+				item.getBasicInfo()->currentLevel = 1;
+				item.getBasicInfo()->maxLevel = 5;
+				item.getBasicInfo()->itemId = readId;
+				item.setProjectileSprite(new sf::Sprite(*readProjectileSprite, calcProjectileSpriteData(readId)));
+				item.setHidden();
+				break;
+			}
+		}
+	}
+	else {
+		for (Weapon& item : weaponInfo) {
+			if (item.getBasicInfo()->itemId == readId) {
+				weapon = item;
+				item.getBasicInfo()->currentLevel++;
+				break;
+			}
+		}
+	}
+	changeWeaponStats(readId, readLevel, weapon);
+}
+
+sf::IntRect CharacterData::calcProjectileSpriteData(int readId) {
+	switch (readId) {
+	case 6:
+		return { { 0, 0 }, {9, 9} };
+	case 7:
+		return { { 9, 0 } , {9,9} };
+	case 8:
+		return { { 26, 0 }, {13, 7} };
+	case 9:
+		return { { 12, 9 }, {12,7} };
+	case 10:
+		return { { 36, 9 }, {10,5} };
+	case 11:
+		return { { 18, 0 }, {9,9} };
+	case 12:
+		return { { 39, 0 }, {12,7} };
+	case 13:
+		return { { 0, 9 }, {12,7} };
+	case 14:
+		return { { 24, 9 }, {12, 7} };
+	case 15:
+		return { { 0, 16 }, {10,5} };
+	}
 }
 
 void CharacterData::changeStats(int readId, int readLevel) {
@@ -137,6 +185,22 @@ void CharacterData::changeStats(int readId, int readLevel) {
 				break;
 			}
 		break;
+	
+	}
+}
+
+void CharacterData::changeWeaponStats(int readId, int readLevel, Weapon& readWeapon) {
+	switch (readId) {
+		case 6:
+			break;
+		case 7:
+			break;
+		case 8:
+			break;
+		case 9:
+			break;
+		case 10:
+			break;
 	}
 }
 
@@ -268,26 +332,26 @@ sf::Vector2f CharacterData::getSlippage() {
 
 int CharacterData::getUsedWeaponSlots() {
 	int count = 0;
-	for (const itemInfo& item : weaponIds)
-		if (item.currentLevel == item.maxLevel)
+	for (Weapon weapon : weaponInfo)
+		if (weapon.getBasicInfo()->currentLevel == weapon.getBasicInfo()->maxLevel)
 			count++;
 	return count;
 }
 
 int CharacterData::getUsedItemSlots() {
 	int count = 0;
-	for (const itemInfo& item : itemInfos)
+	for (const ItemInfo& item : itemInfos)
 		if (item.currentLevel == item.maxLevel)
 			count++;
 	return count;
 }
 
-std::vector<itemInfo>& CharacterData::getWeaponIds() {
-	return weaponIds;
+std::vector<Weapon>* CharacterData::getWeaponInfo() {
+	return &weaponInfo;
 }
 
-std::vector<itemInfo>& CharacterData::getItemIds() {
-	return itemInfos;
+std::vector<ItemInfo>* CharacterData::getItemIds() {
+	return &itemInfos;
 }
 
 std::vector<bool> CharacterData::getIfEvolve() {
@@ -296,8 +360,21 @@ std::vector<bool> CharacterData::getIfEvolve() {
 
 int CharacterData::getHowManyItem() {
 	int count = 0;
-	for (const itemInfo& item : itemInfos)
+	for (const ItemInfo& item : itemInfos)
 		if (item.currentLevel != 0)
 			count++;
 	return count;
+}
+
+int CharacterData::getHowManyWeapons() {
+	int count = 0;
+	for (Weapon item : weaponInfo)
+		if (item.getBasicInfo()->currentLevel != 0)
+			count++;
+	return count;
+}
+
+void CharacterData::cleanUp() {
+	for (Weapon& weapon : weaponInfo) 
+		weapon.deleteSprites();
 }
