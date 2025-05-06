@@ -68,4 +68,5 @@ public:
 	int getHowManyItem();
 	int getHowManyWeapons();
 	void cleanUp();
+	void chestLogic(sf::Texture* readProjectileSprite);
 };

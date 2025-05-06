@@ -63,6 +63,39 @@ void CharacterData::addWeapon(int readId, int readLevel, sf::Texture* readProjec
 	changeWeaponStats(readId, readLevel, weapon);
 }
 
+void CharacterData::chestLogic(sf::Texture* readProjectileSprite) {
+	for (Weapon& weapon : weaponInfo) {
+		if (weapon.getIfCanEvolve() && weapon.getBasicInfo()->currentLevel == weapon.getBasicInfo()->maxLevel) {
+			int requiredItem = weapon.getRequiredItemEvolution();
+			bool ifFound = false;
+			for (Weapon& checkedWeapon : weaponInfo) 
+				if (requiredItem == checkedWeapon.getBasicInfo()->itemId) {
+					ifFound = true;
+					if (checkedWeapon.getBasicInfo()->itemId == 6 || checkedWeapon.getBasicInfo()->itemId == 7) {
+						checkedWeapon.deleteSprites();
+						checkedWeapon.reset();
+					}
+				}
+			for (ItemInfo& item : itemInfos) 
+				if (item.itemId == requiredItem) 
+					ifFound = true;
+			if (ifFound == false)
+				break;
+			int nextId = weapon.getNextEvolution();
+			weapon.deleteSprites();
+			weapon = Weapon();
+			weapon.getBasicInfo()->currentLevel = 1;
+			weapon.getBasicInfo()->maxLevel = 1;
+			weapon.getBasicInfo()->itemId = nextId;
+			weapon.setProjectileSprite(new sf::Sprite(*readProjectileSprite, calcProjectileSpriteData(nextId)));
+			weapon.setHidden();
+			changeWeaponStats(nextId, 1, weapon);
+			return;
+		}
+	}
+	increaseXp(getXpToNext());
+}
+
 sf::IntRect CharacterData::calcProjectileSpriteData(int readId) {
 	switch (readId) {
 	case 6:

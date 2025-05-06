@@ -1,6 +1,7 @@
 #include "SoundManager.h"
 
 void SoundManager::loadSounds(){
+	soundBuffers.push_back(sf::SoundBuffer("Resources/Sounds/powerUpChest.wav"));
 	soundBuffers.push_back(sf::SoundBuffer("Resources/Sounds/powerUpBomb.wav"));
 	soundBuffers.push_back(sf::SoundBuffer("Resources/Sounds/powerUpCoin.wav"));
 	soundBuffers.push_back(sf::SoundBuffer("Resources/Sounds/powerUpXp.wav"));
@@ -9,6 +10,7 @@ void SoundManager::loadSounds(){
 	soundBuffers.push_back(sf::SoundBuffer("Resources/Sounds/Menublock.wav"));
 	soundBuffers.push_back(sf::SoundBuffer("Resources/Sounds/Menuchange.wav"));
 	soundBuffers.push_back(sf::SoundBuffer("Resources/Sounds/Menuselect.wav"));
+	soundHolders["powerChest"] = new sf::Sound(soundBuffers[soundBuffers.size() - 9]);
 	soundHolders["powerBomb"] = new sf::Sound(soundBuffers[soundBuffers.size() - 8]);
 	soundHolders["powerCoin"] = new sf::Sound(soundBuffers[soundBuffers.size() - 7]);
 	soundHolders["powerXp"] = new sf::Sound(soundBuffers[soundBuffers.size() - 6]);

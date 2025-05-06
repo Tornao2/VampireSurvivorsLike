@@ -11,6 +11,11 @@ void Weapon::setHidden() {
 	requiredItemId = evolutionRequirement[basicInfo.itemId - 6].second;
 }
 
+void Weapon::reset() {
+	basicInfo = { 0, 0, -1 };
+	projectileSprite = nullptr;
+}
+
 Weapon::Weapon() {
 	basicInfo = { 0, 0, -1 };
 	projectileSprite = nullptr;
@@ -39,4 +44,16 @@ void Weapon::resetDelay() {
 
 int Weapon::getDelay() {
 	return currentDelay;
+}
+
+bool Weapon::getIfCanEvolve() {
+	return canEvolve;
+}
+
+int Weapon::getRequiredItemEvolution() {
+	return requiredItemId;
+}
+
+int Weapon::getNextEvolution() {
+	return nextEvolution;
 }

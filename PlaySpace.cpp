@@ -244,9 +244,9 @@ bool PlaySpace::initLevelUp() {
         if (weaponTaking) {
             std::vector<Weapon>* infos = playerData.getWeaponInfo();
             for (Weapon item : *infos)
-                if (item.getBasicInfo()->maxLevel != -1)
+                if (item.getBasicInfo()->maxLevel != -1 && item.getBasicInfo()->currentLevel != item.getBasicInfo()->maxLevel)
                     itemIds.push_back({ item.getBasicInfo()->itemId, item.getBasicInfo()->currentLevel, item.getBasicInfo()->maxLevel });
-            while (itemIds.size() != (3 - playerData.getUsedWeaponSlots())) {
+            while (itemIds.size() < availableChoices) {
                 int temp = (rand() % 5) + 6;
                 for (Weapon item : *infos)
                     if (temp == item.getBasicInfo()->itemId) {
@@ -285,9 +285,9 @@ bool PlaySpace::initLevelUp() {
         else {
             std::vector<ItemInfo>* infos = playerData.getItemIds();
             for (ItemInfo item : *infos) 
-                if (item.maxLevel != -1)
+                if (item.maxLevel != -1 && item.maxLevel != item.currentLevel)
                     itemIds.push_back({ item.itemId, item.currentLevel, item.maxLevel }); 
-            while (itemIds.size() != (3 - playerData.getUsedItemSlots())) {
+            while (itemIds.size() < availableChoices) {
                 int temp = (rand() % 5) + 1;
                 for (ItemInfo item : *infos)
                     if (temp == item.itemId) {
@@ -330,20 +330,11 @@ bool PlaySpace::initLevelUp() {
         objectsHandler->loadSpriteIntoHolder(*levelUpTexture, { 32,47 }, { 258, 0 }, additionalMenuIndex);
         objectsHandler->getSpritePointer(additionalMenuIndex, -1)->setPosition({ (float)(199 + (int)playerData.getPos().x - 208), (float)(88 + (int)playerData.getPos().y - 123) });
         if (weaponTaking) {
-            objectsHandler->loadSpriteIntoHolder(*levelUpTexture, { 65,110 }, { 193, 0 }, additionalMenuIndex);
-            objectsHandler->getSpritePointer(additionalMenuIndex, -1)->setPosition({ (float)(148 + (int)playerData.getPos().x - 208), (float)(80 + (int)playerData.getPos().y - 123) });
-            objectsHandler->loadSpriteIntoHolder(*levelUpTexture, { 65,110 }, { 193, 0 }, additionalMenuIndex);
-            objectsHandler->getSpritePointer(additionalMenuIndex, -1)->setPosition({ (float)(220 + (int)playerData.getPos().x - 208), (float)(80 + (int)playerData.getPos().y - 123) });
-            objectsHandler->loadSpriteIntoHolder(*levelUpTexture, { 32,47 }, { 258, 0 }, additionalMenuIndex);
-            objectsHandler->getSpritePointer(additionalMenuIndex, -1)->setPosition({ (float)(164 + (int)playerData.getPos().x - 208), (float)(88 + (int)playerData.getPos().y - 123) });
-            objectsHandler->loadSpriteIntoHolder(*levelUpTexture, { 32,47 }, { 258, 0 }, additionalMenuIndex);
-            objectsHandler->getSpritePointer(additionalMenuIndex, -1)->setPosition({ (float)(236 + (int)playerData.getPos().x - 208), (float)(88 + (int)playerData.getPos().y - 123) });
-            if (weaponTaking) {
                 std::vector<Weapon>* infos = playerData.getWeaponInfo();
                 for (Weapon item : *infos)
-                    if (item.getBasicInfo()->maxLevel != -1)
+                    if (item.getBasicInfo()->maxLevel != -1 && item.getBasicInfo()->currentLevel != item.getBasicInfo()->maxLevel)
                         itemIds.push_back({ item.getBasicInfo()->itemId, item.getBasicInfo()->currentLevel, item.getBasicInfo()->maxLevel });
-                while (itemIds.size() != (3 - playerData.getUsedWeaponSlots())) {
+                while (itemIds.size() < availableChoices) {
                     int temp = (rand() % 5) + 6;
                     for (Weapon item : *infos)
                         if (temp == item.getBasicInfo()->itemId) {
@@ -371,39 +362,38 @@ bool PlaySpace::initLevelUp() {
                 objectsHandler->loadTextIntoHolder(getUpgradeText(std::get<0>(itemIds[choiceAId]), std::get<1>(itemIds[choiceAId]) + 1), 11, { 184 , 134 });
                 choiceAId = std::get<0>(itemIds[choiceAId]);
             }
-            else {
-                std::vector<ItemInfo>* infos = playerData.getItemIds();
+        else {
+            std::vector<ItemInfo>* infos = playerData.getItemIds();
+            for (ItemInfo item : *infos)
+                if (item.maxLevel != -1 && item.maxLevel != item.currentLevel)
+                    itemIds.push_back({ item.itemId, item.currentLevel, item.maxLevel });
+            while (itemIds.size() < availableChoices) {
+                int temp = (rand() % 5) + 1;
                 for (ItemInfo item : *infos)
-                    if (item.maxLevel != -1)
-                        itemIds.push_back({ item.itemId, item.currentLevel, item.maxLevel });
-                while (itemIds.size() != (3 - playerData.getUsedItemSlots())) {
-                    int temp = (rand() % 5) + 1;
-                    for (ItemInfo item : *infos)
-                        if (temp == item.itemId) {
-                            found = true;
-                            break;
-                        }
-                    for (auto& tup : itemIds)
-                        if (std::get<0>(tup) == temp) {
-                            found = true;
-                            break;
-                        }
-                    if (!found)
-                        itemIds.push_back({ temp, 0, 5 });
-                    found = false;
-                }
-                for (int i = itemIds.size() - 1; i > 0; --i) {
-                    int j = std::rand() % (i + 1);
-                    std::swap(itemIds[i], itemIds[j]);
-                }
-                choiceAId = std::rand() % itemIds.size();
-                objectsHandler->loadSpriteIntoHolder(*itemTextures, { 32,31 }, { ((std::get<0>(itemIds[choiceAId]) - 1) % 3) * 32 , (std::get<0>(itemIds[choiceAId]) - 1) / 3 * 31 }, additionalMenuIndex);
-                objectsHandler->getSpritePointer(additionalMenuIndex, -1)->setPosition({ (float)(199 + (int)playerData.getPos().x - 208), (float)(88 + (int)playerData.getPos().y - 123) });
-                objectsHandler->loadTextIntoHolder(std::to_string((std::get<1>(itemIds[choiceAId]) + 1)), 15, { 204 , 118 });
-                objectsHandler->loadTextIntoHolder(std::to_string((std::get<2>(itemIds[choiceAId]))), 15, { 223 , 118 });
-                objectsHandler->loadTextIntoHolder(getUpgradeText(std::get<0>(itemIds[choiceAId]), std::get<1>(itemIds[choiceAId]) + 1), 11, { 184 , 134 });
-                choiceAId = std::get<0>(itemIds[choiceAId]);
+                    if (temp == item.itemId) {
+                        found = true;
+                        break;
+                    }
+                for (auto& tup : itemIds)
+                    if (std::get<0>(tup) == temp) {
+                        found = true;
+                        break;
+                    }
+                if (!found)
+                    itemIds.push_back({ temp, 0, 5 });
+                found = false;
             }
+            for (int i = itemIds.size() - 1; i > 0; --i) {
+                int j = std::rand() % (i + 1);
+                std::swap(itemIds[i], itemIds[j]);
+            }
+            choiceAId = std::rand() % itemIds.size();
+            objectsHandler->loadSpriteIntoHolder(*itemTextures, { 32,31 }, { ((std::get<0>(itemIds[choiceAId]) - 1) % 3) * 32 , (std::get<0>(itemIds[choiceAId]) - 1) / 3 * 31 }, additionalMenuIndex);
+            objectsHandler->getSpritePointer(additionalMenuIndex, -1)->setPosition({ (float)(199 + (int)playerData.getPos().x - 208), (float)(88 + (int)playerData.getPos().y - 123) });
+            objectsHandler->loadTextIntoHolder(std::to_string((std::get<1>(itemIds[choiceAId]) + 1)), 15, { 204 , 118 });
+            objectsHandler->loadTextIntoHolder(std::to_string((std::get<2>(itemIds[choiceAId]))), 15, { 223 , 118 });
+            objectsHandler->loadTextIntoHolder(getUpgradeText(std::get<0>(itemIds[choiceAId]), std::get<1>(itemIds[choiceAId]) + 1), 11, { 184 , 134 });
+            choiceAId = std::get<0>(itemIds[choiceAId]);
         }
     }
     levelButtonFocus();
@@ -511,8 +501,13 @@ void PlaySpace::usePowerUp(int readId) {
             soundManager->playSound("powerHp", false);
             break;
         case 3:
-            playerData.increaseXp((200 * playerData.getLevel())/5);
+            playerData.increaseXp(playerData.getXpToNext()*3);
             soundManager->playSound("powerXp", false);
+            objectsHandler->getTextPointer(1)->setString(std::string("LVL:").append(std::to_string(playerData.getLevel())));
+            break;
+        case 4:
+            playerData.chestLogic(objectsHandler->loadTexture({ 51, 21 }, "ProjectileSprites"));
+            soundManager->playSound("powerChest", false);
             objectsHandler->getTextPointer(1)->setString(std::string("LVL:").append(std::to_string(playerData.getLevel())));
             break;
     }
@@ -563,7 +558,7 @@ void PlaySpace::checkEnemyHp() {
             objectsHandler->getTextPointer(1)->setString(std::string("LVL:").append(std::to_string(playerData.getLevel())));
             soundManager->playSound("death", false);
             if (enemy->getIfBoss())
-                objectsHandler->addPowerUp(rand()%4, enemy->getPos());
+                objectsHandler->addPowerUp(rand()%5, enemy->getPos());
         }
     }
     objectsHandler->killEnemy(enemiesToKill);
@@ -657,7 +652,7 @@ void PlaySpace::respawnEnemies() {
     if (seconds - lastSpawnTime >= 3) {
         lastSpawnTime = seconds;
         for (int i = 0; i < 20; i++) 
-            objectsHandler->addEnemy(static_cast<int>(timer.getElapsedTime().asSeconds() / 60), randomizePos(), (seconds % 30 == 0 && i == 0) ? true : false);
+            objectsHandler->addEnemy(static_cast<int>(timer.getElapsedTime().asSeconds() / 60), randomizePos(), (seconds % 15 == 0 && i == 0) ? true : false);
     }
 }
 
@@ -719,7 +714,7 @@ bool PlaySpace::init() {
     objectsHandler->getSpritePointer(hudHolderIndex, -1)->setPosition({ 36, 10 });
     sf::Texture* enemyTexture = objectsHandler->loadTexture({ 80, 48 }, "EnemySprites");
     sf::Texture* projectileTexture = objectsHandler->loadTexture({ 12, 12 }, "ProjectileSprites");
-    sf::Texture* powerUpTexture = objectsHandler->loadTexture({ 40, 10 }, "PowerUps");
+    sf::Texture* powerUpTexture = objectsHandler->loadTexture({ 50, 10 }, "PowerUps");
     if (!enemyTexture)
         return true;
     if (!projectileTexture)
