@@ -115,32 +115,85 @@ void ObjectsHandler::killEnemy(std::list<EnemyData*> enemiesToKill) {
 
 sf::Vector2f ObjectsHandler::getClosestEnemyCords(sf::Vector2f readPlayerPos) {
     sf::Vector2f target;
-    if (enemyHolder.size() != 0){
-        float closestDistance = std::numeric_limits<float>::max();
-        for (EnemyData* enemy : enemyHolder) {
-            sf::Vector2f d = readPlayerPos - enemy->getPos();
-            float distanceSq = d.x * d.x + d.y * d.y;
-            if (distanceSq < closestDistance) {
-                closestDistance = distanceSq;
-                target = enemy->getPos();
-            }
+    float closestDistance = std::numeric_limits<float>::max();
+    for (EnemyData* enemy : enemyHolder) {
+        sf::Vector2f d = readPlayerPos - enemy->getPos();
+        float distanceSq = d.x * d.x + d.y * d.y;
+        if (distanceSq < closestDistance) {
+            closestDistance = distanceSq;
+            target = enemy->getPos();
         }
     }
-    else 
-        target = { readPlayerPos.x + (rand() % 2) - 1, readPlayerPos.y + (rand() % 2) - 1 };
     return target;
 }
 
-void ObjectsHandler::addProjectile(float damageMod, int projectileId, sf::Vector2f readPos, sf::Vector2f readEndPos) {
-    sf::Sprite* sprite = nullptr;
-    switch (projectileId) {
-        case 0:
-            sprite = new sf::Sprite(textureHolder.at("Resources/ProjectileSprites.png"), { { 0,0 }, { 9, 9 } });
-            break;
-    }
+sf::Vector2f ObjectsHandler::getRandomEnemyCords() {
+    int randValue = rand() % enemyHolder.size();
+    auto enemy = enemyHolder.begin();
+    std::advance(enemy, randValue);
+    return (*enemy)->getPos();
+}
+
+void ObjectsHandler::addProjectile(Weapon weapon, sf::Vector2f readPos, bool faceRight, bool faceDown) {
+    sf::Sprite* sprite = new sf::Sprite(textureHolder.at("Resources/ProjectileSprites.png"), calcProjectileSpriteData(weapon.getBasicInfo()->itemId));
     sprite->setPosition(readPos);
-    Projectiles* projectile = new Projectiles(sprite, damageMod, readPos, readEndPos, projectileId);
+    sf::Vector2f endPos;
+    switch (weapon.getBasicInfo()->itemId) {
+    case 6:
+    case 11:
+    case 7:
+        endPos = getClosestEnemyCords(readPos);
+        break;
+    case 8:
+    case 14:
+        endPos = (faceDown == true) ? sf::Vector2f(readPos.x, readPos.y + 1) : sf::Vector2f(readPos.x, readPos.y - 1);
+        break;
+    case 12:
+    case 13:
+    case 9:
+        endPos = (faceRight == true) ? sf::Vector2f(readPos.x + 1, readPos.y) : sf::Vector2f(readPos.x - 1, readPos.y);
+        break;
+    case 10:
+    case 15:
+        endPos = getRandomEnemyCords();
+        break;
+    }
+    Projectiles* projectile = new Projectiles(sprite, weapon.getStatsForProjectile()[0], weapon.getStatsForProjectile()[2], weapon.getStatsForProjectile()[1], readPos, endPos, calcProjectileSpriteData(weapon.getBasicInfo()->itemId).size);
     projectileHolder.push_back(projectile);
+    if ((weapon.getBasicInfo()->itemId == 12) || (weapon.getBasicInfo()->itemId == 13)) {
+        endPos = (faceRight == false) ? sf::Vector2f(readPos.x + 1, readPos.y) : sf::Vector2f(readPos.x - 1, readPos.y);
+        Projectiles* projectile = new Projectiles(sprite, weapon.getStatsForProjectile()[0], weapon.getStatsForProjectile()[2], weapon.getStatsForProjectile()[1], readPos, endPos, calcProjectileSpriteData(weapon.getBasicInfo()->itemId).size);
+        projectileHolder.push_back(projectile);
+    } else if (weapon.getBasicInfo()->itemId == 14) {
+        endPos = (faceDown == false) ? sf::Vector2f(readPos.x, readPos.y + 1) : sf::Vector2f(readPos.x, readPos.y - 1);
+        Projectiles* projectile = new Projectiles(sprite, weapon.getStatsForProjectile()[0], weapon.getStatsForProjectile()[2], weapon.getStatsForProjectile()[1], readPos, endPos, calcProjectileSpriteData(weapon.getBasicInfo()->itemId).size);
+        projectileHolder.push_back(projectile);
+    }
+}
+
+sf::IntRect ObjectsHandler::calcProjectileSpriteData(int readId) {
+    switch (readId) {
+    case 6:
+        return { { 0, 0 }, {9, 9} };
+    case 7:
+        return { { 9, 0 } , {9,9} };
+    case 8:
+        return { { 26, 0 }, {13, 7} };
+    case 9:
+        return { { 12, 9 }, {12,7} };
+    case 10:
+        return { { 36, 9 }, {10,5} };
+    case 11:
+        return { { 18, 0 }, {9,9} };
+    case 12:
+        return { { 39, 0 }, {12,7} };
+    case 13:
+        return { { 0, 9 }, {12,7} };
+    case 14:
+        return { { 24, 9 }, {12, 7} };
+    case 15:
+        return { { 0, 16 }, {10,5} };
+    }
 }
 
 void ObjectsHandler::clearProjectileHolder() {

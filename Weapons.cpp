@@ -5,7 +5,10 @@ ItemInfo* Weapon::getBasicInfo() {
 }
 
 void Weapon::setHidden() {
-	delay = weaponMaxDelays[basicInfo.itemId - 6];
+	delay = weaponBaseStats[basicInfo.itemId - 6][0];
+	baseDmg = weaponBaseStats[basicInfo.itemId - 6][1];
+	baseMs = weaponBaseStats[basicInfo.itemId - 6][2];
+	baseRange = weaponBaseStats[basicInfo.itemId - 6][3];
 	canEvolve = weaponCanEvolve[basicInfo.itemId - 6];
 	nextEvolution = evolutionRequirement[basicInfo.itemId - 6].first;
 	requiredItemId = evolutionRequirement[basicInfo.itemId - 6].second;
@@ -13,25 +16,10 @@ void Weapon::setHidden() {
 
 void Weapon::reset() {
 	basicInfo = { 0, 0, -1 };
-	projectileSprite = nullptr;
 }
 
 Weapon::Weapon() {
 	basicInfo = { 0, 0, -1 };
-	projectileSprite = nullptr;
-}
-
-sf::Sprite* Weapon::getProjectileSprite() {
-	return projectileSprite;
-}
-
-void Weapon::deleteSprites() {
-	if (projectileSprite != nullptr)
-		delete projectileSprite;
-}
-
-void Weapon::setProjectileSprite(sf::Sprite* readSprite) {
-	projectileSprite = readSprite;
 }
 
 void Weapon::decrementDelay() {
@@ -46,6 +34,10 @@ int Weapon::getDelay() {
 	return currentDelay;
 }
 
+int Weapon::getBaseDelay() {
+	return delay;
+}
+
 bool Weapon::getIfCanEvolve() {
 	return canEvolve;
 }
@@ -56,4 +48,24 @@ int Weapon::getRequiredItemEvolution() {
 
 int Weapon::getNextEvolution() {
 	return nextEvolution;
+}
+
+std::vector<float> Weapon::getStatsForProjectile() {
+	return {baseDmg, baseMs, (float) baseRange};
+}
+
+void Weapon::changeDamage(float readValue) {
+	baseDmg = readValue;
+}
+
+void Weapon::changeMs(float readValue) {
+	baseMs = readValue;
+}
+
+void Weapon::changeRange(int readValue) {
+	baseRange = readValue;
+}
+
+void Weapon::changeFirerate(int readValue) {
+	delay = readValue;
 }

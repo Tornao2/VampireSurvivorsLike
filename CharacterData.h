@@ -31,9 +31,11 @@ private:
 	std::vector<ItemInfo> itemInfos;
 	std::vector<bool> weaponCanEvolve = { false, false, false };
 	sf::Vector2f slippage;
-	sf::IntRect calcProjectileSpriteData(int readId);
+	bool lastXRight, lastYDown;
 public:
 	CharacterData();
+	bool getLastXDir();
+	bool getLastYDir();
 	void setSizes(sf::Vector2f readPos, sf::Vector2i readSize);
 	void setMods();
 	void setBaseStats(int charId);
@@ -67,6 +69,5 @@ public:
 	void changeWeaponStats(int readId, int readLevel, Weapon& readWeapon);
 	int getHowManyItem();
 	int getHowManyWeapons();
-	void cleanUp();
 	void chestLogic(sf::Texture* readProjectileSprite);
 };

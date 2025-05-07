@@ -4,6 +4,14 @@ CharacterDetails getCharacterStats(int index) {
 	return charArray[index];
 }
 
+bool CharacterData::getLastXDir() {
+	return lastXRight;
+}
+
+bool CharacterData::getLastYDir() {
+	return lastYDown;
+}
+
 CharacterData::CharacterData() {
 	itemInfos = {
 		{0, 0, -1},
@@ -45,7 +53,6 @@ void CharacterData::addWeapon(int readId, int readLevel, sf::Texture* readProjec
 				item.getBasicInfo()->currentLevel = 1;
 				item.getBasicInfo()->maxLevel = 5;
 				item.getBasicInfo()->itemId = readId;
-				item.setProjectileSprite(new sf::Sprite(*readProjectileSprite, calcProjectileSpriteData(readId)));
 				item.setHidden();
 				break;
 			}
@@ -71,10 +78,8 @@ void CharacterData::chestLogic(sf::Texture* readProjectileSprite) {
 			for (Weapon& checkedWeapon : weaponInfo) 
 				if (requiredItem == checkedWeapon.getBasicInfo()->itemId) {
 					ifFound = true;
-					if (checkedWeapon.getBasicInfo()->itemId == 6 || checkedWeapon.getBasicInfo()->itemId == 7) {
-						checkedWeapon.deleteSprites();
+					if (checkedWeapon.getBasicInfo()->itemId == 6 || checkedWeapon.getBasicInfo()->itemId == 7) 
 						checkedWeapon.reset();
-					}
 				}
 			for (ItemInfo& item : itemInfos) 
 				if (item.itemId == requiredItem) 
@@ -82,43 +87,16 @@ void CharacterData::chestLogic(sf::Texture* readProjectileSprite) {
 			if (ifFound == false)
 				break;
 			int nextId = weapon.getNextEvolution();
-			weapon.deleteSprites();
 			weapon = Weapon();
 			weapon.getBasicInfo()->currentLevel = 1;
 			weapon.getBasicInfo()->maxLevel = 1;
 			weapon.getBasicInfo()->itemId = nextId;
-			weapon.setProjectileSprite(new sf::Sprite(*readProjectileSprite, calcProjectileSpriteData(nextId)));
 			weapon.setHidden();
 			changeWeaponStats(nextId, 1, weapon);
 			return;
 		}
 	}
 	increaseXp(getXpToNext());
-}
-
-sf::IntRect CharacterData::calcProjectileSpriteData(int readId) {
-	switch (readId) {
-	case 6:
-		return { { 0, 0 }, {9, 9} };
-	case 7:
-		return { { 9, 0 } , {9,9} };
-	case 8:
-		return { { 26, 0 }, {13, 7} };
-	case 9:
-		return { { 12, 9 }, {12,7} };
-	case 10:
-		return { { 36, 9 }, {10,5} };
-	case 11:
-		return { { 18, 0 }, {9,9} };
-	case 12:
-		return { { 39, 0 }, {12,7} };
-	case 13:
-		return { { 0, 9 }, {12,7} };
-	case 14:
-		return { { 24, 9 }, {12, 7} };
-	case 15:
-		return { { 0, 16 }, {10,5} };
-	}
 }
 
 void CharacterData::changeStats(int readId, int readLevel) {
@@ -225,14 +203,84 @@ void CharacterData::changeStats(int readId, int readLevel) {
 void CharacterData::changeWeaponStats(int readId, int readLevel, Weapon& readWeapon) {
 	switch (readId) {
 		case 6:
+			switch (readLevel) {
+				case 2:
+					readWeapon.changeDamage(readWeapon.getStatsForProjectile()[0] * 1.2);
+					break;
+				case 3:
+					readWeapon.changeDamage(readWeapon.getStatsForProjectile()[1] * 1.2);
+					break;
+				case 4:
+					readWeapon.changeDamage(readWeapon.getStatsForProjectile()[0] * 1.2);
+					break;
+				case 5:
+					readWeapon.changeFirerate(readWeapon.getBaseDelay() - 5);
+					break;
+			}
 			break;
 		case 7:
+			switch (readLevel) {
+				case 2:
+					readWeapon.changeDamage(readWeapon.getStatsForProjectile()[1] * 1.2);
+					break;
+				case 3:
+					readWeapon.changeDamage(readWeapon.getStatsForProjectile()[1] * 1.2);
+					break;
+				case 4:
+					readWeapon.changeFirerate(readWeapon.getBaseDelay() - 5);
+					break;
+				case 5:
+					readWeapon.changeDamage(readWeapon.getStatsForProjectile()[1] * 1.2);
+					break;
+			}
 			break;
 		case 8:
+			switch (readLevel) {
+				case 2:
+					readWeapon.changeDamage(readWeapon.getStatsForProjectile()[0] * 1.2);
+					break;
+				case 3:
+					readWeapon.changeDamage(readWeapon.getStatsForProjectile()[0] * 1.2);
+					break;
+				case 4:
+					readWeapon.changeDamage(readWeapon.getStatsForProjectile()[2] * 1.2);
+					break;
+				case 5:
+					readWeapon.changeFirerate(readWeapon.getBaseDelay() - 5);
+					break;
+			}
 			break;
 		case 9:
+			switch (readLevel) {
+				case 2:
+					readWeapon.changeFirerate(readWeapon.getBaseDelay() - 5);
+					break;
+				case 3:
+					readWeapon.changeFirerate(readWeapon.getBaseDelay() - 5);
+					break;
+				case 4:
+					readWeapon.changeDamage(readWeapon.getStatsForProjectile()[0] * 1.2);
+					break;
+				case 5:
+					readWeapon.changeDamage(readWeapon.getStatsForProjectile()[0] * 1.2);
+					break;
+			}
 			break;
 		case 10:
+			switch (readLevel) {
+				case 2:
+					readWeapon.changeFirerate(readWeapon.getBaseDelay() - 5);
+					break;
+				case 3:
+					readWeapon.changeDamage(readWeapon.getStatsForProjectile()[2] * 1.2);
+					break;
+				case 4:
+					readWeapon.changeDamage(readWeapon.getStatsForProjectile()[2] * 1.2);
+					break;
+				case 5:
+					readWeapon.changeDamage(readWeapon.getStatsForProjectile()[0] * 1.2);
+					break;
+			}
 			break;
 	}
 }
@@ -267,6 +315,14 @@ void CharacterData::setBaseStats(int charId) {
 }
 
 void CharacterData::move(sf::Vector2f ms) {
+	if (ms.x > 0)
+		lastXRight = true;
+	else if (ms.x < 0)
+		lastXRight = false;
+	if (ms.y > 0)
+		lastYDown = true;
+	else if (ms.y < 0)
+		lastYDown = false;
 	pos += ms;
 }
 
@@ -405,9 +461,4 @@ int CharacterData::getHowManyWeapons() {
 		if (item.getBasicInfo()->currentLevel != 0)
 			count++;
 	return count;
-}
-
-void CharacterData::cleanUp() {
-	for (Weapon& weapon : weaponInfo) 
-		weapon.deleteSprites();
 }

@@ -3,6 +3,7 @@
 #include "EnemyData.h"
 #include "Projectiles.h"
 #include "PowerUp.h"
+#include "Weapons.h"
 
 class ObjectsHandler {
 	sf::Font font;
@@ -33,7 +34,8 @@ public:
 	std::list <EnemyData*>* getEnemyHolder();
 	void killEnemy(std::list<EnemyData*> enemiesToKill);
 	sf::Vector2f getClosestEnemyCords(sf::Vector2f readPlayerPos);
-	void addProjectile(float damageMod, int projectileId, sf::Vector2f readPos, sf::Vector2f readEndPos);
+	sf::Vector2f getRandomEnemyCords();
+	void addProjectile(Weapon weapon, sf::Vector2f readPos, bool faceRight, bool faceDown);
 	void clearProjectileHolder();
 	std::list <Projectiles*>* getProjectileHolder();
 	void destroyProjectiles(std::list<Projectiles*> projectilesToDestroy);
@@ -43,4 +45,5 @@ public:
 	void destroyPowerUp(PowerUp* powerUpToDestroy);
 	MapGenerator* getMapGenerator();
 	void setMap(int readMapId);
+	sf::IntRect calcProjectileSpriteData(int readId);
 };

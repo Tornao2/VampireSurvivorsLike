@@ -1,24 +1,20 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-
-static std::vector<std::vector<float>> baseProjectileStats = {
-	{1000, 3, 600, 8, 8}
-};
+#define M_PI 3.14159265358979323846f
 
 class Projectiles {
 	sf::Sprite* sprite = nullptr;
-	float damage;
-	sf::Vector2f ms;
-	float range;
-	sf::Vector2f size;
+	float effectiveDamange, effectiveRange;
+	sf::Vector2f actualMs;
+	sf::Vector2i size;
 	sf::Vector2f pos;
 public:
-	Projectiles(sf::Sprite* readSprite, float damageMod, sf::Vector2f readPos, sf::Vector2f readEndPos, int projectileId);
-	void setProjectile(sf::Sprite* readSprite, float damageMod, sf::Vector2f readPos, sf::Vector2f readEndPos, int projectileId);
-	sf::Vector2f getSize();
+	Projectiles(sf::Sprite* readSprite, float damage, float range, float ms, sf::Vector2f readPos, sf::Vector2f readEndPos, sf::Vector2i readSize);
+	sf::Vector2i getSize();
 	sf::Vector2f getPos();
 	float getDamage();
 	void clearSprite();
 	void move();
 	sf::Sprite* getSprite();
+	void rotate(sf::Vector2f readTargetPos, float readMs);
 };

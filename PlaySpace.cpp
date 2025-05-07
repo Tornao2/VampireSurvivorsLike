@@ -463,6 +463,8 @@ bool PlaySpace::realTimeLogic() {
         setTimer();
         setHud();
         respawnEnemies();  
+        if (prevLevel < 5)
+            playerData.increaseXp(3000);
         if (prevLevel != playerData.getLevel())           
             levelDifference = playerData.getLevel() - prevLevel;
         return false;
@@ -515,11 +517,16 @@ void PlaySpace::usePowerUp(int readId) {
 
 void PlaySpace::weaponLogic() {
     if (objectsHandler->getEnemyHolder()->size() != 0) {
-        sf::Vector2f target = objectsHandler->getClosestEnemyCords(playerData.getPos());
-        //if (static_cast<int>(timer.getElapsedTime().asSeconds()) - lastFireTime > 1) {
-            lastFireTime = static_cast<int>(timer.getElapsedTime().asSeconds());
-            objectsHandler->addProjectile(playerData.getEffectiveDamage(), 0, playerData.getPos(), target);
-        //}
+        for (Weapon& node : *playerData.getWeaponInfo()) {
+            if (node.getBasicInfo()->maxLevel != -1) {
+                if (node.getDelay() == 0) {
+                    objectsHandler->addProjectile(node, playerData.getPos(), playerData.getLastXDir(), playerData.getLastYDir());
+                    node.resetDelay();
+                }
+                else
+                    node.decrementDelay();
+            }
+        }
     }
 }
 
@@ -527,7 +534,7 @@ void PlaySpace::moveProjectiles() {
     std::list <Projectiles*> proj;
     for (Projectiles* node : *objectsHandler->getProjectileHolder()) {
         node->move();
-        if ((node->getPos() - playerData.getPos()).length() >= 500)
+        if ((node->getPos() - playerData.getPos()).length() >= 1000)
             proj.push_back(node);
     }
     objectsHandler->destroyProjectiles(proj);
@@ -536,7 +543,7 @@ void PlaySpace::moveProjectiles() {
 void PlaySpace::checkProjectileCollision() {
     std::list <Projectiles*> proj;
     for (Projectiles* node : *objectsHandler->getProjectileHolder()) {
-        sf::FloatRect projectileBounds(node->getPos(), node->getSize());
+        sf::FloatRect projectileBounds(node->getPos(), { (float) node->getSize().x, (float) node->getSize().y });
         for (EnemyData* enemy : *objectsHandler->getEnemyHolder()) {
             sf::FloatRect enemyBounds(enemy->getPos(), enemy->getSize());
             if (enemyBounds.findIntersection(projectileBounds).has_value()) {
@@ -713,7 +720,7 @@ bool PlaySpace::init() {
     objectsHandler->loadSpriteIntoHolder(*hudTexture, { 200,8 }, { 0, 16 }, hudHolderIndex);
     objectsHandler->getSpritePointer(hudHolderIndex, -1)->setPosition({ 36, 10 });
     sf::Texture* enemyTexture = objectsHandler->loadTexture({ 80, 48 }, "EnemySprites");
-    sf::Texture* projectileTexture = objectsHandler->loadTexture({ 12, 12 }, "ProjectileSprites");
+    sf::Texture* projectileTexture = objectsHandler->loadTexture({ 51, 21 }, "ProjectileSprites");
     sf::Texture* powerUpTexture = objectsHandler->loadTexture({ 50, 10 }, "PowerUps");
     if (!enemyTexture)
         return true;
@@ -725,7 +732,6 @@ bool PlaySpace::init() {
 }
 
 void PlaySpace::cleanUp() {
-    playerData.cleanUp();
     objectsHandler->clearSpriteHolder();
     objectsHandler->clearTextHolder();
     objectsHandler->clearEnemyHolder();
