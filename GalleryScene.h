@@ -2,9 +2,10 @@
 #include "Scene.h"
 
 class GalleryScene: public Scene {
-	int spriteHolderIndex;
+	int spriteHolderIndex, additionalHolderIndex;
 	int selectedRow;
 	void refreshSelection();
+	void showSprites();
 public:
 	using Scene::Scene;
 	bool eventLogic(std::optional<sf::Event> gameEvent);
