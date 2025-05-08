@@ -126,6 +126,9 @@ void Engine::changeScene() {
             (static_cast<SettingsScene*>(scene))->setDisplay(&display);
             (static_cast<SettingsScene*>(scene))->setMusicPointer(&playedMusic);
             break;
+        case GALLERY:
+            scene = new GalleryScene(&objectsHandler, &sceneLabel, &soundManager, &soundVolume);
+            break;
         case RESETCHOICE:
             scene = new ResetChoice(&objectsHandler, &sceneLabel, &soundManager, &soundVolume);
             (static_cast<ResetChoice*>(scene))->setDisplay(&display);

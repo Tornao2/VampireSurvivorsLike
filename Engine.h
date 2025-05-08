@@ -6,6 +6,7 @@
 #include "PlayChoice.h"
 #include "PlaySpace.h"
 #include "FinishScreen.h"
+#include "GalleryScene.h"
 
 class Engine {
 	SceneLabels sceneLabel = MAINMENU;

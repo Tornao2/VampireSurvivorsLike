@@ -29,8 +29,7 @@ bool MainMenu::eventLogic(std::optional<sf::Event> gameEvent) {
                     *sceneLabel = SETTINGS;
                     break; 
                 case 3:
-                    //*sceneLabel = GALLERY;
-                    return false;
+                    *sceneLabel = GALLERY;
                     break;
                 case 4:
                     break;

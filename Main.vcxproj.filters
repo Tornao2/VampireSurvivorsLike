@@ -123,6 +123,9 @@
     <ClCompile Include="Weapons.cpp">
       <Filter>Source Files\Scenes\PlaySpaceObjects</Filter>
     </ClCompile>
+    <ClCompile Include="GalleryScene.cpp">
+      <Filter>Source Files\Scenes\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Unlocks.h">
@@ -190,6 +193,9 @@
     </ClInclude>
     <ClInclude Include="Weapons.h">
       <Filter>Header Files\Scenes\PlaySpaceObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GalleryScene.h">
+      <Filter>Header Files\Scenes\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
