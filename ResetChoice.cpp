@@ -30,11 +30,12 @@ bool ResetChoice::eventLogic(std::optional<sf::Event> gameEvent) {
                     *sceneLabel = MAINMENU;
                     display->setResolution({ 1440, 900 });
                     display->setFullscreen(windowed);
-                    std::remove("Upgrade.txt");
-                    std::remove("Display.txt");
-                    std::remove("CharactersUnlocked.txt");
-                    std::remove("MapsUnlocked.txt");
-                    std::remove("Misc.txt");
+                    std::remove("Resources/Upgrade.txt");
+                    std::remove("Resources/Display.txt");
+                    std::remove("Resources/CharactersUnlocked.txt");
+                    std::remove("Resources/MapsUnlocked.txt");
+                    std::remove("Resources/Misc.txt");
+                    *soundVolume = 100;
                     break;
                 }
             return true;

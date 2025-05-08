@@ -463,8 +463,6 @@ bool PlaySpace::realTimeLogic() {
         setTimer();
         setHud();
         respawnEnemies();  
-        if (prevLevel < 5)
-            playerData.increaseXp(3000);
         if (prevLevel != playerData.getLevel())           
             levelDifference = playerData.getLevel() - prevLevel;
         return false;
@@ -660,7 +658,7 @@ sf::Vector2f PlaySpace::randomizePos() {
 
 void PlaySpace::respawnEnemies() {
     int seconds = static_cast<int>(timer.getElapsedTime().asSeconds());
-    if (seconds - lastSpawnTime >= 3) {
+    if (seconds - lastSpawnTime >= 2) {
         lastSpawnTime = seconds;
         for (int i = 0; i < 20; i++) 
             objectsHandler->addEnemy(static_cast<int>(timer.getElapsedTime().asSeconds() / 60), randomizePos(), (seconds % 15 == 0 && i == 0) ? true : false);
@@ -732,6 +730,7 @@ bool PlaySpace::init() {
         return true;
     if (!powerUpTexture)
         return true;
+    playerData.addWeapon(charNumber+6, 1);
     return false; 
 }
 

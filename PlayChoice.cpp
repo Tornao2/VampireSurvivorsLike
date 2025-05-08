@@ -67,7 +67,7 @@ bool PlayChoice::init() {
     if (!playChoiceTexture)
         return true;
     objectsHandler->loadSpriteIntoHolder(*playChoiceTexture, { 432,270 }, { 0, 0 }, spriteHolderIndex);
-    playChoiceTexture = objectsHandler->loadTexture({ 240, 108 }, "PlayChoiceTextures");
+    playChoiceTexture = objectsHandler->loadTexture({ 240, 135 }, "PlayChoiceTextures");
     if (!playChoiceTexture)
         return true;
     objectsHandler->loadSpriteIntoHolder(*playChoiceTexture, { 130,86 }, { 110, 22 }, spriteHolderIndex);
@@ -95,16 +95,23 @@ bool PlayChoice::init() {
     objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 331, 121 });
     objectsHandler->loadSpriteIntoHolder(*playChoiceTexture, { 110,104 }, { 0, 0 }, spriteHolderIndex);
     objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 290, 150 });
-    objectsHandler->loadTextIntoHolder("Hp:", 12, { 303, 161 });
-    objectsHandler->loadTextIntoHolder("Ms:", 12, { 303, 174 });
-    objectsHandler->loadTextIntoHolder("Damage:", 12, { 303, 187 });
-    objectsHandler->loadTextIntoHolder("Exp:", 12, { 303, 200 });
-    objectsHandler->loadTextIntoHolder("Armor:", 12, { 303, 213 });
-    objectsHandler->loadTextIntoHolder("100", 12, { 373, 161 });
-    objectsHandler->loadTextIntoHolder("2", 12, { 373, 174 });
-    objectsHandler->loadTextIntoHolder("100", 12, { 373, 187 });
-    objectsHandler->loadTextIntoHolder("100", 12, { 373, 200 });
-    objectsHandler->loadTextIntoHolder("0", 12, { 373, 213 });
+    objectsHandler->loadSpriteIntoHolder(*playChoiceTexture, { 32,31 }, { 0, 104 }, spriteHolderIndex);
+    objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 330, 219 });
+    sf::Texture* weaponTextures = objectsHandler->loadTexture({ 160, 62 }, "WeaponSprites");
+    if (!weaponTextures)
+        return true;
+    objectsHandler->loadSpriteIntoHolder(*weaponTextures, { 32,31 }, { 32 * (*selectedPlayer), 0 }, spriteHolderIndex);
+    objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setPosition({ 330, 219 });
+    objectsHandler->loadTextIntoHolder("Hp:", 11, { 303, 155 });
+    objectsHandler->loadTextIntoHolder("Ms:", 11, { 303, 167 });
+    objectsHandler->loadTextIntoHolder("Damage:", 11, { 303, 179 });
+    objectsHandler->loadTextIntoHolder("Exp:", 11, { 303, 191 });
+    objectsHandler->loadTextIntoHolder("Armor:", 11, { 303, 203 });
+    objectsHandler->loadTextIntoHolder("100", 11, { 373, 155 });
+    objectsHandler->loadTextIntoHolder("2", 11, { 373, 167 });
+    objectsHandler->loadTextIntoHolder("100", 11, { 373, 179 });
+    objectsHandler->loadTextIntoHolder("100", 11, { 373, 191 });
+    objectsHandler->loadTextIntoHolder("0", 11, { 373, 203 });
     objectsHandler->addVectorToSpriteHolder();
     playChoiceTexture = objectsHandler->loadTexture({ 244, 154 }, "MapThumbnails");
     if (!playChoiceTexture) 
@@ -141,14 +148,16 @@ bool PlayChoice::init() {
 
 void PlayChoice::refreshCharacterStats() {
     CharacterDetails stats = getCharacterStats(*selectedPlayer);
-    objectsHandler->getTextPointer(7)->setString(std::to_string((int) stats.baseHp));
+    objectsHandler->getTextPointer(7)->setString(std::to_string((int)stats.baseHp));
     char buffer[4];
     std::snprintf(buffer, 4, "%.1f", stats.baseMs);
     std::string str(buffer);
     objectsHandler->getTextPointer(8)->setString(str);
-    objectsHandler->getTextPointer(9)->setString(std::to_string((int)(stats.baseDamage*100)).append("%"));
+    objectsHandler->getTextPointer(9)->setString(std::to_string((int)(stats.baseDamage * 100)).append("%"));
     objectsHandler->getTextPointer(10)->setString(std::to_string((int)(stats.baseExp * 100)).append("%"));
     objectsHandler->getTextPointer(11)->setString(std::to_string((int)stats.baseArmor));
+    sf::Texture* weaponTextures = objectsHandler->loadTexture({ 160, 62 }, "WeaponSprites");
+    objectsHandler->getSpritePointer(spriteHolderIndex, -1)->setTextureRect({ { 32 * (*selectedPlayer), 0 }, { 32, 31 } });
 }
 
 void PlayChoice::cleanUp() {
