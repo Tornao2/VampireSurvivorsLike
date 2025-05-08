@@ -63,6 +63,12 @@ void Display::loadFromFile() {
 			fullscreenMode = borders;
 		inFile.close();
 	}
+	else {
+		windowSize.x = 1440;
+		windowSize.y = 900;
+		fullscreenMode = windowed;
+		saveToFile();
+	}
 }
 
 void Display::saveToFile() {
