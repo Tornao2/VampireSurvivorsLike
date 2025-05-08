@@ -44,7 +44,7 @@ void CharacterData::addItem(int readId, int readLevel) {
 	changeStats(readId, readLevel);
 }
 
-void CharacterData::addWeapon(int readId, int readLevel, sf::Texture* readProjectileSprite) {
+void CharacterData::addWeapon(int readId, int readLevel) {
 	Weapon weapon;
 	if (readLevel == 1) {
 		for (Weapon& item : weaponInfo) {
@@ -72,20 +72,20 @@ void CharacterData::addWeapon(int readId, int readLevel, sf::Texture* readProjec
 
 void CharacterData::chestLogic(sf::Texture* readProjectileSprite) {
 	for (Weapon& weapon : weaponInfo) {
-		if (weapon.getIfCanEvolve() && weapon.getBasicInfo()->currentLevel == weapon.getBasicInfo()->maxLevel) {
+		if (weapon.getIfCanEvolve() && (weapon.getBasicInfo()->currentLevel == weapon.getBasicInfo()->maxLevel)) {
 			int requiredItem = weapon.getRequiredItemEvolution();
 			bool ifFound = false;
 			for (Weapon& checkedWeapon : weaponInfo) 
-				if (requiredItem == checkedWeapon.getBasicInfo()->itemId) {
+				if ((requiredItem == checkedWeapon.getBasicInfo()->itemId) && (checkedWeapon.getBasicInfo()->currentLevel == checkedWeapon.getBasicInfo()->maxLevel)) {
 					ifFound = true;
-					if (checkedWeapon.getBasicInfo()->itemId == 6 || checkedWeapon.getBasicInfo()->itemId == 7) 
+					if ((checkedWeapon.getBasicInfo()->itemId == 6) || (checkedWeapon.getBasicInfo()->itemId == 7))
 						checkedWeapon.reset();
 				}
 			for (ItemInfo& item : itemInfos) 
-				if (item.itemId == requiredItem) 
+				if ((item.itemId == requiredItem) && (item.currentLevel == item.maxLevel))
 					ifFound = true;
 			if (ifFound == false)
-				break;
+				continue;
 			int nextId = weapon.getNextEvolution();
 			weapon = Weapon();
 			weapon.getBasicInfo()->currentLevel = 1;
@@ -291,7 +291,7 @@ void CharacterData::setSizes(sf::Vector2f readPos, sf::Vector2i readSize) {
 }
 
 void CharacterData::setMods() {
-	xpToNext = 100;
+	xpToNext = 50;
 	xp = 0;
 	level = 1;
 	invincibilityFrame = 0;

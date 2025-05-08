@@ -10,10 +10,10 @@ struct CharacterDetails {
 };
 
 static CharacterDetails charArray[NUMBEROFCHARS] = {
-	{100.0f, 2.0f, 1.0f, 1.0f, 0, {0, 0}},
-	{120.0f, 1.8f, 1.0f, 1.0f, 1, {16, 0}},
-	{80.0f, 2.5f, 1.1f, 1.1f, 1, {32, 0}},
-	{200.0f, 1.5f, 0.95f, 0.95f, 2, {48, 0}}
+	{80.0f, 2.0f, 1.0f, 1.0f, 0, {0, 0}},
+	{100.0f, 1.8f, 1.0f, 1.0f, 1, {16, 0}},
+	{60.0f, 2.5f, 1.1f, 1.1f, 1, {32, 0}},
+	{140.0f, 1.5f, 0.95f, 0.95f, 2, {48, 0}}
 };
 
 CharacterDetails getCharacterStats(int index);
@@ -63,7 +63,7 @@ public:
 	std::vector<Weapon>* getWeaponInfo();
 	std::vector<ItemInfo>* getItemIds();
 	std::vector<bool> getIfEvolve();
-	void addWeapon(int readId, int readLevel, sf::Texture* readProjectileSprite);
+	void addWeapon(int readId, int readLevel);
 	void addItem(int readId, int readLevel);
 	void changeStats(int readId, int readLevel);
 	void changeWeaponStats(int readId, int readLevel, Weapon& readWeapon);

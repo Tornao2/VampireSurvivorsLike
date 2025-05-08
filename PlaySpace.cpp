@@ -62,13 +62,13 @@ bool PlaySpace::eventLogic(std::optional<sf::Event> gameEvent) {
                 soundManager->playSound("menuSelect", true);
                 if (buttonIndex == 0) {
                     if (weaponTaking) 
-                        playerData.addWeapon(choiceAId, std::stoi(std::string(objectsHandler->getTextPointer(2)->getString())), objectsHandler->loadTexture({ 51, 21 }, "ProjectileSprites"));
+                        playerData.addWeapon(choiceAId, std::stoi(std::string(objectsHandler->getTextPointer(2)->getString())));
                     else 
                         playerData.addItem(choiceAId, std::stoi(std::string(objectsHandler->getTextPointer(2)->getString())));
                 }
                 else {
                     if (weaponTaking) 
-                        playerData.addWeapon(choiceBId, std::stoi(std::string(objectsHandler->getTextPointer(5)->getString())), objectsHandler->loadTexture({ 51, 21 }, "ProjectileSprites"));
+                        playerData.addWeapon(choiceBId, std::stoi(std::string(objectsHandler->getTextPointer(5)->getString())));
                     else 
                         playerData.addItem(choiceBId, std::stoi(std::string(objectsHandler->getTextPointer(5)->getString())));
                 }
@@ -520,7 +520,11 @@ void PlaySpace::weaponLogic() {
         for (Weapon& node : *playerData.getWeaponInfo()) {
             if (node.getBasicInfo()->maxLevel != -1) {
                 if (node.getDelay() == 0) {
-                    objectsHandler->addProjectile(node, playerData.getPos(), playerData.getLastXDir(), playerData.getLastYDir());
+                    objectsHandler->addProjectile(node, playerData.getPos()+sf::Vector2f((float)playerData.getSize().x/2, (float)playerData.getSize().y/2), playerData.getLastXDir(), playerData.getLastYDir());
+                    int id = node.getBasicInfo()->itemId - 5;
+                    if (id == 8)
+                        id = 7;
+                    soundManager->playSound(std::string("weapon").append(std::to_string(id)), false);
                     node.resetDelay();
                 }
                 else

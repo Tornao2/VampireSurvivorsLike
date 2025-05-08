@@ -145,12 +145,12 @@ void ObjectsHandler::addProjectile(Weapon weapon, sf::Vector2f readPos, bool fac
         endPos = getClosestEnemyCords(readPos);
         break;
     case 8:
-    case 14:
-        endPos = (faceDown == true) ? sf::Vector2f(readPos.x, readPos.y + 1) : sf::Vector2f(readPos.x, readPos.y - 1);
-        break;
     case 12:
     case 13:
+        endPos = (faceDown == true) ? sf::Vector2f(readPos.x, readPos.y + 1) : sf::Vector2f(readPos.x, readPos.y - 1);
+        break;
     case 9:
+    case 14:
         endPos = (faceRight == true) ? sf::Vector2f(readPos.x + 1, readPos.y) : sf::Vector2f(readPos.x - 1, readPos.y);
         break;
     case 10:
@@ -160,11 +160,15 @@ void ObjectsHandler::addProjectile(Weapon weapon, sf::Vector2f readPos, bool fac
     }
     Projectiles* projectile = new Projectiles(sprite, weapon.getStatsForProjectile()[0], weapon.getStatsForProjectile()[2], weapon.getStatsForProjectile()[1], readPos, endPos, calcProjectileSpriteData(weapon.getBasicInfo()->itemId).size);
     projectileHolder.push_back(projectile);
-    if ((weapon.getBasicInfo()->itemId == 12) || (weapon.getBasicInfo()->itemId == 13)) {
+    if (weapon.getBasicInfo()->itemId == 14) {
+        sf::Sprite* sprite = new sf::Sprite(textureHolder.at("Resources/ProjectileSprites.png"), calcProjectileSpriteData(weapon.getBasicInfo()->itemId));
+        sprite->setPosition(readPos);
         endPos = (faceRight == false) ? sf::Vector2f(readPos.x + 1, readPos.y) : sf::Vector2f(readPos.x - 1, readPos.y);
         Projectiles* projectile = new Projectiles(sprite, weapon.getStatsForProjectile()[0], weapon.getStatsForProjectile()[2], weapon.getStatsForProjectile()[1], readPos, endPos, calcProjectileSpriteData(weapon.getBasicInfo()->itemId).size);
         projectileHolder.push_back(projectile);
-    } else if (weapon.getBasicInfo()->itemId == 14) {
+    } else if ((weapon.getBasicInfo()->itemId == 12) || (weapon.getBasicInfo()->itemId == 13)) {
+        sf::Sprite* sprite = new sf::Sprite(textureHolder.at("Resources/ProjectileSprites.png"), calcProjectileSpriteData(weapon.getBasicInfo()->itemId));
+        sprite->setPosition(readPos);
         endPos = (faceDown == false) ? sf::Vector2f(readPos.x, readPos.y + 1) : sf::Vector2f(readPos.x, readPos.y - 1);
         Projectiles* projectile = new Projectiles(sprite, weapon.getStatsForProjectile()[0], weapon.getStatsForProjectile()[2], weapon.getStatsForProjectile()[1], readPos, endPos, calcProjectileSpriteData(weapon.getBasicInfo()->itemId).size);
         projectileHolder.push_back(projectile);
