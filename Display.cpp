@@ -52,9 +52,10 @@ DisplayMode Display::getFullscreen(){
 
 void Display::loadFromFile() {
 	std::ifstream inFile("Resources/Display.txt");
+	char dummy;
 	if (inFile) {
 		std::string fullscreenStat;
-		inFile >> windowSize.x >> breakCharacter >> windowSize.y >> breakCharacter >> fullscreenStat;
+		inFile >> windowSize.x >> dummy >> windowSize.y >> dummy >> fullscreenStat;
 		if (std::stoi(fullscreenStat) == 0) 
 			fullscreenMode = windowed;
 		else if (std::stoi(fullscreenStat) == 1) 
@@ -73,6 +74,6 @@ void Display::loadFromFile() {
 
 void Display::saveToFile() {
 	std::ofstream outFile("Resources/Display.txt");
-	outFile << windowSize.x << breakCharacter << windowSize.y << breakCharacter << (int)fullscreenMode << "\n";
+	outFile << windowSize.x << ';' << windowSize.y << ';' << (int)fullscreenMode << "\n";
 	outFile.close();
 }

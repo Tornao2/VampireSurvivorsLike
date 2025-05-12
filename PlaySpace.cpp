@@ -660,8 +660,8 @@ void PlaySpace::respawnEnemies() {
     int seconds = static_cast<int>(timer.getElapsedTime().asSeconds());
     if (seconds - lastSpawnTime >= 2) {
         lastSpawnTime = seconds;
-        for (int i = 0; i < 20; i++) 
-            objectsHandler->addEnemy(static_cast<int>(timer.getElapsedTime().asSeconds() / 60), randomizePos(), (seconds % 15 == 0 && i == 0) ? true : false);
+        for (int i = 0; i < 15; i++) 
+            objectsHandler->addEnemy(static_cast<int>(timer.getElapsedTime().asSeconds() / 60), randomizePos(), (seconds % 20 == 0 && i == 0) ? true : false);
     }
 }
 

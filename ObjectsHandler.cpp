@@ -1,9 +1,9 @@
 #include "ObjectsHandler.h"
 
-bool ObjectsHandler::loadFont() {
+ObjectsHandler::ObjectsHandler() {
     if (!font.openFromFile("Resources/font.otf"))
-        return true;
-    return false;
+        return;
+
 }
 
 int ObjectsHandler::getSpriteHolderSize(int collectionIndex) {

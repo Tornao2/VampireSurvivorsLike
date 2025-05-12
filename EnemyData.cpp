@@ -5,19 +5,15 @@ void EnemyData::giveStats(int enemyId, sf::Vector2f readPos, bool readIsBoss){
 	enemyStats = enemyArray[enemyId];
 	size = { 16, 24 };
 	if (readIsBoss) {
-		enemyStats.armor *= 5;
-		enemyStats.damage *= 3;
-		enemyStats.baseHp *= 20;
-		enemyStats.move *= 1.4;
+		enemyStats.armor *= 3;
+		enemyStats.damage *= 2;
+		enemyStats.baseHp *= 10;
+		enemyStats.move *= 1.3;
 		size = { 32, 48 };
 		enemyStats.xp *= 10;
 	}
 	isBoss = readIsBoss;
 	currentHp = (int) enemyStats.baseHp;
-}
-
-EnemyDataNode* EnemyData::getEnemyDataNode() {
-	return &enemyStats;
 }
 
 sf::Vector2f EnemyData::getSize() {

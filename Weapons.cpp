@@ -58,14 +58,6 @@ void Weapon::changeDamage(float readValue) {
 	baseDmg = readValue;
 }
 
-void Weapon::changeMs(float readValue) {
-	baseMs = readValue;
-}
-
-void Weapon::changeRange(int readValue) {
-	baseRange = readValue;
-}
-
 void Weapon::changeFirerate(int readValue) {
 	delay = readValue;
 }

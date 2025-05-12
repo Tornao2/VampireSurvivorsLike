@@ -1,5 +1,15 @@
 #include "Engine.h"
 
+Engine::Engine() {
+    sceneLabel = MAINMENU;
+    soundVolume = 100;
+    errorCode = 0;
+    selectedMap = 0;
+    selectedChar = 0;
+    tempVariable = 0;
+    scene = nullptr;
+}
+
 void Engine::loadVolume() {
     soundManager.loadSounds();
     std::ifstream inFile("Resources/Misc.txt");
@@ -27,10 +37,6 @@ void Engine::loadMusic(std::string filename) {
 }
 
 void Engine::mainLoop() {
-    if (objectsHandler.loadFont()) {
-        errorCode = -1;
-        return;
-    }
     loadVolume();
     changeScene();
     loadMusic("MenuMusic");

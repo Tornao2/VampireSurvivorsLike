@@ -2,7 +2,7 @@
 
 Projectiles::Projectiles(sf::Sprite* readSprite, float damage, float range, float ms, sf::Vector2f readPos, sf::Vector2f readEndPos, sf::Vector2i readSize) {
 	sprite = readSprite;
-	effectiveDamange = damage;
+	effectiveDamage = damage;
 	effectiveRange = range;
 	pos = readPos;
 	size = readSize;
@@ -27,7 +27,7 @@ sf::Vector2f Projectiles::getPos() {
 }
 
 float Projectiles::getDamage() {
-	return effectiveDamange;
+	return effectiveDamage;
 }
 
 void Projectiles::move() {
