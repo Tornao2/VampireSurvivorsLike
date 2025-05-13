@@ -273,16 +273,7 @@ bool PlaySpace::initLevelUp() {
             objectsHandler->getSpritePointer(additionalMenuIndex, -1)->setPosition({ (float)(164 + (int)playerData.getPos().x - 208), (float)(88 + (int)playerData.getPos().y - 123) });
             objectsHandler->loadSpriteIntoHolder(*weaponTextures, { 32,31 }, { ((std::get<0>(itemIds[choiceBId]) - 1) % 5) * 32 , 0 }, additionalMenuIndex);
             objectsHandler->getSpritePointer(additionalMenuIndex, -1)->setPosition({ (float)(236 + (int)playerData.getPos().x - 208), (float)(88 + (int)playerData.getPos().y - 123) });
-            objectsHandler->loadTextIntoHolder(std::to_string((std::get<1>(itemIds[choiceAId]) + 1)), 15, { 169 , 118 });
-            objectsHandler->loadTextIntoHolder(std::to_string((std::get<2>(itemIds[choiceAId]))), 15, { 188 , 118 });
-            objectsHandler->loadTextIntoHolder(getUpgradeText(std::get<0>(itemIds[choiceAId]), std::get<1>(itemIds[choiceAId]) + 1), 11, { 149 , 134 });
-            objectsHandler->loadTextIntoHolder(std::to_string((std::get<1>(itemIds[choiceBId]) + 1)), 15, { 241 , 118 });
-            objectsHandler->loadTextIntoHolder(std::to_string((std::get<2>(itemIds[choiceBId]))), 15, { 260 , 118 });
-            objectsHandler->loadTextIntoHolder(getUpgradeText(std::get<0>(itemIds[choiceBId]), std::get<1>(itemIds[choiceBId]) + 1), 11, { 221 , 134 });
-            choiceAId = std::get<0>(itemIds[choiceAId]);
-            choiceBId = std::get<0>(itemIds[choiceBId]);
-        }
-        else {
+        }else {
             std::vector<ItemInfo>* infos = playerData.getItemIds();
             for (ItemInfo item : *infos) 
                 if (item.maxLevel != -1 && item.maxLevel != item.currentLevel)
@@ -314,15 +305,15 @@ bool PlaySpace::initLevelUp() {
             objectsHandler->getSpritePointer(additionalMenuIndex, -1)->setPosition({ (float)(164 + (int)playerData.getPos().x - 208), (float)(88 + (int)playerData.getPos().y - 123) });
             objectsHandler->loadSpriteIntoHolder(*itemTextures, { 32,31 }, { ((std::get<0>(itemIds[choiceBId]) - 1) % 3) * 32 , (std::get<0>(itemIds[choiceBId]) - 1) / 3 * 31 }, additionalMenuIndex);
             objectsHandler->getSpritePointer(additionalMenuIndex, -1)->setPosition({ (float)(236 + (int)playerData.getPos().x - 208), (float)(88 + (int)playerData.getPos().y - 123) });
-            objectsHandler->loadTextIntoHolder(std::to_string((std::get<1>(itemIds[choiceAId]) + 1)), 15, { 169 , 118 });
-            objectsHandler->loadTextIntoHolder(std::to_string((std::get<2>(itemIds[choiceAId]))), 15, { 188 , 118 });
-            objectsHandler->loadTextIntoHolder(getUpgradeText(std::get<0>(itemIds[choiceAId]), std::get<1>(itemIds[choiceAId]) + 1), 11, { 149 , 134 });
-            objectsHandler->loadTextIntoHolder(std::to_string((std::get<1>(itemIds[choiceBId]) + 1)), 15, { 241 , 118 });
-            objectsHandler->loadTextIntoHolder(std::to_string((std::get<2>(itemIds[choiceBId]))), 15, { 260 , 118 });
-            objectsHandler->loadTextIntoHolder(getUpgradeText(std::get<0>(itemIds[choiceBId]), std::get<1>(itemIds[choiceBId]) + 1), 11, { 221 , 134 });
-            choiceAId = std::get<0>(itemIds[choiceAId]);
-            choiceBId = std::get<0>(itemIds[choiceBId]);
         }
+        objectsHandler->loadTextIntoHolder(std::to_string((std::get<1>(itemIds[choiceAId]) + 1)), 15, { 169 , 118 });
+        objectsHandler->loadTextIntoHolder(std::to_string((std::get<2>(itemIds[choiceAId]))), 15, { 188 , 118 });
+        objectsHandler->loadTextIntoHolder(getUpgradeText(std::get<0>(itemIds[choiceAId]), std::get<1>(itemIds[choiceAId]) + 1), 11, { 149 , 134 });
+        objectsHandler->loadTextIntoHolder(std::to_string((std::get<1>(itemIds[choiceBId]) + 1)), 15, { 241 , 118 });
+        objectsHandler->loadTextIntoHolder(std::to_string((std::get<2>(itemIds[choiceBId]))), 15, { 260 , 118 });
+        objectsHandler->loadTextIntoHolder(getUpgradeText(std::get<0>(itemIds[choiceBId]), std::get<1>(itemIds[choiceBId]) + 1), 11, { 221 , 134 });
+        choiceAId = std::get<0>(itemIds[choiceAId]);
+        choiceBId = std::get<0>(itemIds[choiceBId]);
     }
     else {
         objectsHandler->loadSpriteIntoHolder(*levelUpTexture, { 65,110 }, { 193, 0 }, additionalMenuIndex);
@@ -357,10 +348,6 @@ bool PlaySpace::initLevelUp() {
                 choiceAId = std::rand() % itemIds.size();
                 objectsHandler->loadSpriteIntoHolder(*weaponTextures, { 32,31 }, { ((std::get<0>(itemIds[choiceAId]) - 1) % 5) * 32 , 0 }, additionalMenuIndex);
                 objectsHandler->getSpritePointer(additionalMenuIndex, -1)->setPosition({ (float)(199 + (int)playerData.getPos().x - 208), (float)(88 + (int)playerData.getPos().y - 123) });
-                objectsHandler->loadTextIntoHolder(std::to_string((std::get<1>(itemIds[choiceAId]) + 1)), 15, { 204 , 118 });
-                objectsHandler->loadTextIntoHolder(std::to_string((std::get<2>(itemIds[choiceAId]))), 15, { 223 , 118 });
-                objectsHandler->loadTextIntoHolder(getUpgradeText(std::get<0>(itemIds[choiceAId]), std::get<1>(itemIds[choiceAId]) + 1), 11, { 184 , 134 });
-                choiceAId = std::get<0>(itemIds[choiceAId]);
             }
         else {
             std::vector<ItemInfo>* infos = playerData.getItemIds();
@@ -390,11 +377,11 @@ bool PlaySpace::initLevelUp() {
             choiceAId = std::rand() % itemIds.size();
             objectsHandler->loadSpriteIntoHolder(*itemTextures, { 32,31 }, { ((std::get<0>(itemIds[choiceAId]) - 1) % 3) * 32 , (std::get<0>(itemIds[choiceAId]) - 1) / 3 * 31 }, additionalMenuIndex);
             objectsHandler->getSpritePointer(additionalMenuIndex, -1)->setPosition({ (float)(199 + (int)playerData.getPos().x - 208), (float)(88 + (int)playerData.getPos().y - 123) });
-            objectsHandler->loadTextIntoHolder(std::to_string((std::get<1>(itemIds[choiceAId]) + 1)), 15, { 204 , 118 });
-            objectsHandler->loadTextIntoHolder(std::to_string((std::get<2>(itemIds[choiceAId]))), 15, { 223 , 118 });
-            objectsHandler->loadTextIntoHolder(getUpgradeText(std::get<0>(itemIds[choiceAId]), std::get<1>(itemIds[choiceAId]) + 1), 11, { 184 , 134 });
-            choiceAId = std::get<0>(itemIds[choiceAId]);
         }
+        objectsHandler->loadTextIntoHolder(std::to_string((std::get<1>(itemIds[choiceAId]) + 1)), 15, { 204 , 118 });
+        objectsHandler->loadTextIntoHolder(std::to_string((std::get<2>(itemIds[choiceAId]))), 15, { 223 , 118 });
+        objectsHandler->loadTextIntoHolder(getUpgradeText(std::get<0>(itemIds[choiceAId]), std::get<1>(itemIds[choiceAId]) + 1), 11, { 184 , 134 });
+        choiceAId = std::get<0>(itemIds[choiceAId]);
     }
     levelButtonFocus();
     return true;

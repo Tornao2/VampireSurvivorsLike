@@ -37,10 +37,10 @@ struct CharacterDetails {
 * Tablica przechowuj¹ca bazowe statystyki dla wszystkich dostêpnych postaci.
 */
 static CharacterDetails charArray[NUMBEROFCHARS] = {
-	{80.0f, 2.0f, 1.0f, 1.0f, 0, {0, 0}},    // Statystyki postaci 0
-	{100.0f, 1.8f, 1.0f, 1.0f, 1, {16, 0}}, // Statystyki postaci 1
-	{60.0f, 2.5f, 1.1f, 1.1f, 1, {32, 0}}, // Statystyki postaci 2
-	{140.0f, 1.5f, 0.95f, 0.95f, 2, {48, 0}}  // Statystyki postaci 3
+	{80.0f, 2.0f, 1.0f, 1.0f, 0, {0, 0}},    ///< Statystyki postaci 0
+	{100.0f, 1.8f, 1.0f, 1.0f, 1, {16, 0}}, ///< Statystyki postaci 1
+	{60.0f, 2.5f, 1.1f, 1.1f, 1, {32, 0}}, ///< Statystyki postaci 2
+	{140.0f, 1.5f, 0.95f, 0.95f, 2, {48, 0}}  ///< Statystyki postaci 3
 };
 
 /**
