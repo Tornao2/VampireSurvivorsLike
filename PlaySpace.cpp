@@ -421,8 +421,11 @@ void PlaySpace::decrementPauseTime() {
 bool PlaySpace::realTimeLogic() {
     int seconds = static_cast<int>(timer.getElapsedTime().asSeconds());
     if (playerData.getCurrentHp() == 0 || seconds >= 600) {
-        if (playerData.getCurrentHp() == 0)
+        if (playerData.getCurrentHp() == 0) {
             soundManager->playSound("death", false);
+            if (static_cast<int>(timer.getElapsedTime().asSeconds())/2 + additionalCoins >= 150) 
+                additionalCoins = 150 - static_cast<int>(timer.getElapsedTime().asSeconds())/2;
+        }
         *sceneLabel = FINISHSCREEN;
         return true;
     }
@@ -820,7 +823,7 @@ sf::Vector2f PlaySpace::determineMovement() {
 }
 
 int PlaySpace::getCoins() {
-    return static_cast<int>(timer.getElapsedTime().asSeconds())/5 + additionalCoins;
+    return static_cast<int>(timer.getElapsedTime().asSeconds())/2 + additionalCoins;
 }
 
 bool PlaySpace::getShouldRun() {

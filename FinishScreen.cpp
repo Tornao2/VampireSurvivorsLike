@@ -19,7 +19,7 @@ void FinishScreen::setCoins(int readCoins, int chosenMap, int chosenChar) {
     modifManager.loadModifiersFromFile();
     modifManager.changeCoins(coins);
     modifManager.saveModifiersToFile();
-    if (readCoins >= 600) {
+    if (readCoins >= 150) {
         Unlocks unlockedManager;
         std::vector<bool> unlockedChars = unlockedManager.loadUnlocked("CharactersUnlocked");
         std::vector<bool> unlockedMaps = unlockedManager.loadUnlocked("MapsUnlocked");
