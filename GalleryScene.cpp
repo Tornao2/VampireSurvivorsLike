@@ -53,9 +53,9 @@ void GalleryScene::showSprites() {
 			break;
 		case 1:
 			usedTexture = objectsHandler->loadTexture({ 80, 48 }, "EnemySprites");
-			for (int i = 0; i < 8; i++) {
-				objectsHandler->loadSpriteIntoHolder(*usedTexture, { 16,24 }, { (i % 4) * 16, i / 4 * 24 }, additionalHolderIndex);
-				objectsHandler->getSpritePointer(additionalHolderIndex, -1)->setPosition({ 142 + 66.f * (i%4), 89 + i/4 * 73.f });
+			for (int i = 0; i < 10; i++) {
+				objectsHandler->loadSpriteIntoHolder(*usedTexture, { 16,24 }, { (i % 5) * 16, i / 5 * 24 }, additionalHolderIndex);
+				objectsHandler->getSpritePointer(additionalHolderIndex, -1)->setPosition({ 145 + 47.f * (i%5), 89 + i/5 * 73.f });
 			}
 			break;
 		case 2:

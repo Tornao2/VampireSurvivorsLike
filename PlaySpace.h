@@ -35,7 +35,7 @@ private:
 	/**
 	* @brief Czas ostatniego pojawienia siê przeciwnika.
 	*/
-	int lastSpawnTime = 10;
+	int lastSpawnTime = 2;
 	/**
 	* @brief Czas ostatniego wystrza³u broni.
 	*/

@@ -7,7 +7,6 @@ void Modifiers::loadCleanModifiers() {
 	modVector.push_back({ "Move%", 0, 5, (float) 0.05 });
 	modVector.push_back({ "Exp%", 0, 4, (float) 0.05 });
 	modVector.push_back({ "Armor", 0, 4, 1 });
-	modVector.push_back({ "AOE%", 0, 4, (float) 0.05 });
 }
 
 void Modifiers::loadModifiersFromFile() {
@@ -89,7 +88,7 @@ unsigned char Modifiers::getRowAmount() {
 	if (modVector.size() == 0) 
 		return 0;
 	else 
-		return (unsigned char) modVector.size() / 5 + 1;
+		return (unsigned char) (modVector.size() -1) / 5 + 1;
 }
 
 bool Modifiers::increaseLevel(int index) {
