@@ -25,7 +25,7 @@ void Engine::loadVolume() {
 
 void Engine::loadMusic(std::string filename) {
     std::string realFilename = "Resources/Sounds/";
-    realFilename = realFilename.append(filename).append(".wav");
+    realFilename = realFilename.append(filename).append(".mp3");
     if (realFilename != currentMusic) {
         playedMusic.stop();
         currentMusic = realFilename;
