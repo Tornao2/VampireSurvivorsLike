@@ -34,3 +34,7 @@ Map layouts are consistent between different sessions and are generated based on
 Enemies which are a certain distance from the player get despawned, unless they are mini-bosses in which case they get teleported to the other side of the screen.
 
 Exiting from the in game menu does not update the coin amount, it is updated upon player's death or victory.
+
+# Demonstration
+
+Demonstration of the project at: https://www.youtube.com/watch?v=4WL2gd17ylE
