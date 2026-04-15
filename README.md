@@ -35,6 +35,3 @@ Enemies which are a certain distance from the player get despawned, unless they 
 
 Exiting from the in game menu does not update the coin amount, it is updated upon player's death or victory.
 
-# Demonstration
-
-Demonstration of the project at: https://www.youtube.com/watch?v=4WL2gd17ylE
